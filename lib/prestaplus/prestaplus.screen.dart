@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:portail_canalplustelecom_mobile/colors.dart';
+import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/main.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/cpe/affectation.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/cpe/restitution.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/ont/affectation.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/ont/restitution.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/prestation.dao.dart';
+import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
 class PrestaplusScreen extends StatelessWidget {

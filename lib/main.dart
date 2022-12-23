@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:rive_splash_screen/rive_splash_screen.dart';
 
-import 'package:portail_canalplustelecom_mobile/colors.dart';
+import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/tabs.dart';
 
 void main() {

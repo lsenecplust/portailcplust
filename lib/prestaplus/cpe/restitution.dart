@@ -2,9 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import 'package:portail_canalplustelecom_mobile/colors.dart';
+import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/main.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/prestation.dao.dart';
+import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/barcode_scanner_controller.dart';
 
 class RestitutionCPE extends StatefulWidget {

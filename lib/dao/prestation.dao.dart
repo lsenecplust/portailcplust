@@ -54,8 +54,7 @@ class Prestation extends Equatable {
   factory Prestation.fromMap(Map<String, dynamic> map) {
     return Prestation(
       idPrestation: map['idPrestation'] ?? '',
-      daterendezvous:
-          DateFormat("d/M/y").parse(map['daterendezvous']),
+      daterendezvous: DateFormat("d/M/y").parse(map['daterendezvous']),
       client: map['client'] ?? '',
       adresse: map['adresse'] ?? '',
       codepostale: map['codepostale']?.toInt() ?? 0,
@@ -91,9 +90,10 @@ class Prestation extends Equatable {
 
   static Future<List<Prestation>> get get async {
     var response = await http.get(
-        Uri.parse('https://mocki.io/v1/ca28493b-fc23-466e-9d21-07a582e734bd'));
+        Uri.parse('https://mocki.io/v1/997242b9-7984-4f2e-b267-660a8ef91040'));
     HttpErrorHandler.handle(response);
     var data = jsonDecode(response.body);
     return List.from(data.map((e) => Prestation.fromMap(e)));
   }
+
 }
