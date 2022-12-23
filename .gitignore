@@ -43,16 +43,18 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-macos/Flutter/
-
 windows/flutter/
+
+macos/Flutter/
 
 linux/flutter/
 
 linux/CMakeLists.txt
 
-android/app/src/debug/
+ios/Runner/
 
-android/app/src/main/
+pubspec.lock
 
-android/app/src/profile/
+.metadata
+
+android/app/src/
