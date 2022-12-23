@@ -44,13 +44,16 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.portail_canalplustelecom_mobile"
+        applicationId "com.canalplustelecom.mobile.portail"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        manifestPlaceholders += [
+                'appAuthRedirectScheme': 'com.auth0.flutterdemo'
+        ]
     }
 
     buildTypes {
