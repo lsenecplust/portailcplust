@@ -6,7 +6,9 @@ import 'package:rive_splash_screen/rive_splash_screen.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/tabs.dart';
 
-void main() {
+import 'auth.dart';
+
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
@@ -27,7 +29,7 @@ class MainApp extends StatelessWidget {
       ),
       home: SplashScreen.navigate(
         name: 'assets/rives/intro.riv',
-        next: (context) => const RootContainer(),
+        next: (context) => const Auth(),
         until: () => Future.delayed(const Duration(seconds: 3)),
         backgroundColor: Colors.white,
         startAnimation: "intro",
@@ -42,7 +44,7 @@ class RootContainer extends StatefulWidget {
   const RootContainer({
     Key? key,
     this.child,
-    this.title='Portail C+T',
+    this.title = 'Portail C+T',
   }) : super(key: key);
 
   @override

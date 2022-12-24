@@ -52,7 +52,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         manifestPlaceholders += [
-                'appAuthRedirectScheme': 'com.auth0.flutterdemo'
+                'appAuthRedirectScheme': 'https://apps.portail.canalplustelecom.mobile'
         ]
     }
 
