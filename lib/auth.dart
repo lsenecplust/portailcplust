@@ -1,11 +1,10 @@
+// ignore_for_file: implementation_imports
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
-import 'package:portail_canalplustelecom_mobile/widgets/streambuilder.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
