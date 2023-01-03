@@ -16,39 +16,24 @@ final tokenEndpoint = Uri.parse("$issuer/protocol/openid-connect/token");
 const clientid = 'portail_canalplustelecom';
 const secret = null;
 Uri redirectUrl = Uri.parse('apps://apps.portail.canalplustelecom.mobile');
-final credentialsFile = File('~/.myapp/credentials.json');
 
-class Auth extends StatelessWidget {
-  const Auth({super.key});
+class Auth {
+  Auth._initme();
+  static final Auth instance = Auth._initme();
+  oauth2.Client? client;
+}
+
+class AuthHandler extends StatelessWidget {
+  final Widget child;
+  final Widget errorWidget;
+  const AuthHandler(
+      {super.key, required this.child, required this.errorWidget});
 
   Future<oauth2.Client> createClient() async {
-    var exists = await credentialsFile.exists();
-
-    // If the OAuth2 credentials have already been saved from a previous run, we
-    // just want to reload them.
-    if (exists) {
-      var credentials =
-          oauth2.Credentials.fromJson(await credentialsFile.readAsString());
-      return oauth2.Client(credentials, identifier: clientid, secret: secret);
-    }
-
-    // If we don't have OAuth2 credentials yet, we need to get the resource owner
-    // to authorize us. We're assuming here that we're a command-line application.
     var grant = oauth2.AuthorizationCodeGrant(
         clientid, authorizationEndpoint, tokenEndpoint,
         secret: secret);
-
-    // A URL on the authorization server (authorizationEndpoint with some additional
-    // query parameters). Scopes and state can optionally be passed into this method.
     var authorizationUrl = grant.getAuthorizationUrl(redirectUrl);
-
-    //print(authorizationUrl);
-    // Redirect the resource owner to the authorization URL. Once the resource
-    // owner has authorized, they'll be redirected to `redirectUrl` with an
-    // authorization code. The `redirect` should cause the browser to redirect to
-    // another URL which should also have a listener.
-    //launchUrl(Uri.parse('apps://apps.portail.canalplustelecom.mobile?session_date=fdfsdfsdf'));
-    //launchUrl(Uri.parse('https://apps.portail.canalplustelecom.mobile/?session_date=fdfsdfsdf'));
     launchUrl(authorizationUrl, mode: LaunchMode.externalApplication);
 
     // ------- 8< -------
@@ -71,19 +56,8 @@ class Auth extends StatelessWidget {
       body: CustomFutureBuilder(
         future: createClient(),
         builder: (context, snapshotClient) {
-          var client = snapshotClient.data!;
-          return CustomFutureBuilder(
-            future: client.read(Uri.parse(
-                'https://re7.oss.canalplustelecom.com/pfs/api/Contrats/rechercher?query=lary sene&isAdress=false')),
-            builder: (context, snapshot) {
-              return Text(snapshot.data!);
-            },
-          );
-
-/*
-  await auth.credentialsFile.writeAsString(client.credentials.toJson());*/
-
-         // return Text(snapshot.data?.secret ?? "");
+          Auth.instance.client = snapshotClient.data!;
+          return child;
         },
       ),
     );

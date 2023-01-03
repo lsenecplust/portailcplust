@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:portail_canalplustelecom_mobile/widgets/somethingwentwrong.dart';
 import 'package:rive_splash_screen/rive_splash_screen.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
@@ -29,7 +30,10 @@ class MainApp extends StatelessWidget {
       ),
       home: SplashScreen.navigate(
         name: 'assets/rives/intro.riv',
-        next: (context) => const Auth(),
+        next: (context) => const AuthHandler(
+          errorWidget: SomethingWenWrong(msg: "Erreur Auth"),
+          child: RootContainer(),
+        ),
         until: () => Future.delayed(const Duration(seconds: 3)),
         backgroundColor: Colors.white,
         startAnimation: "intro",
