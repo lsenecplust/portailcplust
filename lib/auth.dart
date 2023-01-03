@@ -1,11 +1,12 @@
 // ignore_for_file: implementation_imports
 
-
 import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'class/http.dart';
 
 // https://re7.oss.canalplustelecom.com/dev/auth/realms/OSS-RECETTE/.well-known/openid-configuration
 const issuer =
@@ -16,11 +17,7 @@ const clientid = 'portail_canalplustelecom';
 const secret = null;
 Uri redirectUrl = Uri.parse('apps://apps.portail.canalplustelecom.mobile');
 
-class Auth {
-  Auth._initme();
-  static final Auth instance = Auth._initme();
-  oauth2.Client? client;
-}
+
 
 class AuthHandler extends StatelessWidget {
   final Widget child;
@@ -55,7 +52,7 @@ class AuthHandler extends StatelessWidget {
       body: CustomFutureBuilder(
         future: createClient(),
         builder: (context, snapshotClient) {
-          Auth.instance.client = snapshotClient.data!;
+          Http.instance.client = snapshotClient.data!;
           return child;
         },
       ),
