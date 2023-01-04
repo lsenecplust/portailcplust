@@ -1,65 +1,84 @@
-// ignore_for_file: implementation_imports
-
 import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
-import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
-import 'package:uni_links/uni_links.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 import 'class/http.dart';
 
 // https://re7.oss.canalplustelecom.com/dev/auth/realms/OSS-RECETTE/.well-known/openid-configuration
-const issuer =
-    "https://re7.oss.canalplustelecom.com/dev/auth/realms/OSS-RECETTE";
+const issuer = "http://fr-1vm-lab-osslb01.infra.msv/dev/auth/realms/OSS-DEV";
 final authorizationEndpoint = Uri.parse("$issuer/protocol/openid-connect/auth");
 final tokenEndpoint = Uri.parse("$issuer/protocol/openid-connect/token");
 const clientid = 'portail_canalplustelecom';
-const secret = null;
-Uri redirectUrl = Uri.parse('apps://apps.portail.canalplustelecom.mobile');
 
-class AuthHandler extends StatelessWidget {
+class AuthHandler extends StatefulWidget {
   final Widget child;
   final Widget errorWidget;
   const AuthHandler(
       {super.key, required this.child, required this.errorWidget});
 
-  Future<oauth2.Client> createClient() async {
-    var grant = oauth2.AuthorizationCodeGrant(
-        clientid, authorizationEndpoint, tokenEndpoint,
-        secret: secret);
-    var authorizationUrl = grant.getAuthorizationUrl(redirectUrl);
-    launchUrl(authorizationUrl,
-        mode: LaunchMode.inAppWebView,
-        webViewConfiguration: const WebViewConfiguration(
-            enableJavaScript: true, enableDomStorage: true));
+  @override
+  State<AuthHandler> createState() => _AuthHandlerState();
+}
 
-    Uri? responseUrl;
-    await for (var uri in linkStream) {
-      if (uri?.startsWith(redirectUrl.toString()) ?? false) {
-        responseUrl = Uri.parse(uri!);
-        break;
-      }
-    }
+class _AuthHandlerState extends State<AuthHandler> {
+  bool isLogged = Http.instance.isLogged;
+  @override
+  Widget build(BuildContext context) {
+    if (isLogged) return widget.child;
+    return Scaffold(
+        body: KeycloackWebView(
+      grant: oauth2.AuthorizationCodeGrant(
+        clientid,
+        authorizationEndpoint,
+        tokenEndpoint,
+      ),
+      onLogged: () {
+        setState(() {
+          isLogged = Http.instance.isLogged;
+        });
+      },
+    ));
+  }
+}
 
-    if (responseUrl == null) throw Exception("Unexpexted");
-    return await grant.handleAuthorizationResponse(responseUrl.queryParameters);
+class KeycloackWebView extends StatefulWidget {
+  final oauth2.AuthorizationCodeGrant grant;
+  final Function() onLogged;
+  const KeycloackWebView({
+    Key? key,
+    required this.grant,
+    required this.onLogged,
+  }) : super(key: key);
+
+  @override
+  State<KeycloackWebView> createState() => _KeycloackWebViewState();
+}
+
+class _KeycloackWebViewState extends State<KeycloackWebView> {
+  late final WebViewController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onNavigationRequest: (NavigationRequest request) async {
+            var responseUrl = Uri.parse(request.url);
+            Http.instance.client = await widget.grant
+                .handleAuthorizationResponse(responseUrl.queryParameters);
+            widget.onLogged();
+            return NavigationDecision.prevent;
+          },
+        ),
+      )
+      ..loadRequest(widget.grant.getAuthorizationUrl(
+          authorizationEndpoint)); //redirect to authorizationEndpoint simplifie la conf keycloack. De plus on intercept le redirect, on le kill et on recup le authCode
   }
 
   @override
   Widget build(BuildContext context) {
-    final WebViewController controller = WebViewController()
-    ..loadRequest(Uri.parse('https://www.google.com'));
     return Scaffold(body: WebViewWidget(controller: controller));
-
-    return Scaffold(
-      body: CustomFutureBuilder(
-        future: createClient(),
-        builder: (context, snapshotClient) {
-          Http.instance.client = snapshotClient.data!;
-          return child;
-        },
-      ),
-    );
   }
 }
