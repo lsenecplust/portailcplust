@@ -5,6 +5,7 @@ import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'class/http.dart';
 
@@ -17,8 +18,6 @@ const clientid = 'portail_canalplustelecom';
 const secret = null;
 Uri redirectUrl = Uri.parse('apps://apps.portail.canalplustelecom.mobile');
 
-
-
 class AuthHandler extends StatelessWidget {
   final Widget child;
   final Widget errorWidget;
@@ -30,9 +29,10 @@ class AuthHandler extends StatelessWidget {
         clientid, authorizationEndpoint, tokenEndpoint,
         secret: secret);
     var authorizationUrl = grant.getAuthorizationUrl(redirectUrl);
-    launchUrl(authorizationUrl, mode: LaunchMode.externalApplication);
-
-    // ------- 8< -------
+    launchUrl(authorizationUrl,
+        mode: LaunchMode.inAppWebView,
+        webViewConfiguration: const WebViewConfiguration(
+            enableJavaScript: true, enableDomStorage: true));
 
     Uri? responseUrl;
     await for (var uri in linkStream) {
@@ -48,6 +48,10 @@ class AuthHandler extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final WebViewController controller = WebViewController()
+    ..loadRequest(Uri.parse('https://www.google.com'));
+    return Scaffold(body: WebViewWidget(controller: controller));
+
     return Scaffold(
       body: CustomFutureBuilder(
         future: createClient(),

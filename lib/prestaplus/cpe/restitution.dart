@@ -119,15 +119,15 @@ class _RestitutionCPEState extends State<RestitutionCPE> {
   void affecter() {
     AwesomeDialog(
       context: context,
-      animType: AnimType.LEFTSLIDE,
+      animType: AnimType.leftSlide,
       headerAnimationLoop: false,
       autoHide: const Duration(seconds: 2),
-      dialogType: DialogType.SUCCES,
+      dialogType: DialogType.success,
       showCloseIcon: true,
       title: 'Succes',
       desc: 'Restitution Terminéee',
       btnOkIcon: Icons.check_circle,
-      onDissmissCallback: (type) {
+      onDismissCallback: (type) {
         Navigator.push(context, MaterialPageRoute(builder:((context) {
           return const RootContainer();
         })));
