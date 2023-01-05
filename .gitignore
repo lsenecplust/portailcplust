@@ -40,3 +40,9 @@ app.*.map.json
 
 # Android Studio will place build artifacts here
 pubspec.lock
+
+linux/flutter/
+
+macos/Flutter/
+
+windows/flutter/

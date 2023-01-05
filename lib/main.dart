@@ -29,6 +29,7 @@ class MainApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(backgroundColor: CustomColors.dark),
       ),
       home: SplashScreen.navigate(
+        fit: BoxFit.cover,
         name: 'assets/rives/intro.riv',
         next: (context) => const AuthHandler(
           errorWidget: SomethingWenWrong(msg: "Erreur Auth"),
