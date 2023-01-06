@@ -16,7 +16,7 @@ class PrestaplusScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomFutureBuilder(
-      future: Prestation.get,
+      future: Prestation.get(context),
       builder: (context, snapshot) {
         return PresationList(
           prestations: snapshot.data!,
@@ -77,66 +77,68 @@ class _PrestationCard extends StatelessWidget {
       onTap: () => onSelected(prestation),
       child: Card(
         elevation: 15,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Icon(Icons.calendar_month, color: CustomColors.gray500),
-                Text(
-                  "${prestation.idPrestation} ",
-                ),
-                Text(
-                  DateFormat('EEE d MMM HH:mm',
-                          Localizations.localeOf(context).languageCode)
-                      .format(prestation.daterendezvous),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                DefaultTextStyle(
-                  style: const TextStyle(color: CustomColors.gray500),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(prestation.client),
-                        Text(prestation.adresse),
-                        Text("${prestation.codepostale} ${prestation.ville}"),
-                      ]),
-                ),
-              ],
-            ),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: isSelected
-                  ? Wrap(
-                      spacing: 5.0,
-                      children: [
-                        ElevatedButton.icon(
-                            onPressed: () => gotoAffectationCPE(context),
-                            icon: const Icon(Icons.router),
-                            label: const Text("Affectation CPE")),
-                        ElevatedButton.icon(
-                            onPressed: () => gotoRestitutionCPE(context),
-                            icon: const Icon(
-                                Icons.switch_access_shortcut_outlined),
-                            label: const Text("Restitution CPE")),
-                        ElevatedButton.icon(
-                            onPressed: () => gotoAffectationONT(context),
-                            icon: const Icon(Icons.router),
-                            label: const Text("Affectation ONT")),
-                        ElevatedButton.icon(
-                            onPressed: () => gotoRestitutionONT(context),
-                            icon: const Icon(
-                                Icons.switch_access_shortcut_outlined),
-                            label: const Text("Restitution ONT")),
-                      ],
-                    )
-                  : null,
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Icon(Icons.calendar_month, color: CustomColors.gray500),
+                  Text(
+                    "${prestation.numPrestation} ",
+                  ),
+                  Text(
+                    DateFormat('EEE d MMM HH:mm',
+                            Localizations.localeOf(context).languageCode)
+                        .format(prestation.dateRdv),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  DefaultTextStyle(
+                    style: const TextStyle(color: CustomColors.gray500),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(prestation.contactFullname),
+                          Text(prestation.clientNom),
+                        ]),
+                  ),
+                ],
+              ),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: isSelected
+                    ? Wrap(
+                        spacing: 5.0,
+                        children: [
+                          ElevatedButton.icon(
+                              onPressed: () => gotoAffectationCPE(context),
+                              icon: const Icon(Icons.router),
+                              label: const Text("Affectation CPE")),
+                          ElevatedButton.icon(
+                              onPressed: () => gotoRestitutionCPE(context),
+                              icon: const Icon(
+                                  Icons.switch_access_shortcut_outlined),
+                              label: const Text("Restitution CPE")),
+                          ElevatedButton.icon(
+                              onPressed: () => gotoAffectationONT(context),
+                              icon: const Icon(Icons.router),
+                              label: const Text("Affectation ONT")),
+                          ElevatedButton.icon(
+                              onPressed: () => gotoRestitutionONT(context),
+                              icon: const Icon(
+                                  Icons.switch_access_shortcut_outlined),
+                              label: const Text("Restitution ONT")),
+                        ],
+                      )
+                    : null,
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -1,64 +1,77 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:portail_canalplustelecom_mobile/class/httperrorhandler.dart';
+import 'package:portail_canalplustelecom_mobile/class/constante.dart';
+import 'package:portail_canalplustelecom_mobile/class/http.dart';
 
 class Prestation extends Equatable {
-  final String idPrestation;
-  final DateTime daterendezvous;
-  final String client;
-  final String adresse;
-  final int codepostale;
-  final String ville;
+  final String numPrestation;
+  final String idRdvPxo;
+  final String clientNom;
+  final String contactNom;
+  final String contactPrenom;
+  final String contactEmail;
+  final String contactTel;
+  final DateTime dateRdv;
   const Prestation({
-    required this.idPrestation,
-    required this.daterendezvous,
-    required this.client,
-    required this.adresse,
-    required this.codepostale,
-    required this.ville,
+    required this.numPrestation,
+    required this.idRdvPxo,
+    required this.clientNom,
+    required this.contactNom,
+    required this.contactPrenom,
+    required this.contactEmail,
+    required this.contactTel,
+    required this.dateRdv,
   });
 
   Prestation copyWith({
-    String? idPrestation,
-    DateTime? daterendezvous,
-    String? client,
-    String? adresse,
-    int? codepostale,
-    String? ville,
+    String? numPrestation,
+    String? idRdvPxo,
+    String? clientNom,
+    String? contactNom,
+    String? contactPrenom,
+    String? contactEmail,
+    String? contactTel,
+    DateTime? dateRdv,
   }) {
     return Prestation(
-      idPrestation: idPrestation ?? this.idPrestation,
-      daterendezvous: daterendezvous ?? this.daterendezvous,
-      client: client ?? this.client,
-      adresse: adresse ?? this.adresse,
-      codepostale: codepostale ?? this.codepostale,
-      ville: ville ?? this.ville,
+      numPrestation: numPrestation ?? this.numPrestation,
+      idRdvPxo: idRdvPxo ?? this.idRdvPxo,
+      clientNom: clientNom ?? this.clientNom,
+      contactNom: contactNom ?? this.contactNom,
+      contactPrenom: contactPrenom ?? this.contactPrenom,
+      contactEmail: contactEmail ?? this.contactEmail,
+      contactTel: contactTel ?? this.contactTel,
+      dateRdv: dateRdv ?? this.dateRdv,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'idPrestation': idPrestation,
-      'daterendezvous': daterendezvous.millisecondsSinceEpoch,
-      'client': client,
-      'adresse': adresse,
-      'codepostale': codepostale,
-      'ville': ville,
+      'numPrestation': numPrestation,
+      'idRdvPxo': idRdvPxo,
+      'clientNom': clientNom,
+      'contactNom': contactNom,
+      'contactPrenom': contactPrenom,
+      'contactEmail': contactEmail,
+      'contactTel': contactTel,
+      'dateRdv': dateRdv.millisecondsSinceEpoch,
     };
   }
 
   factory Prestation.fromMap(Map<String, dynamic> map) {
     return Prestation(
-      idPrestation: map['idPrestation'] ?? '',
-      daterendezvous: DateFormat("d/M/y").parse(map['daterendezvous']),
-      client: map['client'] ?? '',
-      adresse: map['adresse'] ?? '',
-      codepostale: map['codepostale']?.toInt() ?? 0,
-      ville: map['ville'] ?? '',
+      numPrestation: map['numPrestation'] ?? '',
+      idRdvPxo: map['idRdvPxo'] ?? '',
+      clientNom: map['clientNom'] ?? '',
+      contactNom: map['contactNom'] ?? '',
+      contactPrenom: map['contactPrenom'] ?? '',
+      contactEmail: map['contactEmail'] ?? '',
+      contactTel: map['contactTel'] ?? '',
+      dateRdv: DateTime.parse(map['dateRdv']),
     );
   }
 
@@ -69,31 +82,32 @@ class Prestation extends Equatable {
 
   @override
   String toString() {
-    return 'Prestation(idPrestation: $idPrestation, daterendezvous: $daterendezvous, client: $client, adresse: $adresse, codepostale: $codepostale, ville: $ville)';
+    return 'Prestation(numPrestation: $numPrestation, idRdvPxo: $idRdvPxo, clientNom: $clientNom, contactNom: $contactNom, contactPrenom: $contactPrenom, contactEmail: $contactEmail, contactTel: $contactTel, dateRdv: $dateRdv)';
   }
 
   @override
   List<Object> get props {
     return [
-      idPrestation,
-      daterendezvous,
-      client,
-      adresse,
-      codepostale,
-      ville,
+      numPrestation,
+      idRdvPxo,
+      clientNom,
+      contactNom,
+      contactPrenom,
+      contactEmail,
+      contactTel,
+      dateRdv,
     ];
   }
+
+  String get contactFullname => "$contactNom $contactPrenom";
 
   /*-----------------------------------------------------------------------------*/
   /*-----------------------------    FETCH METHODS  -----------------------------*/
   /*-----------------------------------------------------------------------------*/
 
-  static Future<List<Prestation>> get get async {
-    var response = await http.get(
-        Uri.parse('https://mocki.io/v1/997242b9-7984-4f2e-b267-660a8ef91040'));
-    HttpErrorHandler.handle(response);
-    var data = jsonDecode(response.body);
+  static Future<List<Prestation>> get(BuildContext context) async {
+    var data =
+        await Http.instance.get(context, "${Constantes.webApihost}/pro/list");
     return List.from(data.map((e) => Prestation.fromMap(e)));
   }
-
 }

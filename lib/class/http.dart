@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:portail_canalplustelecom_mobile/main.dart';
@@ -15,11 +17,11 @@ class Http {
     reloadApp(context);
   }
 
-  Future<String> get(BuildContext context, String url) {
+  Future<dynamic> get(BuildContext context, String url) {
     if (client == null) throw Exception("http client is null");
     return client!.get(Uri.parse((url))).then((response) {
       if (response.statusCode == 403) relog(context);
-      return response.body;
+      return jsonDecode(response.body);
     }).onError((error, stackTrace) {
       if (error is oauth2.AuthorizationException) {
         switch (error.error) {
