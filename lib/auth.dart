@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:webview_flutter/webview_flutter.dart';
+import 'class/constante.dart';
 import 'class/http.dart';
 
-// https://re7.oss.canalplustelecom.com/dev/auth/realms/OSS-RECETTE/.well-known/openid-configuration
-const issuer = "http://fr-1vm-lab-osslb01.infra.msv/dev/auth/realms/OSS-DEV";
-final authorizationEndpoint = Uri.parse("$issuer/protocol/openid-connect/auth");
-final tokenEndpoint = Uri.parse("$issuer/protocol/openid-connect/token");
-const clientid = 'portail_canalplustelecom';
+
+final authorizationEndpoint = Uri.parse("${Constantes.issuer}/protocol/openid-connect/auth");
+final tokenEndpoint = Uri.parse("${Constantes.issuer}/protocol/openid-connect/token");
+
 
 class AuthHandler extends StatefulWidget {
   final Widget child;
@@ -27,7 +27,7 @@ class _AuthHandlerState extends State<AuthHandler> {
     return Scaffold(
         body: KeycloackWebView(
       grant: oauth2.AuthorizationCodeGrant(
-        clientid,
+        Constantes.clientid,
         authorizationEndpoint,
         tokenEndpoint,
       ),
@@ -69,12 +69,12 @@ class _KeycloackWebViewState extends State<KeycloackWebView> {
             Http.instance.client = await widget.grant
                 .handleAuthorizationResponse(responseUrl.queryParameters);
             widget.onLogged();
-            return NavigationDecision.prevent;
+            return NavigationDecision.prevent; //TODO : laisser passer les url update password
           },
         ),
       )
       ..loadRequest(widget.grant.getAuthorizationUrl(
-          authorizationEndpoint)); //redirect to authorizationEndpoint simplifie la conf keycloack. De plus on intercept le redirect, on le kill et on recup le authCode
+        Uri.parse(Constantes.issuer))); //redirect to authorizationEndpoint simplifie la conf keycloack. De plus on intercept le redirect, on le kill et on recup le authCode
   }
 
   @override
