@@ -5,7 +5,7 @@ import 'package:portail_canalplustelecom_mobile/widgets/somethingwentwrong.dart'
 import 'package:rive_splash_screen/rive_splash_screen.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
-import 'package:portail_canalplustelecom_mobile/tabs.dart';
+import 'package:portail_canalplustelecom_mobile/menu.dart';
 
 import 'auth.dart';
 
@@ -27,6 +27,8 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: CustomColors.pink.toMaterial,
         appBarTheme: const AppBarTheme(backgroundColor: CustomColors.dark),
+        iconTheme:const IconThemeData(color:CustomColors.pink)
+
       ),
       home: SplashScreen.navigate(
         fit: BoxFit.cover,
@@ -45,10 +47,12 @@ class MainApp extends StatelessWidget {
 
 class RootContainer extends StatefulWidget {
   final Widget? child;
+  final Menu selectedmenu;
   final String title;
   const RootContainer({
     Key? key,
     this.child,
+    this.selectedmenu = Menu.prestaplus,
     this.title = 'Portail C+T',
   }) : super(key: key);
 
@@ -58,16 +62,19 @@ class RootContainer extends StatefulWidget {
 
 class _RootContainerState extends State<RootContainer>
     with TickerProviderStateMixin {
+  late Menu selectedMenu;
+
   @override
   void initState() {
     super.initState();
+    selectedMenu = widget.selectedmenu;
     initializeDateFormatting();
   }
 
   @override
   Widget build(BuildContext context) {
     TabController tabcontroller =
-        TabController(length: AllTabs.values.length, vsync: this);
+        TabController(length: selectedMenu.tabs.length, vsync: this);
     Widget background = Opacity(
       opacity: 0.5,
       child: Column(
@@ -98,6 +105,7 @@ class _RootContainerState extends State<RootContainer>
 
     if (widget.child == null) {
       return Scaffold(
+        drawer: const CplusDrawer(),
         appBar: AppBar(
           title: Center(child: Text(widget.title)),
           bottom: PreferredSize(
@@ -108,7 +116,7 @@ class _RootContainerState extends State<RootContainer>
                 isScrollable: false,
                 indicatorColor: CustomColors.pink.withOpacity(0.99),
                 controller: tabcontroller,
-                tabs: List.from(AllTabs.values.map((e) => e.tab)),
+                tabs: List.from(selectedMenu.tabs.map((e) => e.tab)),
               ),
             ),
           ),
@@ -118,7 +126,7 @@ class _RootContainerState extends State<RootContainer>
             background,
             TabBarView(
               controller: tabcontroller,
-              children: List.from(AllTabs.values.map((e) => e.view)),
+              children: List.from(selectedMenu.tabs.map((e) => e.view)),
             ),
           ],
         ),
@@ -135,5 +143,28 @@ class _RootContainerState extends State<RootContainer>
         ],
       ),
     );
+  }
+}
+
+class CplusDrawer extends StatelessWidget {
+  const CplusDrawer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+        child: ListView(children: [
+      Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Center(
+            child: Image.asset(
+          "assets/images/logo.png",
+          width: 150,
+        )),
+      ),
+      const Divider(),
+      ...Menu.values.map((e) => e.tile(context))
+    ]));
   }
 }
