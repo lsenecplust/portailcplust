@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/constante.dart';
 import 'package:portail_canalplustelecom_mobile/class/http.dart';

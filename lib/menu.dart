@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/main.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/calendrier/calendar.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/prestaplus.screen.dart';
 
 enum Menu {
@@ -29,8 +30,8 @@ enum Menu {
 }
 
 enum Tabs {
-  list(Menu.prestaplus, Icons.list, "Liste", PrestaplusScreen()),
-  calendar(Menu.prestaplus, Icons.calendar_month, "Calendrier", PrestaplusScreen()),
+  list(Menu.prestaplus, Icons.search, "Recherche", PrestaplusScreen()),
+  calendar(Menu.prestaplus, Icons.calendar_month, "Calendrier", CalanderdarScreen()),
   scan(Menu.prestaplus, Icons.qr_code_2, "Scan", PrestaplusScreen()),
   nextrdv4(Menu.geoeligibitlite, Icons.map, "Geo", PrestaplusScreen()),
   ;

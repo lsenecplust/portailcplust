@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:portail_canalplustelecom_mobile/widgets/somethingwentwrong.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:rive_splash_screen/rive_splash_screen.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/menu.dart';
+import 'package:portail_canalplustelecom_mobile/widgets/somethingwentwrong.dart';
 
 import 'auth.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
   runApp(const MainApp());
 }
 
@@ -24,12 +27,20 @@ class MainApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Portail C+T mobile',
+      supportedLocales: const <Locale>[
+        Locale('fr'),
+        Locale('en'),
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        SfGlobalLocalizations.delegate
+      ],
       theme: ThemeData(
-        primarySwatch: CustomColors.pink.toMaterial,
-        appBarTheme: const AppBarTheme(backgroundColor: CustomColors.dark),
-        iconTheme:const IconThemeData(color:CustomColors.pink)
-
-      ),
+          primarySwatch: CustomColors.pink.toMaterial,
+          appBarTheme: const AppBarTheme(backgroundColor: CustomColors.dark),
+          iconTheme: const IconThemeData(color: CustomColors.pink)),
       home: SplashScreen.navigate(
         fit: BoxFit.cover,
         name: 'assets/rives/intro.riv',
@@ -37,7 +48,7 @@ class MainApp extends StatelessWidget {
           errorWidget: SomethingWenWrong(msg: "Erreur Auth"),
           child: RootContainer(),
         ),
-        until: () => Future.delayed(const Duration(seconds: 3)),
+        isLoading: true,
         backgroundColor: Colors.white,
         startAnimation: "intro",
       ),
@@ -67,12 +78,13 @@ class _RootContainerState extends State<RootContainer>
   @override
   void initState() {
     super.initState();
-    selectedMenu = widget.selectedmenu;
     initializeDateFormatting();
+    selectedMenu = widget.selectedmenu;
   }
 
   @override
   Widget build(BuildContext context) {
+    Intl.defaultLocale = Localizations.localeOf(context).languageCode;
     TabController tabcontroller =
         TabController(length: selectedMenu.tabs.length, vsync: this);
     Widget background = Opacity(
@@ -111,7 +123,7 @@ class _RootContainerState extends State<RootContainer>
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(50),
             child: ColoredBox(
-              color: CustomColors.pink,
+              color: CustomColors.graydark,
               child: TabBar(
                 isScrollable: false,
                 indicatorColor: CustomColors.pink.withOpacity(0.99),

@@ -40,12 +40,15 @@ dependencies:
   rive_splash_screen: ^0.1.1
   equatable: ^2.0.5
   http: ^0.13.5
-  intl: ^0.18.0
+  intl: ^0.17.0
   mobile_scanner: ^2.1.0
   awesome_dialog: ^3.0.2
   oauth2: ^2.0.1
   webview_flutter: ^4.0.1
-
+  syncfusion_flutter_calendar: ^20.4.42
+  syncfusion_localizations: ^20.4.42
+  flutter_localizations: 
+    sdk: flutter   
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +75,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/images/
+     - assets/images/calendrier/
      - assets/rives/
 
   # An image asset can refer to one or more resolution-specific "variants", see
