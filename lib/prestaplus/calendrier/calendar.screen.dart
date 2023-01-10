@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.sfdatasource.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
@@ -20,9 +19,7 @@ class CalanderdarScreen extends StatelessWidget {
             scheduleViewMonthHeaderBuilder: scheduleViewHeaderBuilder,
             appointmentBuilder: appointmentBuilder,
             scheduleViewSettings: const ScheduleViewSettings(
-              hideEmptyScheduleWeek: true,
-              appointmentItemHeight: 72
-            ),
+                hideEmptyScheduleWeek: true, appointmentItemHeight: 72),
             dataSource: PrestationDataSource(snapshot.data!),
           );
         });

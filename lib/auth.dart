@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:webview_flutter/webview_flutter.dart';
 import 'class/constante.dart';
-import 'class/http.dart';
+import 'class/authenticatedhttp.dart';
 
 
 final authorizationEndpoint = Uri.parse("${Constantes.issuer}/protocol/openid-connect/auth");
@@ -20,7 +20,7 @@ class AuthHandler extends StatefulWidget {
 }
 
 class _AuthHandlerState extends State<AuthHandler> {
-  bool isLogged = Http.instance.isLogged;
+  bool isLogged = AuthenticatedHttp.instance.isLogged;
   @override
   Widget build(BuildContext context) {
     if (isLogged) return widget.child;
@@ -33,7 +33,7 @@ class _AuthHandlerState extends State<AuthHandler> {
       ),
       onLogged: () {
         setState(() {
-          isLogged = Http.instance.isLogged;
+          isLogged = AuthenticatedHttp.instance.isLogged;
         });
       },
     ));
@@ -66,7 +66,7 @@ class _KeycloackWebViewState extends State<KeycloackWebView> {
         NavigationDelegate(
           onNavigationRequest: (NavigationRequest request) async {
             var responseUrl = Uri.parse(request.url);
-            Http.instance.client = await widget.grant
+            AuthenticatedHttp.instance.client = await widget.grant
                 .handleAuthorizationResponse(responseUrl.queryParameters);
             widget.onLogged();
             return NavigationDecision.prevent; //TODO : laisser passer les url update password

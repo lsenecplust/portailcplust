@@ -8,6 +8,7 @@ import 'package:portail_canalplustelecom_mobile/prestaplus/cpe/affectation.dart'
 import 'package:portail_canalplustelecom_mobile/prestaplus/cpe/restitution.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/ont/affectation.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/ont/restitution.dart';
+import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
 class PrestationCard extends StatelessWidget {
   final Prestation prestation;
@@ -15,7 +16,6 @@ class PrestationCard extends StatelessWidget {
     Key? key,
     required this.prestation,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -29,36 +29,45 @@ class PrestationCard extends StatelessWidget {
           builder: (BuildContext context) {
             return SizedBox(
               height: 200,
-              child: Center(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(prestation.numPrestation,style: Theme.of(context).textTheme.headline4,),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      prestation.numPrestation,
+                      style: Theme.of(context).textTheme.headline4,
                     ),
-                    Wrap(
-                      spacing: 5.0,
-                      children: [
-                        ElevatedButton.icon(
-                            onPressed: () => gotoAffectationCPE(context),
-                            icon: const Icon(Icons.router),
-                            label: const Text("Affectation CPE")),
-                        ElevatedButton.icon(
-                            onPressed: () => gotoRestitutionCPE(context),
-                            icon: const Icon(Icons.switch_access_shortcut_outlined),
-                            label: const Text("Restitution CPE")),
-                        ElevatedButton.icon(
-                            onPressed: () => gotoAffectationONT(context),
-                            icon: const Icon(Icons.router),
-                            label: const Text("Affectation ONT")),
-                        ElevatedButton.icon(
-                            onPressed: () => gotoRestitutionONT(context),
-                            icon: const Icon(Icons.switch_access_shortcut_outlined),
-                            label: const Text("Restitution ONT")),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: CustomFutureBuilder(
+                        future: prestation.getActions(context),
+                        progressIndicator: Column(children:  [
+                          const CircularProgressIndicator(),
+                          Text("Recherche des actions possibles...",style: Theme.of(context).textTheme.caption,),
+                        ]),
+                        builder: (context, snapshot) {
+                          var actions = snapshot.data!;
+                          if (actions.isEmpty) {
+                            return Column(
+                              children: const [
+                                Icon(Icons.cancel, size: 50),
+                                Text("Aucune action possible")
+                              ],
+                            );
+                          }
+
+                          return Wrap(
+                              spacing: 5.0,
+                              children: List.from(actions.map(
+                                (e) => ElevatedButton.icon(
+                                    onPressed: () =>
+                                        gotoAffectationCPE(context),
+                                    icon: Icon(e.tache.icon),
+                                    label: Text(e.tache.libelle)),
+                              )));
+                        }),
+                  ),
+                ],
               ),
             );
           },

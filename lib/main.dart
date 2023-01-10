@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:rive_splash_screen/rive_splash_screen.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
@@ -39,8 +38,11 @@ class MainApp extends StatelessWidget {
       ],
       theme: ThemeData(
           primarySwatch: CustomColors.pink.toMaterial,
+          primaryColor: CustomColors.pink,
+          toggleableActiveColor: CustomColors.pink,
           appBarTheme: const AppBarTheme(backgroundColor: CustomColors.dark),
           iconTheme: const IconThemeData(color: CustomColors.pink)),
+
       home: SplashScreen.navigate(
         fit: BoxFit.cover,
         name: 'assets/rives/intro.riv',

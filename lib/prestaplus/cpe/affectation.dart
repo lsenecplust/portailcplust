@@ -5,7 +5,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/main.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
-import 'package:portail_canalplustelecom_mobile/widgets/barcode_scanner_controller.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/scanner.widget.dart';
 
 class AffectationCPE extends StatefulWidget {
   final Prestation prestation;
@@ -35,23 +35,7 @@ class _AffectationCPEState extends State<AffectationCPE> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            ElevatedButton.icon(
-                onPressed: toogleScanner,
-                icon: const Icon(Icons.qr_code),
-                label: const Text("Scanner")),
-            AnimatedContainer(
-              duration: duration,
-              height: isScanning ? 300 : 0,
-              width: double.infinity,
-              child: Builder(builder: (context) {
-                if (isScanning == false) return Container();
-                if (isLoading == true) return Container();
-
-                return BarCodeScanner(
-                  onDetect: onDetect,
-                );
-              }),
-            ),
+            Scanner(ondetect: onDetect),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -109,15 +93,15 @@ class _AffectationCPEState extends State<AffectationCPE> {
     });
   }
 
-  void onDetect(Barcode value) {
+  void onDetect(String value) {
     toogleScanner();
 
     if (serialnumber.text.isEmpty || serialNode.hasFocus) {
-      serialnumber.text = value.rawValue ?? "";
+      serialnumber.text = value;
       return;
     }
     if (macadrress.text.isEmpty || macNode.hasFocus) {
-      macadrress.text = value.rawValue ?? "";
+      macadrress.text = value;
     }
   }
 

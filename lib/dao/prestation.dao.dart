@@ -4,7 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/constante.dart';
-import 'package:portail_canalplustelecom_mobile/class/http.dart';
+import 'package:portail_canalplustelecom_mobile/class/authenticatedhttp.dart';
+import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 
 class Prestation extends Equatable {
   final String numPrestation;
@@ -105,8 +106,26 @@ class Prestation extends Equatable {
   /*-----------------------------------------------------------------------------*/
 
   static Future<List<Prestation>> get(BuildContext context) async {
-    var data =
-        await Http.instance.get(context, "${Constantes.webApihost}/pro/list");
+    var data = await AuthenticatedHttp.instance
+        .get(context, "${Constantes.webApihost}/pro/list");
     return List.from(data.map((e) => Prestation.fromMap(e)));
+  }
+
+  static Future<List<Prestation>> search(
+      BuildContext context, String param) async {
+    var data = await AuthenticatedHttp.instance
+        .get(context, "${Constantes.webApihost}/pro/search/$param");
+    return List.from(data.map((e) => Prestation.fromMap(e)));
+  }
+
+  Future<List<MigAction>> getAllActions(BuildContext context) async {
+    var data = await AuthenticatedHttp.instance
+        .get(context, "${Constantes.webApihost}/actions/$numPrestation");
+    return List.from(data.map((e) => MigAction.fromMap(e)));
+  }
+
+  Future<List<MigAction>> getActions(BuildContext context) async {
+    var actions = await getAllActions(context);
+    return actions.where((element) => element.isExecutable).toList();
   }
 }
