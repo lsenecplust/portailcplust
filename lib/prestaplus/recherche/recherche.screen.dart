@@ -13,6 +13,7 @@ class PrestaplusRechercheScreen extends StatefulWidget {
 
 class _PrestaplusRechercheScreenState extends State<PrestaplusRechercheScreen> {
   var controller = TextEditingController();
+  var focus = FocusNode();
   var future = Future.delayed(const Duration(seconds: 0))
       .then((value) => List<Prestation>.empty());
   @override
@@ -23,6 +24,8 @@ class _PrestaplusRechercheScreenState extends State<PrestaplusRechercheScreen> {
           padding: const EdgeInsets.all(20.0),
           child: TextFormField(
             controller: controller,
+            focusNode: focus ,
+            autofocus: false,
             decoration: const InputDecoration(
                 label: Text("Recherche"), suffixIcon: Icon(Icons.search)),
           ),
@@ -30,6 +33,7 @@ class _PrestaplusRechercheScreenState extends State<PrestaplusRechercheScreen> {
         ElevatedButton(
           child: const Text("Recherche"),
           onPressed: () {
+            focus.unfocus();
             setState(() {
               future = controller.text.isEmpty
                   ? Prestation.get(context)

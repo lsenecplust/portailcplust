@@ -17,14 +17,12 @@ class PrestationCard extends StatelessWidget {
     required this.prestation,
   }) : super(key: key);
 
-  bool get isActive => prestation.dateRdv
-      .isAfter(DateTime.now().subtract(const Duration(days: 10)));
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         showModalBottomSheet<void>(
+          
           context: context,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
