@@ -17,6 +17,9 @@ class PrestationCard extends StatelessWidget {
     required this.prestation,
   }) : super(key: key);
 
+  bool get isActive => prestation.dateRdv
+      .isAfter(DateTime.now().subtract(const Duration(days: 10)));
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -41,9 +44,12 @@ class PrestationCard extends StatelessWidget {
                   Expanded(
                     child: CustomFutureBuilder(
                         future: prestation.getActions(context),
-                        progressIndicator: Column(children:  [
+                        progressIndicator: Column(children: [
                           const CircularProgressIndicator(),
-                          Text("Recherche des actions possibles...",style: Theme.of(context).textTheme.caption,),
+                          Text(
+                            "Recherche des actions possibles...",
+                            style: Theme.of(context).textTheme.caption,
+                          ),
                         ]),
                         builder: (context, snapshot) {
                           var actions = snapshot.data!;
@@ -101,23 +107,31 @@ class PrestationCard extends StatelessWidget {
                     "${prestation.numPrestation} ",
                   ),
                   Text(
-                    DateFormat('EEEE d MMM HH:mm').format(prestation.dateRdv),
+                    DateFormat('EEE d MMM yyyy - HH:mm')
+                        .format(prestation.dateRdv),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    prestation.idRdvPxo,
+                    style: const TextStyle(color: CustomColors.gray500),
+                  ),
+                  Text(
+                    prestation.contactFullname,
+                    style: const TextStyle(color: CustomColors.gray500),
                   ),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                    Text(
-                      prestation.contactFullname,
-                      style: const TextStyle(color: CustomColors.gray500),
-                    ),
-                    Text(
-                      prestation.clientNom,
-                      style: const TextStyle(color: CustomColors.pink),
-                    ),
-                  ]),
+                  Text(
+                    prestation.clientNom,
+                    style: const TextStyle(color: CustomColors.pink),
+                  ),
                 ],
               ),
             ],
