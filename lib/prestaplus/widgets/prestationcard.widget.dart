@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
+import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/main.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/cpe/affectation.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/cpe/restitution.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/ont/affectation.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/ont/restitution.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/actionequipement.screen.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
 class PrestationCard extends StatelessWidget {
@@ -22,7 +20,6 @@ class PrestationCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         showModalBottomSheet<void>(
-          
           context: context,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -64,10 +61,9 @@ class PrestationCard extends StatelessWidget {
                               spacing: 5.0,
                               children: List.from(actions.map(
                                 (e) => ElevatedButton.icon(
-                                    onPressed: () =>
-                                        gotoAffectationCPE(context),
+                                    onPressed: () => goto(e, context),
                                     icon: Icon(e.tache.icon),
-                                    label: Text(e.tache.libelle)),
+                                    label: Text(e.tache.displayName)),
                               )));
                         }),
                   ),
@@ -139,43 +135,14 @@ class PrestationCard extends StatelessWidget {
     );
   }
 
-  void gotoAffectationCPE(context) {
+  goto(MigAction action, BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => RootContainer(
-                  title: "Affectation CPE",
-                  child: AffectationCPE(prestation: prestation),
-                )));
-  }
-
-  gotoRestitutionCPE(BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => RootContainer(
-                  title: "Restitution CPE",
-                  child: RestitutionCPE(prestation: prestation),
-                )));
-  }
-
-  gotoAffectationONT(BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => RootContainer(
-                  title: "Affectation ONT",
-                  child: AffectationONT(prestation: prestation),
-                )));
-  }
-
-  gotoRestitutionONT(BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => RootContainer(
-                  title: "Restitution ONT",
-                  child: RestitutionONT(prestation: prestation),
+                  title: action.tache.displayName,
+                  child: ActionEquipementScreen(
+                      prestation: prestation, migaction: action),
                 )));
   }
 }

@@ -1,78 +1,135 @@
 import 'package:flutter/material.dart';
-import 'package:portail_canalplustelecom_mobile/class/authenticatedhttp.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
-import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/scanner.widget.dart';
-import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
-class PrestaplusScanScreen extends StatelessWidget {
+import 'package:portail_canalplustelecom_mobile/prestaplus/actionequipement.screen.dart';
+
+class PrestaplusScanScreen extends StatefulWidget {
   const PrestaplusScanScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Scanner(
-          ondetect: (String? code) {},
-        ),
-        ElevatedButton(
-          child: const Text("test"),
-          onPressed: () {
-            print(AuthenticatedHttp.instance.client!.credentials.accessToken);
-          },
-        ),
-        const Expanded(child: EquipementFuture(param: "ALCLB18C5317"))
-      ],
-    );
-  }
+  State<PrestaplusScanScreen> createState() => _PrestaplusScanScreenState();
 }
 
-class EquipementFuture extends StatelessWidget {
-  final String param;
-  const EquipementFuture({super.key, required this.param});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomFutureBuilder(
-      future: Equipement.get(context, param),
-      builder: (context, snapshot) {
-        var equipements = snapshot.data!;
-        return ListView(
-          children:
-              List.from(equipements.map((e) => EquipementCard(equipement: e))),
-        );
-      },
-    );
-  }
-}
-
-class EquipementCard extends StatelessWidget {
-  final Equipement equipement;
-  const EquipementCard({super.key, required this.equipement});
-
+class _PrestaplusScanScreenState extends State<PrestaplusScanScreen> {
+  String? searchPattern;
+  String? clientfound;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-            boxShadow: [
-              BoxShadow(
-                  color: CustomColors.pink,
-                  offset: Offset(-7, 0),
-                  blurRadius: 0,
-                  spreadRadius: 0),
-              BoxShadow(
-                  color: CustomColors.gray400,
-                  offset: Offset(2, 2),
-                  blurRadius: 2,
-                  spreadRadius: 2.0),
-            ],
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          SearchOrScanSwitch(
+            onchange: (value) {
+              setState(() {
+                searchPattern = value;
+              });
+            },
           ),
-          child: Text(equipement.adresseMAC)),
+          EquipementFuture(
+            onselectedequipment: (value) {
+              setState(() {
+                //TODO : import client contrat search
+                clientfound =
+                    DateTime.now().second.isEven ? "RIBEIRO Dalila" : "";
+              });
+            },
+            param: searchPattern,
+          ),
+          ClientCard(
+            client: clientfound,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ClientCard extends StatelessWidget {
+  final String? client;
+  const ClientCard({
+    Key? key,
+    required this.client,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (client == null) {
+      return Container();
+    }
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: CustomColors.pink,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.0),
+                      topRight: Radius.circular(8.0)),
+                ),
+                child: const Text(
+                  "Equipement affecté",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8.0),
+                      bottomRight: Radius.circular(8.0)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: CustomColors.gray400,
+                        offset: Offset(2, 2),
+                        blurRadius: 2,
+                        spreadRadius: 2.0),
+                  ],
+                ),
+                child: Builder(builder: (context) {
+                  if (client!.isEmpty) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.person_off,
+                          color: CustomColors.gray400,
+                        ),
+                        Text(
+                          "Aucune affection",
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                      ],
+                    );
+                  }
+                  return Column(children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(client!),
+                        const Text("Contrat : GP1234567"),
+                      ],
+                    ),
+                  ]);
+                }),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

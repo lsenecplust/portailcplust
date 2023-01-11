@@ -26,6 +26,7 @@ class MainApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Portail C+T mobile',
+       debugShowCheckedModeBanner: false,
       supportedLocales: const <Locale>[
         Locale('fr'),
         Locale('en'),
@@ -41,8 +42,15 @@ class MainApp extends StatelessWidget {
           primaryColor: CustomColors.pink,
           toggleableActiveColor: CustomColors.pink,
           appBarTheme: const AppBarTheme(backgroundColor: CustomColors.dark),
+          toggleButtonsTheme: ToggleButtonsThemeData(
+            borderColor: Colors.transparent,
+            fillColor: CustomColors.pink,
+            selectedColor: Colors.white,
+            textStyle: Theme.of(context).textTheme.caption,
+            color: CustomColors.gray,
+            disabledColor: CustomColors.gray
+          ),
           iconTheme: const IconThemeData(color: CustomColors.pink)),
-
       home: SplashScreen.navigate(
         fit: BoxFit.cover,
         name: 'assets/rives/intro.riv',
