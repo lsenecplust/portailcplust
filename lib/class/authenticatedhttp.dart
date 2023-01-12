@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
-import 'package:portail_canalplustelecom_mobile/main.dart';
+import 'package:portail_canalplustelecom_mobile/main.app.widget.dart';
 
 class AuthenticatedHttp {
   AuthenticatedHttp._initme();

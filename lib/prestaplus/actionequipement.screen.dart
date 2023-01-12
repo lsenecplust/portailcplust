@@ -6,10 +6,10 @@ import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
-import 'package:portail_canalplustelecom_mobile/main.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipementcard.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/scanner.widget.dart';
+import 'package:portail_canalplustelecom_mobile/rootcontainer.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
 class ActionEquipementScreen extends StatefulWidget {

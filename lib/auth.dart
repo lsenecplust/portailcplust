@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'class/constante.dart';
 import 'class/authenticatedhttp.dart';
 
 
-final authorizationEndpoint = Uri.parse("${Constantes.issuer}/protocol/openid-connect/auth");
-final tokenEndpoint = Uri.parse("${Constantes.issuer}/protocol/openid-connect/token");
+final authorizationEndpoint = Uri.parse("${ApplicationConfiguration.keycloack.issuer}/protocol/openid-connect/auth");
+final tokenEndpoint = Uri.parse("${ApplicationConfiguration.keycloack.issuer}/protocol/openid-connect/token");
 
 
 class AuthHandler extends StatefulWidget {
@@ -27,7 +27,7 @@ class _AuthHandlerState extends State<AuthHandler> {
     return Scaffold(
         body: KeycloackWebView(
       grant: oauth2.AuthorizationCodeGrant(
-        Constantes.clientid,
+        ApplicationConfiguration.keycloack.clientid,
         authorizationEndpoint,
         tokenEndpoint,
       ),
@@ -74,7 +74,7 @@ class _KeycloackWebViewState extends State<KeycloackWebView> {
         ),
       )
       ..loadRequest(widget.grant.getAuthorizationUrl(
-        Uri.parse(Constantes.issuer))); //redirect to authorizationEndpoint simplifie la conf keycloack. De plus on intercept le redirect, on le kill et on recup le authCode
+        Uri.parse(ApplicationConfiguration.keycloack.issuer))); //redirect to authorizationEndpoint simplifie la conf keycloack. De plus on intercept le redirect, on le kill et on recup le authCode
   }
 
   @override

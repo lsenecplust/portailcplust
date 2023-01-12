@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:portail_canalplustelecom_mobile/class/authenticatedhttp.dart';
-import 'package:portail_canalplustelecom_mobile/class/constante.dart';
 
 class Equipement {
   final int id;
@@ -238,7 +238,7 @@ class Equipement {
   static Future<List<Equipement>> get(
       BuildContext context, String param) async {
     var data = await AuthenticatedHttp.instance
-        .get(context, "${Constantes.webApihost}/equipement/$param");
+        .get(context, "${ApplicationConfiguration.pfs.webapi.host}/equipement/$param");
     return List.from(data.map((e) => Equipement.fromMap(e)));
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/geoeligibilite/geoeligibilites.screen.dart';
-import 'package:portail_canalplustelecom_mobile/main.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/calendrier/calendar.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/recherche/recherche.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/scan/scan.screen.dart';
+import 'package:portail_canalplustelecom_mobile/rootcontainer.dart';
 
 enum Menu {
   prestaplus(Icons.hail_rounded, "Presta+"),

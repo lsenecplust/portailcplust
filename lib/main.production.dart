@@ -9,6 +9,6 @@ import 'main.app.widget.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  ApplicationConfiguration.setlocal();
+  ApplicationConfiguration.setproduction();
   runApp(const MainApp());
 }

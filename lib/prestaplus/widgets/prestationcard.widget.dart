@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
-import 'package:portail_canalplustelecom_mobile/main.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actionequipement.screen.dart';
+import 'package:portail_canalplustelecom_mobile/rootcontainer.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
 class PrestationCard extends StatelessWidget {
