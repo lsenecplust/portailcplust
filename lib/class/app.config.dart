@@ -17,13 +17,13 @@ enum Environement {
               "https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
           clientid: "canalbox-apps"),
       pfs:
-          Pfs(webapi: WebAPI(host: "re7.oss.canalplustelecom.com/webApi_PFS"))),
+          Pfs(webapi: WebAPI(host: "https://re7.oss.canalplustelecom.com/webApi_PFS"))),
   production(
       keycloack: Keycloack(
           issuer:
               "https://abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
           clientid: "canalbox-apps"),
-      pfs: Pfs(webapi: WebAPI(host: "oss.canalplustelecom.com//webApi_PFS")));
+      pfs: Pfs(webapi: WebAPI(host: "https://oss.canalplustelecom.com//webApi_PFS")));
 
   final Pfs pfs;
   final Keycloack keycloack;
