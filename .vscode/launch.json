@@ -23,8 +23,8 @@
             "name": "recette",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile",
             "program": "lib/main.recette.dart",
+            "flutterMode": "debug"
         },
         {
             "name": "production",
