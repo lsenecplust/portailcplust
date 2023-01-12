@@ -148,12 +148,16 @@ class _SearchOrScanSwitchState extends State<SearchOrScanSwitch> {
   Widget build(BuildContext context) {
     var scanWidget = Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        width: 200,
-        height: 150,
-        child: BarCodeScanner(
-          onDetect: (value) => widget.onchange(value.rawValue),
-        ),
+      child: LayoutBuilder(
+        builder: (context,constraints) {
+          return SizedBox(
+            width: constraints.maxWidth,
+            height: 150,
+            child: BarCodeScanner(
+              onDetect: (value) => widget.onchange(value.rawValue),
+            ),
+          );
+        }
       ),
     );
 
