@@ -23,6 +23,7 @@ class _PrestaplusScanScreenState extends State<PrestaplusScanScreen> {
             onchange: (value) {
               setState(() {
                 searchPattern = value;
+                print(value);
               });
             },
           ),

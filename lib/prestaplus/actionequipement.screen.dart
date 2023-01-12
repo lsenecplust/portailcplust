@@ -247,6 +247,19 @@ class EquipementFuture extends StatelessWidget {
       future: Equipement.get(context, param!),
       builder: (context, snapshot) {
         var equipements = snapshot.data!;
+        if (equipements.isEmpty) {
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: const [
+                  Icon(Icons.no_cell_rounded),
+                  Text("Aucun équipement trouvée"),
+                ],
+              ),
+            ),
+          );
+        }
 
         if (equipements.length == 1) equipmentSelected = equipements.first;
 
