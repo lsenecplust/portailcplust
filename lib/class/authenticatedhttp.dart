@@ -18,6 +18,7 @@ class AuthenticatedHttp {
   }
 
   Future<dynamic> get(BuildContext context, String url) {
+    print(client?.credentials.accessToken ?? "no token");
     if (client == null) relog(context);
     return client!.get(Uri.parse((url))).then((response) {
       if (response.statusCode == 403) relog(context);

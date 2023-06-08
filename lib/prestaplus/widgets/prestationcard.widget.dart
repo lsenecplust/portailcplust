@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -38,7 +39,7 @@ class PrestationCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: CustomFutureBuilder(
-                        future: prestation.getActions(context),
+                        future: prestation.getAllActions(context),
                         progressIndicator: Column(children: [
                           const CircularProgressIndicator(),
                           Text(

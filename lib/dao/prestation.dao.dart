@@ -118,8 +118,17 @@ class Prestation extends Equatable {
   }
 
   Future<List<MigAction>> getAllActions(BuildContext context) async {
+   
+   
     var data = await AuthenticatedHttp.instance
         .get(context, "${ApplicationConfiguration.pfs.webapi.host}/actions/$numPrestation");
+   
+   return [
+    MigAction(tache: EnumMigAction.affectationCPE, isExecutable: true),
+    MigAction(tache: EnumMigAction.affectationONT, isExecutable: true),
+    MigAction(tache: EnumMigAction.restitutionCPE, isExecutable: true),
+    MigAction(tache: EnumMigAction.restitutionONT, isExecutable: true),
+    ];
     return List.from(data.map((e) => MigAction.fromMap(e)));
   }
 

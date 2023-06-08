@@ -40,18 +40,18 @@ dependencies:
   rive_splash_screen: ^0.1.1
   equatable: ^2.0.5
   http: ^0.13.5
-  intl: ^0.17.0
-  mobile_scanner: ^2.1.0
+  intl: ^0.18.1
+  mobile_scanner: ^3.2.0
   awesome_dialog: ^3.0.2
   oauth2: ^2.0.1
   webview_flutter: ^4.0.1
-  syncfusion_flutter_calendar: ^20.4.42
-  syncfusion_localizations: ^20.4.42
+  syncfusion_flutter_calendar: ^21.2.9
+  syncfusion_localizations: ^21.2.9
   flutter_localizations: 
     sdk: flutter   
-  flutter_map: ^3.1.0
-  latlong: ^0.6.1
-  flutter_launcher_icons: ^0.11.0
+  flutter_map: ^4.0.0
+  flutter_launcher_icons: ^0.13.1
+  search_highlight_text: ^1.0.0+2
 
 dev_dependencies:
   flutter_test:
