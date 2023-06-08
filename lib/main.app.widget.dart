@@ -89,15 +89,15 @@ class MainApp extends StatelessWidget {
             }),
           )),
       home: SplashScreen.navigate(
-        fit: BoxFit.cover,
-        name: 'assets/rives/intro.riv',
+        fit: BoxFit.contain,
+        name: 'assets/rives/logo.riv',
         next: (context) => const AuthHandler(
           errorWidget: SomethingWenWrong(msg: "Erreur Auth"),
           child: RootContainer(),
         ),
         isLoading: true,
         backgroundColor: Colors.white,
-        startAnimation: "intro",
+        startAnimation: "Splash",
       ),
     );
   }
