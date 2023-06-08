@@ -34,7 +34,7 @@ class PrestationCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       prestation.numPrestation,
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ),
                   Expanded(
@@ -44,14 +44,14 @@ class PrestationCard extends StatelessWidget {
                           const CircularProgressIndicator(),
                           Text(
                             "Recherche des actions possibles...",
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ]),
                         builder: (context, snapshot) {
                           var actions = snapshot.data!;
                           if (actions.isEmpty) {
-                            return Column(
-                              children: const [
+                            return const Column(
+                              children: [
                                 Icon(Icons.cancel, size: 50),
                                 Text("Aucune action possible")
                               ],

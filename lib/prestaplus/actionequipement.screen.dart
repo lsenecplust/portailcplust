@@ -36,7 +36,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
           children: [
             Text(
               "Prestation",
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -105,26 +105,27 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
       },
     );
     var actionok = await launchactionequipement();
-    if (mounted) Navigator.pop(context);
-
-    await AwesomeDialog(
-      context: context,
-      animType: AnimType.leftSlide,
-      headerAnimationLoop: false,
-      autoHide: const Duration(seconds: 2),
-      dialogType: actionok ? DialogType.success : DialogType.error,
-      showCloseIcon: true,
-      title: actionok ? 'Succes' : 'Error',
-      desc: '${widget.migaction.tache.displayName} Terminéee',
-      btnOkIcon: Icons.check_circle,
-      onDismissCallback: (type) {
-        if (actionok) {
-          Navigator.push(context, MaterialPageRoute(builder: ((context) {
-            return const RootContainer();
-          })));
-        }
-      },
-    ).show();
+    if (mounted) {
+      Navigator.pop(context);
+      await AwesomeDialog(
+        context: context,
+        animType: AnimType.leftSlide,
+        headerAnimationLoop: false,
+        autoHide: const Duration(seconds: 2),
+        dialogType: actionok ? DialogType.success : DialogType.error,
+        showCloseIcon: true,
+        title: actionok ? 'Succes' : 'Error',
+        desc: '${widget.migaction.tache.displayName} Terminéee',
+        btnOkIcon: Icons.check_circle,
+        onDismissCallback: (type) {
+          if (actionok) {
+            Navigator.push(context, MaterialPageRoute(builder: ((context) {
+              return const RootContainer();
+            })));
+          }
+        },
+      ).show();
+    }
   }
 }
 
@@ -148,17 +149,15 @@ class _SearchOrScanSwitchState extends State<SearchOrScanSwitch> {
   Widget build(BuildContext context) {
     var scanWidget = Padding(
       padding: const EdgeInsets.all(8.0),
-      child: LayoutBuilder(
-        builder: (context,constraints) {
-          return SizedBox(
-            width: constraints.maxWidth,
-            height: 150,
-            child: BarCodeScanner(
-              onDetect: (value) => widget.onchange(value.rawValue),
-            ),
-          );
-        }
-      ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        return SizedBox(
+          width: constraints.maxWidth,
+          height: 150,
+          child: BarCodeScanner(
+            onDetect: (value) => widget.onchange(value.barcodes.first.rawValue),
+          ),
+        );
+      }),
     );
 
     var searchWidget = Padding(
@@ -167,12 +166,12 @@ class _SearchOrScanSwitchState extends State<SearchOrScanSwitch> {
         children: [
           Card(
             child: DefaultTextStyle(
-              style: Theme.of(context).textTheme.caption!,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              style: Theme.of(context).textTheme.bodySmall!,
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text("Recherche équipement par :"),
                     Text("- num dec"),
                     Text("- num serie"),
@@ -252,11 +251,11 @@ class EquipementFuture extends StatelessWidget {
       builder: (context, snapshot) {
         var equipements = snapshot.data!;
         if (equipements.isEmpty) {
-          return Card(
+          return const Card(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Column(
-                children: const [
+                children: [
                   Icon(Icons.no_cell_rounded),
                   Text("Aucun équipement trouvée"),
                 ],

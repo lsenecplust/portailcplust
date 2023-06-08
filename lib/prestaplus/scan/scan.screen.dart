@@ -23,7 +23,7 @@ class _PrestaplusScanScreenState extends State<PrestaplusScanScreen> {
             onchange: (value) {
               setState(() {
                 searchPattern = value;
-                print(value);
+              //  print(value);
               });
             },
           ),
@@ -111,7 +111,7 @@ class ClientCard extends StatelessWidget {
                         ),
                         Text(
                           "Aucune affection",
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     );

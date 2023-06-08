@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class BarCodeScanner extends StatefulWidget {
-  final ValueChanged<Barcode> onDetect;
+  final ValueChanged<BarcodeCapture> onDetect;
   const BarCodeScanner({
     Key? key,
     required this.onDetect,
@@ -20,7 +20,7 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
     return MobileScanner(
       controller: controller,
       fit: BoxFit.cover,
-      onDetect: (barcode, args) {
+      onDetect: (barcode) {
         controller.stop();
         widget.onDetect(barcode);
       },

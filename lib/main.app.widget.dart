@@ -18,7 +18,7 @@ class MainApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Portail C+T mobile',
-       debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       supportedLocales: const <Locale>[
         Locale('fr'),
         Locale('en'),
@@ -30,19 +30,64 @@ class MainApp extends StatelessWidget {
         SfGlobalLocalizations.delegate
       ],
       theme: ThemeData(
+          useMaterial3: true,
           primarySwatch: CustomColors.pink.toMaterial,
           primaryColor: CustomColors.pink,
-          toggleableActiveColor: CustomColors.pink,
           appBarTheme: const AppBarTheme(backgroundColor: CustomColors.dark),
           toggleButtonsTheme: ToggleButtonsThemeData(
-            borderColor: Colors.transparent,
-            fillColor: CustomColors.pink,
-            selectedColor: Colors.white,
-            textStyle: Theme.of(context).textTheme.caption,
-            color: CustomColors.gray,
-            disabledColor: CustomColors.gray
+              borderColor: Colors.transparent,
+              fillColor: CustomColors.pink,
+              selectedColor: Colors.white,
+              textStyle: Theme.of(context).textTheme.bodySmall,
+              color: CustomColors.gray,
+              disabledColor: CustomColors.gray),
+          iconTheme: const IconThemeData(color: CustomColors.pink),
+          checkboxTheme: CheckboxThemeData(
+            fillColor: MaterialStateProperty.resolveWith<Color?>(
+                (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return null;
+              }
+              if (states.contains(MaterialState.selected)) {
+                return CustomColors.pink;
+              }
+              return null;
+            }),
           ),
-          iconTheme: const IconThemeData(color: CustomColors.pink)),
+          radioTheme: RadioThemeData(
+            fillColor: MaterialStateProperty.resolveWith<Color?>(
+                (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return null;
+              }
+              if (states.contains(MaterialState.selected)) {
+                return CustomColors.pink;
+              }
+              return null;
+            }),
+          ),
+          switchTheme: SwitchThemeData(
+            thumbColor: MaterialStateProperty.resolveWith<Color?>(
+                (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return null;
+              }
+              if (states.contains(MaterialState.selected)) {
+                return CustomColors.pink;
+              }
+              return null;
+            }),
+            trackColor: MaterialStateProperty.resolveWith<Color?>(
+                (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return null;
+              }
+              if (states.contains(MaterialState.selected)) {
+                return CustomColors.pink;
+              }
+              return null;
+            }),
+          )),
       home: SplashScreen.navigate(
         fit: BoxFit.cover,
         name: 'assets/rives/intro.riv',
