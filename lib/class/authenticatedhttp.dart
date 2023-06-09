@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 import 'package:portail_canalplustelecom_mobile/main.app.widget.dart';
 
 class AuthenticatedHttp {
@@ -17,14 +18,17 @@ class AuthenticatedHttp {
     reloadApp(context);
   }
 
-  Future<dynamic> get(BuildContext context, String url) {
+  Future<dynamic> get(BuildContext context, String url) async {
     if (client == null) relog(context);
-    return client!.get(Uri.parse((url))).then((response) {
+    print(client?.credentials.accessToken);
+    try {
+      var response = await client!.get(Uri.parse((url)));
       if (response.statusCode == 403) relog(context);
+      if (response.statusCode == 404) return Future.error(NotFoundException());
       return jsonDecode(response.body);
-    }).onError((error, stackTrace) {
-      if (error is oauth2.AuthorizationException) {
-        switch (error.error) {
+    } catch (e) {
+      if (e is oauth2.AuthorizationException) {
+        switch (e.error) {
           case "invalid_grant":
             relog(context);
             return "redirect";
@@ -32,9 +36,9 @@ class AuthenticatedHttp {
             return "redirect";
         }
       } else {
-        throw Exception(error);
+        throw Exception(e);
       }
-    });
+    }
   }
 
   bool get _isExpired => client?.credentials.isExpired ?? true;
