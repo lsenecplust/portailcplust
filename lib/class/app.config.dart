@@ -32,12 +32,6 @@ enum Environement {
 
 class ApplicationConfiguration {
   static Environement? environement;
-  /*factory ApplicationConfiguration._local() => ApplicationConfiguration(Environement.local);
-  factory ApplicationConfiguration.development() => ApplicationConfiguration(Environement.development);
-  factory ApplicationConfiguration.recette() => ApplicationConfiguration(Environement.recette);
-  factory ApplicationConfiguration.production() => ApplicationConfiguration(Environement.production);*/
-
-  //static final ApplicationConfiguration? instance = ;
   static Pfs get pfs => environement!.pfs;
   static Keycloack get keycloack => environement!.keycloack;
   static setlocal() {

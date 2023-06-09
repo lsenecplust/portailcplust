@@ -72,14 +72,21 @@ class _RootContainerState extends State<RootContainer>
           title: Center(child: Text(widget.title)),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(50),
-            child: ColoredBox(
-              color: CustomColors.graydark,
-              child: TabBar(
-                isScrollable: false,
-                indicatorColor: CustomColors.pink.withOpacity(0.99),
-                controller: tabcontroller,
-                tabs: List.from(selectedMenu.tabs.map((e) => e.tab)),
-              ),
+            child: LayoutBuilder(
+              builder: (context,constraints) {
+                return Container(
+                  color: Colors.white,
+                  constraints: BoxConstraints(minWidth: constraints.maxWidth),
+                  child: Center(
+                    child: TabBar(
+                      isScrollable: true,
+                      indicatorColor: CustomColors.pink.withOpacity(0.99),
+                      controller: tabcontroller,
+                      tabs: List.from(selectedMenu.tabs.map((e) => e.tab)),
+                    ),
+                  ),
+                );
+              }
             ),
           ),
         ),
