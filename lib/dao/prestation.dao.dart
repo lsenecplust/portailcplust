@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:portail_canalplustelecom_mobile/class/authenticatedhttp.dart';
+import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 
 class Prestation extends Equatable {
@@ -105,25 +106,27 @@ class Prestation extends Equatable {
   /*-----------------------------------------------------------------------------*/
 
   static Future<List<Prestation>> get(BuildContext context) async {
-    var data = await AuthenticatedHttp.instance
-        .get(context, "${ApplicationConfiguration.pfs.webapi.host}/pro/list");
-    return List.from(data.map((e) => Prestation.fromMap(e)));
+    try {
+      var data = await AuthenticatedHttp.instance
+          .get(context, "${ApplicationConfiguration.pfs.webapi.host}/pro/list");
+      return List.from(data.map((e) => Prestation.fromMap(e)));
+    } on NotFoundException catch (_) {
+       return List.empty();
+    }
   }
 
   static Future<List<Prestation>> search(
       BuildContext context, String param) async {
-    var data = await AuthenticatedHttp.instance
-        .get(context, "${ApplicationConfiguration.pfs.webapi.host}/pro/search/$param");
+    var data = await AuthenticatedHttp.instance.get(context,
+        "${ApplicationConfiguration.pfs.webapi.host}/pro/search/$param");
     return List.from(data.map((e) => Prestation.fromMap(e)));
   }
 
   Future<List<MigAction>> getAllActions(BuildContext context) async {
-   
-   
-    var data = await AuthenticatedHttp.instance
-        .get(context, "${ApplicationConfiguration.pfs.webapi.host}/actions/$numPrestation");
-   
-   /*return [
+    var data = await AuthenticatedHttp.instance.get(context,
+        "${ApplicationConfiguration.pfs.webapi.host}/actions/$numPrestation");
+
+    /*return [
     MigAction(tache: EnumMigAction.affectationCPE, isExecutable: true),
     MigAction(tache: EnumMigAction.affectationONT, isExecutable: true),
     MigAction(tache: EnumMigAction.restitutionCPE, isExecutable: true),
