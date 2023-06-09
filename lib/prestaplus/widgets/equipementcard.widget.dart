@@ -22,14 +22,14 @@ class EquipementCard extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             decoration:  BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(4.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(4.0)),
               boxShadow: [
                 BoxShadow(
                     color: lightColorScheme.primary,
-                    offset: Offset(-7, 0),
+                    offset: const Offset(-7, 0),
                     blurRadius: 0,
                     spreadRadius: 0),
-                BoxShadow(
+                const BoxShadow(
                     color: CustomColors.gray400,
                     offset: Offset(2, 2),
                     blurRadius: 2,
