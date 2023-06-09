@@ -65,9 +65,9 @@ class ClientCard extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                decoration: const BoxDecoration(
-                  color: CustomColors.pink,
-                  borderRadius: BorderRadius.only(
+                decoration:  BoxDecoration(
+                  color: lightColorScheme.primary,
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(8.0),
                       topRight: Radius.circular(8.0)),
                 ),

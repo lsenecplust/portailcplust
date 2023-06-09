@@ -20,12 +20,12 @@ class EquipementCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Container(
             padding: const EdgeInsets.all(8.0),
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(4.0)),
               boxShadow: [
                 BoxShadow(
-                    color: CustomColors.pink,
+                    color: lightColorScheme.primary,
                     offset: Offset(-7, 0),
                     blurRadius: 0,
                     spreadRadius: 0),

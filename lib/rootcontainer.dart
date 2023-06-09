@@ -80,7 +80,7 @@ class _RootContainerState extends State<RootContainer>
                   child: Center(
                     child: TabBar(
                       isScrollable: true,
-                      indicatorColor: CustomColors.pink.withOpacity(0.99),
+                      indicatorColor: lightColorScheme.primary.withOpacity(0.99),
                       controller: tabcontroller,
                       tabs: List.from(selectedMenu.tabs.map((e) => e.tab)),
                     ),

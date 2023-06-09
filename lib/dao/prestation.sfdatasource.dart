@@ -29,7 +29,7 @@ class PrestationDataSource extends CalendarDataSource {
 
   @override
   Color getColor(int index) {
-    return CustomColors.pink;
+    return lightColorScheme.primary;
     //return _getMeetingData(index).background;
   }
 

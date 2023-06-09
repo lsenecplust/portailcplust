@@ -19,7 +19,7 @@ class CalanderdarScreen extends StatelessWidget {
             scheduleViewMonthHeaderBuilder: scheduleViewHeaderBuilder,
             appointmentBuilder: appointmentBuilder,
             scheduleViewSettings: const ScheduleViewSettings(
-                hideEmptyScheduleWeek: true, appointmentItemHeight: 72),
+                hideEmptyScheduleWeek: true, appointmentItemHeight: 82),
             dataSource: PrestationDataSource(snapshot.data!),
           );
         });
