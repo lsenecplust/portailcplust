@@ -4,7 +4,7 @@ enum Environement {
           issuer:
               "https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
           clientid: "canalbox-apps"),
-      pfs: Pfs(webapi: WebAPI(host: "http://10.105.20.164/webApi_PFS"))),
+      pfs: Pfs(webapi: WebAPI(host: "https://192.168.0.14:5001"))),
   development(
       keycloack: Keycloack(
           issuer:
