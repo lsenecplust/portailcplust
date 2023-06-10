@@ -16,8 +16,8 @@ enum Environement {
           issuer:
               "https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
           clientid: "canalbox-apps"),
-      pfs:
-          Pfs(webapi: WebAPI(host: "https://re7.abo.canalplustelecom.com/pfs"))),
+      pfs: Pfs(
+          webapi: WebAPI(host: "https://re7.abo.canalplustelecom.com/pfs"))),
   production(
       keycloack: Keycloack(
           issuer:
@@ -72,4 +72,7 @@ class Keycloack {
     required this.issuer,
     required this.clientid,
   });
+  Uri get authorizationEndpoint =>
+      Uri.parse("$issuer/protocol/openid-connect/auth");
+  Uri get tokenEndpoint => Uri.parse("$issuer/protocol/openid-connect/token");
 }

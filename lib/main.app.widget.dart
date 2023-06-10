@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget {
       home: SplashScreen.navigate(
         fit: BoxFit.contain,
         name: 'assets/rives/logo.riv',
-        next: (context) => const AuthHandler(
+        next: (context) => const Auth(
           errorWidget: SomethingWenWrong(msg: "Erreur Auth"),
           child: RootContainer(),
         ),

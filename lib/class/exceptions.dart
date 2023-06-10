@@ -17,3 +17,11 @@ class InternalException extends ApiException {
     return 'NotFoundException: $message';
   }
 }
+class UnAuthoriseException extends ApiException {
+  final String? message;
+  UnAuthoriseException({this.message});
+  @override
+  String toString() {
+    return 'UnAuthoriseException: $message';
+  }
+}

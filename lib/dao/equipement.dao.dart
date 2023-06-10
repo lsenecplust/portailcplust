@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
-import 'package:portail_canalplustelecom_mobile/class/authenticatedhttp.dart';
 
 class Equipement {
   final int id;
@@ -137,14 +137,14 @@ class Equipement {
   factory Equipement.fromMap(Map<String, dynamic> map) {
     return Equipement(
       id: map['id'].toInt() as int,
-      type: map['type']==null ? "" : map['type'] as String,
+      type: map['type'] == null ? "" : map['type'] as String,
       nomFournisseur: "bcvbcb",
       referenceProduit: "",
       typeProduit: "",
       referenceCommerciale: "",
       numeroCommande: "",
       dateCommande: "",
-      dateProductionUsine:"",
+      dateProductionUsine: "",
       lotProduction: "",
       numeroSerie: map['numero_serie'] as String,
       codeEAN: "",
@@ -157,7 +157,7 @@ class Equipement {
       ssid: "",
       cleWEP: "",
       typeADSL: "",
-      numdec:  map['numdec'] as String,
+      numdec: map['numdec'] as String,
       marque: "",
     );
   }
@@ -229,7 +229,8 @@ class Equipement {
   }
 
   String get formatedAdressMAC => adresseMAC
-      .splitMapJoin(RegExp(r'[a-zA-Z0-9]{2}'), onMatch: (m) => ':${m[0]}').substring(1);
+      .splitMapJoin(RegExp(r'[a-zA-Z0-9]{2}'), onMatch: (m) => ':${m[0]}')
+      .substring(1);
 
   /*-----------------------------------------------------------------------------*/
   /*-----------------------------    FETCH METHODS  -----------------------------*/
@@ -237,8 +238,8 @@ class Equipement {
 
   static Future<List<Equipement>> get(
       BuildContext context, String param) async {
-    var data = await AuthenticatedHttp.instance
-        .get(context, "${ApplicationConfiguration.pfs.webapi.host}/equipement/$param");
+    var data = await OAuthManager.of(context)!
+        .get(context,"${ApplicationConfiguration.pfs.webapi.host}/equipement/$param");
     return List.from(data.map((e) => Equipement.fromMap(e)));
   }
 }
