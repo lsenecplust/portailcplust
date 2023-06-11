@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
 import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
@@ -16,6 +17,7 @@ class Prestation extends Equatable {
   final String contactEmail;
   final String contactTel;
   final DateTime dateRdv;
+  final String offre;
   const Prestation({
     required this.numPrestation,
     required this.idRdvPxo,
@@ -25,6 +27,7 @@ class Prestation extends Equatable {
     required this.contactEmail,
     required this.contactTel,
     required this.dateRdv,
+    required this.offre,
   });
 
   Prestation copyWith({
@@ -36,6 +39,7 @@ class Prestation extends Equatable {
     String? contactEmail,
     String? contactTel,
     DateTime? dateRdv,
+    String? offre,
   }) {
     return Prestation(
       numPrestation: numPrestation ?? this.numPrestation,
@@ -46,6 +50,7 @@ class Prestation extends Equatable {
       contactEmail: contactEmail ?? this.contactEmail,
       contactTel: contactTel ?? this.contactTel,
       dateRdv: dateRdv ?? this.dateRdv,
+      offre: offre ?? this.offre,
     );
   }
 
@@ -59,6 +64,7 @@ class Prestation extends Equatable {
       'contactEmail': contactEmail,
       'contactTel': contactTel,
       'dateRdv': dateRdv.millisecondsSinceEpoch,
+      'offre': offre,
     };
   }
 
@@ -72,6 +78,7 @@ class Prestation extends Equatable {
       contactEmail: map['contactEmail'] ?? '',
       contactTel: map['contactTel'] ?? '',
       dateRdv: DateTime.parse(map['dateRdv']),
+      offre: map['offre'] ?? '',
     );
   }
 
@@ -82,7 +89,7 @@ class Prestation extends Equatable {
 
   @override
   String toString() {
-    return 'Prestation(numPrestation: $numPrestation, idRdvPxo: $idRdvPxo, clientNom: $clientNom, contactNom: $contactNom, contactPrenom: $contactPrenom, contactEmail: $contactEmail, contactTel: $contactTel, dateRdv: $dateRdv)';
+    return 'Prestation(numPrestation: $numPrestation, idRdvPxo: $idRdvPxo, clientNom: $clientNom, contactNom: $contactNom, contactPrenom: $contactPrenom, contactEmail: $contactEmail, contactTel: $contactTel, dateRdv: $dateRdv, offre: $offre)';
   }
 
   @override
@@ -96,6 +103,7 @@ class Prestation extends Equatable {
       contactEmail,
       contactTel,
       dateRdv,
+      offre,
     ];
   }
 
@@ -108,7 +116,7 @@ class Prestation extends Equatable {
   static Future<List<Prestation>> get(BuildContext context) async {
     try {
       var data = await OAuthManager.of(context)!
-          .get(context,"${ApplicationConfiguration.pfs.webapi.host}/pro/list");
+          .get(context, "${ApplicationConfiguration.pfs.webapi.host}/pro/list");
       return List.from(data.map((e) => Prestation.fromMap(e)));
     } on NotFoundException catch (_) {
       return List.empty();
@@ -117,14 +125,15 @@ class Prestation extends Equatable {
 
   static Future<List<Prestation>> search(
       BuildContext context, String param) async {
-    var data = await OAuthManager.of(context)!
-        .get(context,"${ApplicationConfiguration.pfs.webapi.host}/pro/search/$param");
+    var data = await OAuthManager.of(context)!.get(context,
+        "${ApplicationConfiguration.pfs.webapi.host}/pro/search/$param");
     return List.from(data.map((e) => Prestation.fromMap(e)));
   }
 
   Future<List<MigAction>> getAllActions(BuildContext context) async {
     var data = await OAuthManager.of(context)!.get(context,
-        "${ApplicationConfiguration.pfs.webapi.host}/actions/$numPrestation");
+        "${ApplicationConfiguration.pfs.webapi.host}/actions/$numPrestation",
+        params: {'prestation': numPrestation, 'offre': offre});
 
     /*return [
     MigAction(tache: EnumMigAction.affectationCPE, isExecutable: true),
