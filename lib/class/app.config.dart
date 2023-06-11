@@ -2,7 +2,7 @@ enum Environement {
   local(
       keycloack: Keycloack(
           issuer:
-              "https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
+              "https://lemur-6.cloud-iam.com/auth/realms/portailcplustelecomtest",
           clientid: "canalbox-apps"),
       pfs: Pfs(webapi: WebAPI(host: "https://192.168.0.14:5001"))),
   development(
