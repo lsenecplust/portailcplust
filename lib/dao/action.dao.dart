@@ -1,60 +1,72 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 enum EnumMigAction {
-  affectationONT("T0013", "affectation-ont","Affectation ONT",Icons.router),
-  affectationCPE("T0010", "affectation-cpe","Affectation CPE",Icons.switch_access_shortcut_outlined),
-  restitutionONT("T0041", "restitution-ont","Restitution ONT",Icons.router),
-  restitutionCPE("T0040", "restitution-cpe","Restitution CPE",Icons.switch_access_shortcut_outlined);
+  affectation(Icons.switch_access_shortcut_outlined),
+  restitution(Icons.settings_backup_restore_rounded),
+  echange(Icons.swap_calls_rounded);
 
-  final String code;
-  final String libelle;
-  final String displayName;
   final IconData icon;
-  const EnumMigAction(this.code, this.libelle,this.displayName,this.icon);
+  const EnumMigAction(
+    this.icon,
+  );
 }
 
-class MigAction {
-  final EnumMigAction tache;
+class MigAction extends Equatable {
+  final String tache;
+  final String codeTache;
   final bool isExecutable;
-  MigAction({
+  const MigAction({
     required this.tache,
+    required this.codeTache,
     required this.isExecutable,
   });
 
+  EnumMigAction? get type => switch (codeTache) {
+        'T0011' || 'T0012' => EnumMigAction.echange,
+        'T0013' || 'T0010' => EnumMigAction.affectation,
+        'T0040' || 'T0041' => EnumMigAction.restitution,
+        _ => null
+      };
+
   MigAction copyWith({
-    EnumMigAction? tache,
+    String? tache,
+    String? codeTache,
     bool? isExecutable,
   }) {
     return MigAction(
       tache: tache ?? this.tache,
+      codeTache: codeTache ?? this.codeTache,
       isExecutable: isExecutable ?? this.isExecutable,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'codeTache': tache.code,
-      'tache': tache.libelle,
+    return {
+      'tache': tache,
+      'codeTache': codeTache,
       'isExecutable': isExecutable,
     };
   }
 
   factory MigAction.fromMap(Map<String, dynamic> map) {
     return MigAction(
-      tache: EnumMigAction.values.firstWhere((e) => e.code == map['codeTache']),
-      isExecutable: map['isExecutable'] as bool,
+      tache: map['tache'] ?? '',
+      codeTache: map['codeTache'] ?? '',
+      isExecutable: map['isExecutable'] ?? false,
     );
   }
 
   String toJson() => json.encode(toMap());
 
   factory MigAction.fromJson(String source) =>
-      MigAction.fromMap(json.decode(source) as Map<String, dynamic>);
+      MigAction.fromMap(json.decode(source));
 
   @override
-  String toString() => 'Action(tache: $tache, isExecutable: $isExecutable)';
+  String toString() =>
+      'MigAction(tache: $tache, codeTache: $codeTache, isExecutable: $isExecutable)';
 
   @override
   bool operator ==(covariant MigAction other) {
@@ -65,4 +77,7 @@ class MigAction {
 
   @override
   int get hashCode => tache.hashCode ^ isExecutable.hashCode;
+
+  @override
+  List<Object> get props => [tache, codeTache, isExecutable];
 }

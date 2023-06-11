@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:oauth2/oauth2.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -12,16 +14,18 @@ class Auth extends StatefulWidget {
     Key? key,
     required this.child,
     required this.errorWidget,
+    this.authenticateHttpClient,
   }) : super(key: key);
   final Widget child;
   final Widget errorWidget;
-
+  final AuthenticateHttpClient? authenticateHttpClient;
   @override
   State<Auth> createState() => _AuthState();
 }
 
 class _AuthState extends State<Auth> {
-  AuthenticateHttpClient authenticateHttp = AuthenticateHttpClient();
+  late AuthenticateHttpClient authenticateHttp =
+      widget.authenticateHttpClient ?? AuthenticateHttpClient();
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +63,19 @@ class OAuthManager extends InheritedWidget {
       oldWidget.onHttpInit != onHttpInit;
 
   Future<dynamic> get(BuildContext context, String url,
-      {Map<String, String>? params}) async {
+          {Map<String, String>? params}) =>
+      _sendQuery(context,
+          () => client!.get(Uri.parse(url).replace(queryParameters: params)));
+
+  Future<dynamic> post(BuildContext context, String url, Object body,
+          {Map<String, String>? params}) =>
+      _sendQuery(
+          context,
+          () => client!.post(Uri.parse(url).replace(queryParameters: params),
+              body: body));
+
+  Future<dynamic> _sendQuery(
+      BuildContext context, Future<http.Response> Function() method) async {
     assert(client != null, "authenticateHttp.client cannot be null");
 
     debugPrint(client?.credentials.accessToken);
@@ -71,25 +87,23 @@ class OAuthManager extends InheritedWidget {
       OAuthManager.of(context)?.onHttpInit(null); //Redirige vers la page login
     }
     try {
-      var response =
-          await client!.get(Uri.parse(url).replace(queryParameters: params));
-
+      var response = await method().timeout(const Duration(seconds: 10));
       if (response.statusCode == 403) {
-        return Future.error(UnAuthoriseException(message: response.body));
+        return Future.error(UnAuthorise(message: response.body));
       }
       if (response.statusCode == 404) {
-        return Future.error(NotFoundException());
+        return Future.error(NotFound());
       }
       return jsonDecode(response.body);
     } on AuthorizationException catch (e) {
       client!.close();
       OAuthManager.of(context)?.onHttpInit(null); //Redirige vers la page login
       return Future.error(
-          UnAuthoriseException(message: "${e.error} : ${e.description}"));
+          UnAuthorise(message: "${e.error} : ${e.description}"));
+    } on TimeoutException catch (_) {
+      return Future.error(TimeOut());
     } catch (e) {
-      client!.close();
-      OAuthManager.of(context)?.onHttpInit(null); //Redirige vers la page login
-      return Future.error(UnAuthoriseException());
+      return Future.error(Internal());
     }
   }
 
@@ -97,6 +111,26 @@ class OAuthManager extends InheritedWidget {
   bool get _isExpired => client?.credentials.isExpired ?? true;
   bool get _canRefresh => client?.credentials.canRefresh ?? false;
   bool get isLogged => _isExpired == false || _canRefresh;
+
+  navigatePush(BuildContext context, Widget child) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Auth(
+                authenticateHttpClient: authenticateHttp,
+                errorWidget: Container(),
+                child: child)));
+  }
+
+    navigatePushReplacement(BuildContext context, Widget child) {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Auth(
+                authenticateHttpClient: authenticateHttp,
+                errorWidget: Container(),
+                child: child)));
+  }
 }
 
 class _AuthHandler extends StatefulWidget {

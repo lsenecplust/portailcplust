@@ -118,7 +118,7 @@ class Prestation extends Equatable {
       var data = await OAuthManager.of(context)!
           .get(context, "${ApplicationConfiguration.instance!.webapipfs}/pro/list");
       return List.from(data.map((e) => Prestation.fromMap(e)));
-    } on NotFoundException catch (_) {
+    } on NotFound catch (_) {
       return List.empty();
     }
   }
@@ -135,17 +135,11 @@ class Prestation extends Equatable {
         "${ApplicationConfiguration.instance!.webapipfs}/actions/$numPrestation",
         params: {'prestation': numPrestation, 'offre': offre});
 
-    /*return [
-    MigAction(tache: EnumMigAction.affectationCPE, isExecutable: true),
-    MigAction(tache: EnumMigAction.affectationONT, isExecutable: true),
-    MigAction(tache: EnumMigAction.restitutionCPE, isExecutable: true),
-    MigAction(tache: EnumMigAction.restitutionONT, isExecutable: true),
-    ];*/
     return List.from(data.map((e) => MigAction.fromMap(e)));
   }
 
   Future<List<MigAction>> getActions(BuildContext context) async {
     var actions = await getAllActions(context);
-    return actions.where((element) => element.isExecutable).toList();
+    return actions.where((element) => element.isExecutable).take(3).toList();
   }
 }

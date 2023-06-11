@@ -1,27 +1,31 @@
 sealed class ApiException  implements Exception {
 }
 
-class NotFoundException extends ApiException {
+class NotFound extends ApiException {
   final String? message;
-  NotFoundException({this.message});
+  NotFound({this.message});
   @override
   String toString() {
     return 'NotFoundException: $message';
   }
 }
-class InternalException extends ApiException {
+class Internal extends ApiException {
   final String? message;
-  InternalException({this.message});
+  Internal({this.message});
   @override
   String toString() {
     return 'NotFoundException: $message';
   }
 }
-class UnAuthoriseException extends ApiException {
+class UnAuthorise extends ApiException {
   final String? message;
-  UnAuthoriseException({this.message});
+  UnAuthorise({this.message});
   @override
   String toString() {
     return 'UnAuthoriseException: $message';
   }
+}
+
+class TimeOut extends ApiException {
+  TimeOut();
 }

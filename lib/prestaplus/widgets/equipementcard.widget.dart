@@ -5,10 +5,12 @@ import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 
 class EquipementCard extends StatelessWidget {
   final Equipement equipement;
+  final bool isSelected;
   final Function(Equipement equipement) ontap;
   const EquipementCard({
     Key? key,
     required this.equipement,
+    this.isSelected=false,
     required this.ontap,
   }) : super(key: key);
 
@@ -21,7 +23,7 @@ class EquipementCard extends StatelessWidget {
         child: Container(
             padding: const EdgeInsets.all(8.0),
             decoration:  BoxDecoration(
-              color: Colors.white,
+              color:isSelected? lightColorScheme.secondary.withOpacity(0.1): Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(4.0)),
               boxShadow: [
                 BoxShadow(

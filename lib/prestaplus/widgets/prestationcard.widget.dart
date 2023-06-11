@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:portail_canalplustelecom_mobile/auth.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
@@ -18,15 +19,15 @@ class PrestationCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext parentContext) {
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         showModalBottomSheet<void>(
-          context: parentContext,
+          context: context,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          builder: (BuildContext context) {
+          builder: (BuildContext subcontext) {
             return SizedBox(
               width: double.infinity,
               height: 200,
@@ -36,20 +37,20 @@ class PrestationCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       prestation.numPrestation,
-                      style: Theme.of(context).textTheme.headlineMedium,
+                      style: Theme.of(subcontext).textTheme.headlineMedium,
                     ),
                   ),
                   Expanded(
                     child: CustomFutureBuilder(
-                        future: prestation.getAllActions(parentContext),
+                        future: prestation.getActions(context),
                         progressIndicator: Column(children: [
                           const PortailIndicator(),
                           Text(
                             "Recherche des actions possibles...",
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: Theme.of(subcontext).textTheme.bodySmall,
                           ),
                         ]),
-                        builder: (context, snapshot) {
+                        builder: (subcontext, snapshot) {
                           var actions = snapshot.data!;
                           if (actions.isEmpty) {
                             return const Column(
@@ -60,13 +61,16 @@ class PrestationCard extends StatelessWidget {
                             );
                           }
 
-                          return Wrap(
-                              spacing: 5.0,
+                          return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: List.from(actions.map(
-                                (e) => ElevatedButton.icon(
+                                (e) => FilledButton.icon(
                                     onPressed: () => goto(e, context),
-                                    icon: Icon(e.tache.icon),
-                                    label: Text(e.tache.displayName)),
+                                    icon: Icon(e.type!.icon),
+                                    label: SizedBox(
+                                        width: 200,
+                                        child: Center(child: Text(e.tache)))),
                               )));
                         }),
                   ),
@@ -77,7 +81,7 @@ class PrestationCard extends StatelessWidget {
         );
       },
       child: Container(
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: const BorderRadius.all(Radius.circular(4.0)),
           boxShadow: [
@@ -97,7 +101,6 @@ class PrestationCard extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -115,11 +118,11 @@ class PrestationCard extends StatelessWidget {
                 children: [
                   Text(
                     prestation.idRdvPxo,
-                    style:  const TextStyle(color: CustomColors.gray500),
+                    style: const TextStyle(color: CustomColors.gray500),
                   ),
                   Text(
                     prestation.contactFullname,
-                    style:  const TextStyle(color: CustomColors.gray500),
+                    style: const TextStyle(color: CustomColors.gray500),
                   ),
                 ],
               ),
@@ -128,7 +131,7 @@ class PrestationCard extends StatelessWidget {
                 children: [
                   Text(
                     prestation.clientNom,
-                    style:  TextStyle(color: lightColorScheme.primary),
+                    style: TextStyle(color: lightColorScheme.primary),
                   ),
                 ],
               ),
@@ -140,13 +143,12 @@ class PrestationCard extends StatelessWidget {
   }
 
   goto(MigAction action, BuildContext context) {
-    Navigator.push(
+    OAuthManager.of(context)?.navigatePush(
         context,
-        MaterialPageRoute(
-            builder: (context) => RootContainer(
-                  title: action.tache.displayName,
-                  child: ActionEquipementScreen(
-                      prestation: prestation, migaction: action),
-                )));
+        RootContainer(
+          title: action.tache,
+          child:
+              ActionEquipementScreen(prestation: prestation, migaction: action),
+        ));
   }
 }

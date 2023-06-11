@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
+import 'dart:convert';
 
 class Keycloack extends Equatable {
   final String issuer;
@@ -26,5 +25,6 @@ class Keycloack extends Equatable {
   @override
   String toString() => 'Keycloack(issuer: $issuer, clientid: $clientid)';
 
+  @override
   List<Object> get props => [issuer, clientid];
 }

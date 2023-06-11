@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
-
-import 'package:portail_canalplustelecom_mobile/prestaplus/actionequipement.screen.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/searchorscan.widget.dart';
 
 class PrestaplusScanScreen extends StatefulWidget {
   const PrestaplusScanScreen({super.key});

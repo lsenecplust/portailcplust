@@ -8,6 +8,14 @@
             "name": "local",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main.local.dart",
+            "flutterMode": "debug",
+
+        },
+        {
+            "name": "devlopment",
+            "request": "launch",
+            "type": "dart",
             "program": "lib/main.devlopment.dart",
             "flutterMode": "debug",
 
