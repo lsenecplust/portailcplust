@@ -7,6 +7,7 @@ import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipementcard.widget.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/scanner.widget.dart';
 import 'package:portail_canalplustelecom_mobile/rootcontainer.dart';
@@ -100,7 +101,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(32.0))),
           contentPadding: EdgeInsets.only(top: 10.0),
-          content: CircularProgressIndicator.adaptive(),
+          content: PortailIndicator(),
         );
       },
     );

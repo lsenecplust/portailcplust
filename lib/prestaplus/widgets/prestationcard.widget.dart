@@ -6,6 +6,7 @@ import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actionequipement.screen.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/rootcontainer.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
@@ -42,7 +43,7 @@ class PrestationCard extends StatelessWidget {
                     child: CustomFutureBuilder(
                         future: prestation.getAllActions(context),
                         progressIndicator: Column(children: [
-                          const CircularProgressIndicator(),
+                          const PortailIndicator(),
                           Text(
                             "Recherche des actions possibles...",
                             style: Theme.of(context).textTheme.bodySmall,

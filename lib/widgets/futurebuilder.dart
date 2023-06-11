@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/somethingwentwrong.dart';
 
 class CustomFutureBuilder<T> extends StatelessWidget {
@@ -36,7 +37,7 @@ class CustomFutureBuilder<T> extends StatelessWidget {
                   const Center(
                       child: Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(),
+                    child: PortailIndicator(),
                   ));
             case ConnectionState.done:
               if (snapshot.hasError) {
