@@ -8,7 +8,7 @@ class PortailIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 100),
+        constraints: const BoxConstraints(maxWidth: 100,maxHeight: 100),
         child: RiveLoading(
             name: 'assets/rives/logo.riv',
             loopAnimation: 'loading',

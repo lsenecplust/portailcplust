@@ -18,11 +18,11 @@ class PrestationCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext parentContext) {
     return InkWell(
       onTap: () {
         showModalBottomSheet<void>(
-          context: context,
+          context: parentContext,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -41,7 +41,7 @@ class PrestationCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: CustomFutureBuilder(
-                        future: prestation.getAllActions(context),
+                        future: prestation.getAllActions(parentContext),
                         progressIndicator: Column(children: [
                           const PortailIndicator(),
                           Text(
