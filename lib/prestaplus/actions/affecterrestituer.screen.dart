@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:portail_canalplustelecom_mobile/auth.dart';
 
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
@@ -88,14 +89,10 @@ class _AffecterRestituerState extends State<AffecterRestituer> {
         btnOkIcon: Icons.check_circle,
         onDismissCallback: (type) {
           if (actionok) {
-            Navigator.push(context, MaterialPageRoute(builder: ((context) {
-              return const RootContainer();
-            })));
+            OAuthManager.of(context)?.navigatePush(context, const RootContainer());
           }
         },
       ).show();
     }
   }
-
-
 }
