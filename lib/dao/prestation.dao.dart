@@ -116,7 +116,7 @@ class Prestation extends Equatable {
   static Future<List<Prestation>> get(BuildContext context) async {
     try {
       var data = await OAuthManager.of(context)!
-          .get(context, "${ApplicationConfiguration.pfs.webapi.host}/pro/list");
+          .get(context, "${ApplicationConfiguration.instance!.webapipfs}/pro/list");
       return List.from(data.map((e) => Prestation.fromMap(e)));
     } on NotFoundException catch (_) {
       return List.empty();
@@ -126,13 +126,13 @@ class Prestation extends Equatable {
   static Future<List<Prestation>> search(
       BuildContext context, String param) async {
     var data = await OAuthManager.of(context)!.get(context,
-        "${ApplicationConfiguration.pfs.webapi.host}/pro/search/$param");
+        "${ApplicationConfiguration.instance!.webapipfs}/pro/search/$param");
     return List.from(data.map((e) => Prestation.fromMap(e)));
   }
 
   Future<List<MigAction>> getAllActions(BuildContext context) async {
     var data = await OAuthManager.of(context)!.get(context,
-        "${ApplicationConfiguration.pfs.webapi.host}/actions/$numPrestation",
+        "${ApplicationConfiguration.instance!.webapipfs}/actions/$numPrestation",
         params: {'prestation': numPrestation, 'offre': offre});
 
     /*return [

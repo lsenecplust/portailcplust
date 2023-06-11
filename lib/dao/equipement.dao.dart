@@ -239,7 +239,7 @@ class Equipement {
   static Future<List<Equipement>> get(
       BuildContext context, String param) async {
     var data = await OAuthManager.of(context)!
-        .get(context,"${ApplicationConfiguration.pfs.webapi.host}/equipement/$param");
+        .get(context,"${ApplicationConfiguration.instance!.webapipfs}/equipement/$param");
     return List.from(data.map((e) => Equipement.fromMap(e)));
   }
 }

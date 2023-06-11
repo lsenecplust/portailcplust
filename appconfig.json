@@ -1,0 +1,37 @@
+{
+    "local" : {
+        "keycloak" : {
+            "issuer" :"https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
+            "clientid":"canalbox-apps"
+        },
+        "webapipfs": "https://192.168.0.14:5001"
+    },
+    "locallemur" : {
+        "keycloak" : {
+            "issuer" :"https://lemur-6.cloud-iam.com/auth/realms/portailcplustelecomtest",
+            "clientid":"canalbox-apps"
+        },
+        "webapipfs": "https://192.168.0.14:5001"
+    } ,
+    "development" : {
+        "keycloak" : {
+            "issuer" :"https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
+            "clientid":"canalbox-apps"
+        },
+        "webapipfs": "http://10.105.20.164/webApi_PFS"
+    } ,
+    "recette" : {
+        "keycloak" : {
+            "issuer" :"https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
+            "clientid":"canalbox-apps"
+        },
+        "webapipfs": "https://re7.abo.canalplustelecom.com/pfs"
+    }  ,
+    "production" : {
+        "keycloak" : {
+            "issuer" :"https://abo.canalplustelecom.com/dev/auth/realms/OSS-PROD",
+            "clientid":"canalbox-apps"
+        },
+        "webapipfs": "https://abo.canalplustelecom.com/pfs"
+    }  
+}

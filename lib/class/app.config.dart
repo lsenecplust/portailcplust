@@ -1,78 +1,46 @@
-enum Environement {
-  local(
-      keycloack: Keycloack(
-          issuer:
-              "https://lemur-6.cloud-iam.com/auth/realms/portailcplustelecomtest",
-          clientid: "canalbox-apps"),
-      pfs: Pfs(webapi: WebAPI(host: "https://192.168.0.14:5001"))),
-  development(
-      keycloack: Keycloack(
-          issuer:
-              "https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
-          clientid: "canalbox-apps"),
-      pfs: Pfs(webapi: WebAPI(host: "http://10.105.20.164/webApi_PFS"))),
-  recette(
-      keycloack: Keycloack(
-          issuer:
-              "https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
-          clientid: "canalbox-apps"),
-      pfs: Pfs(
-          webapi: WebAPI(host: "https://re7.abo.canalplustelecom.com/pfs"))),
-  production(
-      keycloack: Keycloack(
-          issuer:
-              "https://abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
-          clientid: "canalbox-apps"),
-      pfs: Pfs(webapi: WebAPI(host: "https://abo.canalplustelecom.com/pfs")));
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:equatable/equatable.dart';
+import 'package:portail_canalplustelecom_mobile/class/Keycloak.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
-  final Pfs pfs;
-  final Keycloack keycloack;
-  const Environement({required this.pfs, required this.keycloack});
-}
+class ApplicationConfiguration extends Equatable {
+  final String webapipfs;
+  final Keycloack keycloak;
 
-class ApplicationConfiguration {
-  static Environement? environement;
-  static Pfs get pfs => environement!.pfs;
-  static Keycloack get keycloack => environement!.keycloack;
-  static setlocal() {
-    environement = Environement.local;
-  }
-
-  static setdevelopment() {
-    environement = Environement.development;
-  }
-
-  static setrecette() {
-    environement = Environement.recette;
-  }
-
-  static setproduction() {
-    environement = Environement.production;
-  }
-}
-
-class Pfs {
-  final WebAPI webapi;
-  const Pfs({
-    required this.webapi,
+  static ApplicationConfiguration? instance;
+  const ApplicationConfiguration({
+    required this.webapipfs,
+    required this.keycloak,
   });
-}
+  static init({String? environement}) async {
+ 
+    var input = await rootBundle.loadString("appconfig.json");
+    var map = jsonDecode(input);
+    instance =
+        ApplicationConfiguration.fromMap(map[environement ?? "production"]);
+  }
 
-class WebAPI {
-  final String host;
-  const WebAPI({
-    required this.host,
-  });
-}
+  static setlocal() => init(environement: "local");
+  static setdevelopment() => init(environement: "development");
+  static setrecette() => init(environement: "recette");
+  static setproduction() => init(environement: "production");
 
-class Keycloack {
-  final String issuer;
-  final String clientid;
-  const Keycloack({
-    required this.issuer,
-    required this.clientid,
-  });
-  Uri get authorizationEndpoint =>
-      Uri.parse("$issuer/protocol/openid-connect/auth");
-  Uri get tokenEndpoint => Uri.parse("$issuer/protocol/openid-connect/token");
+  factory ApplicationConfiguration.fromMap(Map<String, dynamic> map) {
+    return ApplicationConfiguration(
+      webapipfs: map['webapipfs'] ?? '',
+      keycloak: Keycloack.fromMap(map['keycloak']),
+    );
+  }
+
+  factory ApplicationConfiguration.fromJson(String source) =>
+      ApplicationConfiguration.fromMap(json.decode(source));
+
+  @override
+  String toString() =>
+      'ApplicationConfiguration(webapipfs: $webapipfs, keycloak: $keycloak)';
+
+  @override
+  List<Object> get props => [webapipfs, keycloak];
 }

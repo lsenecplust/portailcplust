@@ -116,9 +116,9 @@ class _AuthHandlerState extends State<_AuthHandler> {
     return Scaffold(
         body: _KeycloackWebView(
       grant: AuthorizationCodeGrant(
-        ApplicationConfiguration.keycloack.clientid,
-        ApplicationConfiguration.keycloack.authorizationEndpoint,
-        ApplicationConfiguration.keycloack.tokenEndpoint,
+        ApplicationConfiguration.instance!.keycloak.clientid,
+        ApplicationConfiguration.instance!.keycloak.authorizationEndpoint,
+        ApplicationConfiguration.instance!.keycloak.tokenEndpoint,
       ),
     ));
   }
@@ -160,7 +160,7 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
         ),
       )
       ..loadRequest(widget.grant.getAuthorizationUrl(Uri.parse(
-          ApplicationConfiguration.keycloack
+          ApplicationConfiguration.instance!.keycloak
               .issuer))); //redirect to authorizationEndpoint simplifie la conf keycloack. De plus on intercept le redirect, on le kill et on recup le authCode
   }
 
