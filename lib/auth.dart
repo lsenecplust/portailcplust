@@ -58,9 +58,10 @@ class OAuthManager extends InheritedWidget {
   bool updateShouldNotify(OAuthManager oldWidget) =>
       oldWidget.onHttpInit != onHttpInit;
 
-  Future<dynamic> get(BuildContext context, String url) async {
+  Future<dynamic> get(BuildContext context, String url,
+      {Map<String, String>? params}) async {
     assert(client != null, "authenticateHttp.client cannot be null");
-    
+
     debugPrint(client?.credentials.accessToken);
     debugPrint("[expiration]=${client?.credentials.expiration}");
     debugPrint("[canRefresh]=${client?.credentials.canRefresh}");
@@ -69,9 +70,10 @@ class OAuthManager extends InheritedWidget {
     if (isLogged == false) {
       OAuthManager.of(context)?.onHttpInit(null); //Redirige vers la page login
     }
-
     try {
-      var response = await client!.get(Uri.parse((url)));
+      var response =
+          await client!.get(Uri.parse(url).replace(queryParameters: params));
+
       if (response.statusCode == 403) {
         return Future.error(UnAuthoriseException(message: response.body));
       }
@@ -80,12 +82,14 @@ class OAuthManager extends InheritedWidget {
       }
       return jsonDecode(response.body);
     } on AuthorizationException catch (e) {
-      Future.error(
+      client!.close();
+      OAuthManager.of(context)?.onHttpInit(null); //Redirige vers la page login
+      return Future.error(
           UnAuthoriseException(message: "${e.error} : ${e.description}"));
     } catch (e) {
-      Future.error(UnAuthoriseException());
-    } finally {
+      client!.close();
       OAuthManager.of(context)?.onHttpInit(null); //Redirige vers la page login
+      return Future.error(UnAuthoriseException());
     }
   }
 
@@ -144,9 +148,13 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
         NavigationDelegate(
           onNavigationRequest: (NavigationRequest request) async {
             var responseUrl = Uri.parse(request.url);
+            debugPrint(responseUrl.toString());
+            if (responseUrl.queryParameters['execution'] == "UPDATE_PASSWORD") {
+              return NavigationDecision.navigate;
+            }
             OAuthManager.of(context)?.onHttpInit(await widget.grant
                 .handleAuthorizationResponse(responseUrl.queryParameters));
-            //TODO : laisser passer les url update password
+
             return NavigationDecision.prevent;
           },
         ),
