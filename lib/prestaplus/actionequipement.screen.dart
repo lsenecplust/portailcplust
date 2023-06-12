@@ -30,6 +30,16 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
   Widget build(BuildContext context) {
     return RootContainer(
       key: rootContainerKey,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FilledButton.icon(
+            icon: const Icon(Icons.ads_click_sharp),
+            onPressed: () => switch (widget.migaction.type!) {
+                  EnumMigAction.affectation => test(),
+                  EnumMigAction.restitution => test(),
+                  EnumMigAction.echange => test(),
+                },
+            label:
+                Text(widget.migaction.tache)),
       title: widget.migaction.tache,
       child: switch (widget.migaction.type!) {
         (EnumMigAction.affectation) => AffecterRestituer(
@@ -46,18 +56,12 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
     );
   }
 
+  void test() {
+
+  }
+
   onSelected(Equipement? e, String? param) {
-    rootContainerKey.currentState?.setFloatingActionButton(
-        FilledButton.icon(
-            icon: const Icon(Icons.ads_click_sharp),
-            onPressed: () => switch (widget.migaction.type!) {
-                  EnumMigAction.affectation => affecter(e, param),
-                  EnumMigAction.restitution => restituer(e, param),
-                  EnumMigAction.echange => echanger(e, param),
-                },
-            label:
-                Text("${e == null ? 'forcer' : ''} ${widget.migaction.tache}")),
-        FloatingActionButtonLocation.centerFloat);
+    rootContainerKey.currentState?.toggleFloatingActionButton();
   }
 
   Future affecter(Equipement? e, String? param) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/menu.dart';
 
@@ -9,8 +8,7 @@ class RootContainer extends StatefulWidget {
   final Widget? child;
   final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
-  final Function(Widget?, FloatingActionButtonLocation?)?
-      setFloatingActionButton;
+  final Function()? setFloatingActionButton;
   final Menu selectedmenu;
   final String title;
   const RootContainer({
@@ -30,17 +28,10 @@ class RootContainer extends StatefulWidget {
 class RootContainerState extends State<RootContainer>
     with TickerProviderStateMixin {
   late Menu selectedMenu = widget.selectedmenu;
-  late Widget? floatingActionButton = widget.floatingActionButton;
-  late FloatingActionButtonLocation? floatingActionButtonLocation =
-      widget.floatingActionButtonLocation;
-
-  setFloatingActionButton(Widget floatingActionButton,
-      FloatingActionButtonLocation floatingActionButtonLocation) {
-    setState(() {
-      this.floatingActionButton = floatingActionButton;
-      this.floatingActionButtonLocation = floatingActionButtonLocation;
-    });
-  }
+  GlobalKey<FABAnimatedState> fabKey = GlobalKey();
+  toggleFloatingActionButton() => fabKey.currentState?.toggle();
+  showFloatingActionButton() => fabKey.currentState?.show();
+  hideFloatingActionButton() => fabKey.currentState?.hide();
 
   @override
   void initState() {
@@ -113,16 +104,18 @@ class RootContainerState extends State<RootContainer>
             ),
           ],
         ),
-        floatingActionButton: floatingActionButton,
-        floatingActionButtonLocation: floatingActionButtonLocation,
+        floatingActionButton: FABAnimated(
+            key: fabKey, floatingActionButton: widget.floatingActionButton),
+        floatingActionButtonLocation: widget.floatingActionButtonLocation,
       );
     }
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text(widget.title)),
       ),
-      floatingActionButton: floatingActionButton,
-      floatingActionButtonLocation: floatingActionButtonLocation,
+      floatingActionButton: FABAnimated(
+          key: fabKey, floatingActionButton: widget.floatingActionButton),
+      floatingActionButtonLocation: widget.floatingActionButtonLocation,
       body: Stack(
         children: [
           background,
@@ -153,5 +146,50 @@ class CplusDrawer extends StatelessWidget {
       const Divider(),
       ...Menu.values.map((e) => e.tile(context))
     ]));
+  }
+}
+
+class FABAnimated extends StatefulWidget {
+  final Widget? floatingActionButton;
+  final bool visible;
+  const FABAnimated({
+    Key? key,
+    this.visible = false,
+    this.floatingActionButton,
+  }) : super(key: key);
+
+  @override
+  State<FABAnimated> createState() => FABAnimatedState();
+}
+
+class FABAnimatedState extends State<FABAnimated> {
+  late bool visible = widget.visible;
+
+  void show() {
+    setState(() {
+      visible = true;
+    });
+  }
+
+  void hide() {
+    setState(() {
+      visible = false;
+    });
+  }
+
+  void toggle() {
+    setState(() {
+      visible = !visible;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.floatingActionButton == null) return Container();
+    return AnimatedOpacity(
+        opacity: visible ? 1 : 0,
+        duration: const Duration(milliseconds: 500),
+        child: widget.floatingActionButton);
+
   }
 }
