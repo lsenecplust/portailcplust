@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:equatable/equatable.dart';
-import 'package:portail_canalplustelecom_mobile/class/keycloak.dart';
+import 'package:portail_canalplustelecom_mobile/class/keycloak.config.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class ApplicationConfiguration extends Equatable {
