@@ -9,7 +9,7 @@ import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/affecterrestituer.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/echange.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
-import 'package:portail_canalplustelecom_mobile/rootcontainer.dart';
+import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 
 class ActionEquipementScreen extends StatefulWidget {
   final Prestation prestation;
@@ -25,10 +25,11 @@ class ActionEquipementScreen extends StatefulWidget {
 }
 
 class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
-  GlobalKey<RootContainerState> rootContainerKey = GlobalKey();
+  GlobalKey<ScaffoldMenuState> rootContainerKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return RootContainer(
+    return ScaffoldMenu(
+      
       key: rootContainerKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FilledButton.icon(
@@ -126,7 +127,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
         onDismissCallback: (type) {
           if (actionok) {
             OAuthManager.of(context)
-                ?.navigatePush(context, const RootContainer());
+                ?.navigatePush(context, const ScaffoldMenu());
           }
         },
       ).show();

@@ -4,7 +4,7 @@ import 'package:portail_canalplustelecom_mobile/geoeligibilite/geoeligibilites.s
 import 'package:portail_canalplustelecom_mobile/prestaplus/calendrier/calendar.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/recherche/recherche.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/scan/scan.screen.dart';
-import 'package:portail_canalplustelecom_mobile/rootcontainer.dart';
+import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 
 enum Menu {
   prestaplus(Icons.hail_rounded, "Presta+"),
@@ -21,9 +21,10 @@ enum Menu {
   Widget tile(BuildContext context) => ListTile(
       leading: Icon(icondata),
       title: Text(label),
-      onTap: () => OAuthManager.of(context)?.navigatePushReplacement(
-          context, RootContainer(selectedmenu: this)));
+      onTap: () => OAuthManager.of(context)
+          ?.navigatePushReplacement(context, ScaffoldMenu(selectedmenu: this)));
   List<Tabs> get tabs => Tabs.values.where((e) => e.menu == this).toList();
+  Map<Widget, Widget> get tabsAsMap => {for (Tabs t in tabs) t.tab: t.view};
 }
 
 enum Tabs {

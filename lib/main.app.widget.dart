@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:portail_canalplustelecom_mobile/class/theme.config.dart';
-import 'package:portail_canalplustelecom_mobile/rootcontainer.dart';
+import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 import 'package:rive_splash_screen/rive_splash_screen.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/somethingwentwrong.dart';
@@ -34,7 +34,7 @@ class MainApp extends StatelessWidget {
         name: 'assets/rives/logo.riv',
         next: (context) => const Auth(
           errorWidget: SomethingWenWrong(msg: "Erreur Auth"),
-          child: RootContainer(),
+          child: ScaffoldMenu(),
         ),
         isLoading: true,
         backgroundColor: Colors.white,
