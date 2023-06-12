@@ -5,31 +5,47 @@ import 'package:intl/intl.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/menu.dart';
 
-
 class RootContainer extends StatefulWidget {
   final Widget? child;
+  final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final Function(Widget?, FloatingActionButtonLocation?)?
+      setFloatingActionButton;
   final Menu selectedmenu;
   final String title;
   const RootContainer({
     Key? key,
     this.child,
+    this.floatingActionButton,
+    this.floatingActionButtonLocation,
+    this.setFloatingActionButton,
     this.selectedmenu = Menu.prestaplus,
     this.title = 'Portail C+T',
   }) : super(key: key);
 
   @override
-  State<RootContainer> createState() => _RootContainerState();
+  State<RootContainer> createState() => RootContainerState();
 }
 
-class _RootContainerState extends State<RootContainer>
+class RootContainerState extends State<RootContainer>
     with TickerProviderStateMixin {
-  late Menu selectedMenu;
+  late Menu selectedMenu = widget.selectedmenu;
+  late Widget? floatingActionButton = widget.floatingActionButton;
+  late FloatingActionButtonLocation? floatingActionButtonLocation =
+      widget.floatingActionButtonLocation;
+
+  setFloatingActionButton(Widget floatingActionButton,
+      FloatingActionButtonLocation floatingActionButtonLocation) {
+    setState(() {
+      this.floatingActionButton = floatingActionButton;
+      this.floatingActionButtonLocation = floatingActionButtonLocation;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     initializeDateFormatting();
-    selectedMenu = widget.selectedmenu;
   }
 
   @override
@@ -72,22 +88,20 @@ class _RootContainerState extends State<RootContainer>
           title: Center(child: Text(widget.title)),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(50),
-            child: LayoutBuilder(
-              builder: (context,constraints) {
-                return Container(
-                  color: Colors.white,
-                  constraints: BoxConstraints(minWidth: constraints.maxWidth),
-                  child: Center(
-                    child: TabBar(
-                      isScrollable: true,
-                      indicatorColor: lightColorScheme.primary.withOpacity(0.99),
-                      controller: tabcontroller,
-                      tabs: List.from(selectedMenu.tabs.map((e) => e.tab)),
-                    ),
+            child: LayoutBuilder(builder: (context, constraints) {
+              return Container(
+                color: Colors.white,
+                constraints: BoxConstraints(minWidth: constraints.maxWidth),
+                child: Center(
+                  child: TabBar(
+                    isScrollable: true,
+                    indicatorColor: lightColorScheme.primary.withOpacity(0.99),
+                    controller: tabcontroller,
+                    tabs: List.from(selectedMenu.tabs.map((e) => e.tab)),
                   ),
-                );
-              }
-            ),
+                ),
+              );
+            }),
           ),
         ),
         body: Stack(
@@ -99,12 +113,16 @@ class _RootContainerState extends State<RootContainer>
             ),
           ],
         ),
+        floatingActionButton: floatingActionButton,
+        floatingActionButtonLocation: floatingActionButtonLocation,
       );
     }
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text(widget.title)),
       ),
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
       body: Stack(
         children: [
           background,

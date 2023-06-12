@@ -8,14 +8,12 @@ import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 class EquipementFuture extends StatelessWidget {
   final String? param;
   final MigAction? migaction;
-  final Function(Equipement?)? action;
-  final ValueChanged<Equipement?>? onselectedequipment;
+  final Function(Equipement? equipement, String? param)? onSelectedequipment;
   const EquipementFuture(
       {super.key,
       required this.param,
-      this.action,
       this.migaction,
-      this.onselectedequipment});
+      this.onSelectedequipment});
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +34,8 @@ class EquipementFuture extends StatelessWidget {
           builder: (context, snapshot) {
             var equipements = snapshot.data!;
             if (equipements.isEmpty) {
+              equipmentSelected = null;
+              onSelectedequipment?.call(null, param);
               return const Card(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
@@ -49,25 +49,20 @@ class EquipementFuture extends StatelessWidget {
               );
             }
 
-            if (equipements.length == 1) equipmentSelected = equipements.first;
+            if (equipements.length == 1) {
+              equipmentSelected = equipements.first;
+              onSelectedequipment?.call(equipmentSelected, param);
+            }
 
             return EquipementList(
               equipements: equipements,
               onSelected: (value) {
                 equipmentSelected = value;
+                onSelectedequipment?.call(equipmentSelected, param);
               },
             );
           },
         ),
-        Visibility(
-          visible: migaction != null,
-          child: Center(
-            child: FilledButton.icon(
-                icon: const Icon(Icons.ads_click_sharp),
-                onPressed: () => action?.call(equipmentSelected,),
-                label: Text("forcer ${migaction?.tache ?? "action"}")),
-          ),
-        )
       ],
     );
   }

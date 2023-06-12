@@ -8,7 +8,6 @@ import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actionequipement.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
-import 'package:portail_canalplustelecom_mobile/rootcontainer.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
 class PrestationCard extends StatelessWidget {
@@ -145,10 +144,6 @@ class PrestationCard extends StatelessWidget {
   goto(MigAction action, BuildContext context) {
     OAuthManager.of(context)?.navigatePush(
         context,
-        RootContainer(
-          title: action.tache,
-          child:
-              ActionEquipementScreen(prestation: prestation, migaction: action),
-        ));
+        ActionEquipementScreen(prestation: prestation, migaction: action));
   }
 }

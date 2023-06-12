@@ -28,7 +28,7 @@ class _PrestaplusScanScreenState extends State<PrestaplusScanScreen> {
             },
           ),
           EquipementFuture(
-            onselectedequipment: (value) {
+            onSelectedequipment: (e,value) {
               setState(() {
                 //TODO : import client contrat search
                 clientfound =
