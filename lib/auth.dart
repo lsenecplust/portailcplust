@@ -53,7 +53,7 @@ class OAuthManager extends InheritedWidget {
   final ValueChanged<Client?> onHttpInit;
 
   static OAuthManager? of(BuildContext context) {
-    var oauth = context.dependOnInheritedWidgetOfExactType<OAuthManager>();
+    var oauth = context.getInheritedWidgetOfExactType<OAuthManager>();
     assert(oauth != null, "OAuthManager not found in widgetTree");
     return oauth;
   }

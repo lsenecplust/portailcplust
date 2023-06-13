@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/actions/actionequipement.screen.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/actions/action.equipement.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
 

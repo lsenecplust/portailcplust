@@ -7,6 +7,7 @@ import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/recherche.equipement.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/actions/saisiemanuelle.equipement.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/scanner.equipement.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/floatingactionbuttonvisible.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
@@ -70,21 +71,11 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
           ),
           const HorizontalTab(
               label: "Saisie manuelle",
-              icondata: Icons.draw_outlined): Container(),
+              icondata: Icons.draw_outlined): SaisieManuelle(
+                onSubmit: (param) {
+                onSelected(null, param);
+              }, migaction: widget.migaction,),
         }
-
-        /*switch (widget.migaction.type!) {
-        (EnumMigAction.affectation) => AffecterRestituer(
-            onSelected: onSelected,
-            prestation: widget.prestation,
-            migaction: widget.migaction),
-        (EnumMigAction.restitution) => AffecterRestituer(
-            onSelected: onSelected,
-            prestation: widget.prestation,
-            migaction: widget.migaction),
-        (EnumMigAction.echange) =>
-          Echange(prestation: widget.prestation, migaction: widget.migaction)
-      },*/
         );
   }
 

@@ -4,7 +4,7 @@
             "issuer" :"https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
             "clientid":"canalbox-apps"
         },
-        "webapipfs": "https://192.168.0.14:5001"
+        "webapipfs": "https://192.168.110.162:5001"
     },
     "locallemur" : {
         "keycloak" : {
