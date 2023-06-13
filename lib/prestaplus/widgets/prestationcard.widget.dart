@@ -29,7 +29,7 @@ class PrestationCard extends StatelessWidget {
           builder: (BuildContext subcontext) {
             return SizedBox(
               width: double.infinity,
-              height: 200,
+              height: 250,
               child: Column(
                 children: [
                   Padding(
@@ -61,7 +61,7 @@ class PrestationCard extends StatelessWidget {
                           }
 
                           return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: List.from(actions.map(
                                 (e) => FilledButton.icon(
