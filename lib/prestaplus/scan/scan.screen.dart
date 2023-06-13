@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/searchorscan.widget.dart';
 
 class PrestaplusScanScreen extends StatefulWidget {
   const PrestaplusScanScreen({super.key});
@@ -19,14 +18,15 @@ class _PrestaplusScanScreenState extends State<PrestaplusScanScreen> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          SearchOrScanSwitch(
+         /* SearchOrScanSwitch(
             onchange: (value) {
               setState(() {
                 searchPattern = value;
               //  print(value);
               });
             },
-          ),
+          ),*/
+                //TODO : replace by new tabs separate swidgets
           EquipementFuture(
             onSelectedequipment: (e,value) {
               setState(() {

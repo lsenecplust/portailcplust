@@ -5,6 +5,14 @@ import 'package:intl/intl.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/menu.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/floatingactionbuttonvisible.widget.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
+
+class TabControllerWrapper {
+  TabController? controller;
+  TabControllerWrapper({
+    this.controller,
+  });
+}
 
 class SimpleScaffold extends StatefulWidget {
   final Widget? body;
@@ -69,7 +77,8 @@ class ScaffoldTabs extends StatefulWidget {
   final Widget? floatingActionButton;
   final GlobalKey<FABAnimatedState>? floatingActionButtonKey;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
-  final Map<Widget, Widget>? tabs;
+  final Map<HorizontalTab, Widget>? tabs;
+  final TabControllerWrapper? tabcontroller;
   const ScaffoldTabs({
     Key? key,
     this.appBar,
@@ -78,6 +87,7 @@ class ScaffoldTabs extends StatefulWidget {
     this.floatingActionButtonKey,
     this.floatingActionButtonLocation,
     this.tabs,
+    this.tabcontroller,
   }) : super(key: key);
 
   @override
@@ -99,11 +109,12 @@ class _ScaffoldTabsState extends State<ScaffoldTabs>
 
   @override
   Widget build(BuildContext context) {
+    widget.tabcontroller?.controller = tabcontroller;
     return SimpleScaffold(
       appBar: AppBar(
         title: widget.appBar?.title,
         bottom: PreferredSize(
-          preferredSize : const Size.fromHeight(50),
+          preferredSize: const Size.fromHeight(50),
           child: LayoutBuilder(builder: (context, constraints) {
             return Container(
               color: Colors.white,

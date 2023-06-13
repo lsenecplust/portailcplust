@@ -87,7 +87,7 @@ class OAuthManager extends InheritedWidget {
       OAuthManager.of(context)?.onHttpInit(null); //Redirige vers la page login
     }
     try {
-      var response = await method().timeout(const Duration(seconds: 10));
+      var response = await method().timeout(const Duration(seconds: 30));
       if (response.statusCode == 403) {
         return Future.error(UnAuthorise(message: response.body));
       }

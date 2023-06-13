@@ -147,18 +147,18 @@ class Equipement {
       dateProductionUsine: "",
       lotProduction: "",
       numeroSerie: map['numero_serie'] as String,
-      codeEAN: "",
+      codeEAN: map['code_ean'] as String,
       adresseMAC: map['adresse_mac'] as String,
       versionHardware: "",
       versionFirmware: "",
       motdepasseFTP: "",
       motdepasseAdmin: "",
       supportWIFI: 0,
-      ssid: "",
+      ssid: map['ssid'] as String,
       cleWEP: "",
       typeADSL: "",
       numdec: map['numdec'] as String,
-      marque: "",
+      marque: map['marque'] as String,
     );
   }
 

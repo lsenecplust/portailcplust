@@ -6,10 +6,16 @@ import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/actions/affecterrestituer.screen.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/actions/echange.screen.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/actions/recherche.equipement.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/actions/scanner.equipement.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/floatingactionbuttonvisible.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
+
+class RechercheParam {
+  static String? param;
+}
 
 class ActionEquipementScreen extends StatefulWidget {
   final Prestation prestation;
@@ -25,24 +31,49 @@ class ActionEquipementScreen extends StatefulWidget {
 }
 
 class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
-  GlobalKey<ScaffoldMenuState> rootContainerKey = GlobalKey();
+  GlobalKey<FABAnimatedState> floatingActionButtonKey = GlobalKey();
+  TabControllerWrapper wrapper = TabControllerWrapper();
+  String? param;
+  Equipement? equipement;
+
   @override
   Widget build(BuildContext context) {
-    return ScaffoldMenu(
-      
-      key: rootContainerKey,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FilledButton.icon(
+    RechercheParam.param = null;
+    return ScaffoldTabs(
+        tabcontroller: wrapper,
+        floatingActionButtonKey: floatingActionButtonKey,
+        appBar: AppBar(
+          title: Text(widget.migaction.tache),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FilledButton.icon(
             icon: const Icon(Icons.ads_click_sharp),
             onPressed: () => switch (widget.migaction.type!) {
-                  EnumMigAction.affectation => test(),
-                  EnumMigAction.restitution => test(),
-                  EnumMigAction.echange => test(),
+                  EnumMigAction.affectation => affecter(),
+                  EnumMigAction.restitution => restituer(),
+                  EnumMigAction.echange => echanger(),
                 },
-            label:
-                Text(widget.migaction.tache)),
-      title: widget.migaction.tache,
-      child: switch (widget.migaction.type!) {
+            label: Text(widget.migaction.tache)),
+        tabs: {
+          const HorizontalTab(label: "Scanner", icondata: Icons.qr_code):
+              ScannerEquipement(
+            prestation: widget.prestation,
+            onSelected: (param) {
+              wrapper.controller?.animateTo(1);
+              RechercheParam.param = param;
+            },
+          ),
+          const HorizontalTab(label: "Rechercher", icondata: Icons.search):
+              RechercheEquipement(
+            prestation: widget.prestation,
+            onSelected: onSelected,
+          ),
+          const HorizontalTab(
+              label: "Saisie manuelle",
+              icondata: Icons.draw_outlined): Container(),
+        }
+
+        /*switch (widget.migaction.type!) {
         (EnumMigAction.affectation) => AffecterRestituer(
             onSelected: onSelected,
             prestation: widget.prestation,
@@ -53,19 +84,21 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
             migaction: widget.migaction),
         (EnumMigAction.echange) =>
           Echange(prestation: widget.prestation, migaction: widget.migaction)
-      },
-    );
-  }
-
-  void test() {
-
+      },*/
+        );
   }
 
   onSelected(Equipement? e, String? param) {
-    rootContainerKey.currentState?.toggleFloatingActionButton();
+    equipement = e;
+    param = param;
+    if (e == null && param ==null) {
+      floatingActionButtonKey.currentState?.hide();
+    } else {
+      floatingActionButtonKey.currentState?.show();
+    }
   }
 
-  Future affecter(Equipement? e, String? param) {
+  Future affecter() {
     Random rnd;
     int min = 5;
     int max = 10;
@@ -77,7 +110,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
                 .then((value) => rnd.nextInt(max).isEven));
   }
 
-  Future restituer(Equipement? e, String? param) async {
+  Future restituer() async {
     Random rnd;
     int min = 5;
     int max = 10;
@@ -88,7 +121,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
                 .then((value) => rnd.nextInt(max).isEven));
   }
 
-  Future echanger(Equipement? e, String? param) async {
+  Future echanger() async {
     Random rnd;
     int min = 5;
     int max = 10;

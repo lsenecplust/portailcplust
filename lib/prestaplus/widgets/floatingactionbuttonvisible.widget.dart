@@ -17,21 +17,27 @@ class FABAnimatedState extends State<FABAnimated> {
   late bool visible = widget.visible;
 
   void show() {
-    setState(() {
-      visible = true;
-    });
+    try {
+      setState(() {
+        visible = true;
+      });
+    } catch (_) {}
   }
 
   void hide() {
-    setState(() {
-      visible = false;
-    });
+    try {
+      setState(() {
+        visible = false;
+      });
+    } catch (_) {}
   }
 
   void toggle() {
-    setState(() {
-      visible = !visible;
-    });
+    try {
+      setState(() {
+        visible = !visible;
+      });
+    } catch (_) {}
   }
 
   @override
@@ -41,6 +47,5 @@ class FABAnimatedState extends State<FABAnimated> {
         opacity: visible ? 1 : 0,
         duration: const Duration(milliseconds: 500),
         child: widget.floatingActionButton);
-
   }
 }

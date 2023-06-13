@@ -4,6 +4,7 @@ import 'package:portail_canalplustelecom_mobile/geoeligibilite/geoeligibilites.s
 import 'package:portail_canalplustelecom_mobile/prestaplus/calendrier/calendar.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/recherche/recherche.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/scan/scan.screen.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 
 enum Menu {
@@ -24,7 +25,7 @@ enum Menu {
       onTap: () => OAuthManager.of(context)
           ?.navigatePushReplacement(context, ScaffoldMenu(selectedmenu: this)));
   List<Tabs> get tabs => Tabs.values.where((e) => e.menu == this).toList();
-  Map<Widget, Widget> get tabsAsMap => {for (Tabs t in tabs) t.tab: t.view};
+  Map<HorizontalTab, Widget> get tabsAsMap => {for (Tabs t in tabs) t.tab: t.view};
 }
 
 enum Tabs {
@@ -46,15 +47,8 @@ enum Tabs {
   final Menu menu;
   final Widget view;
 
-  Tab get tab => Tab(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Icon(icondata),
-          ),
-          Text(label),
-        ],
-      ));
+  HorizontalTab get tab => HorizontalTab(
+        icondata: icondata,
+        label: label,
+      );
 }
