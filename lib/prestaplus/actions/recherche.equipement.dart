@@ -1,27 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
 
+import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
+import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/action.equipement.screen.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/actions/echange.equipement.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
 
-class RechercheEquipement extends StatefulWidget {
+class RechercheManuelle extends StatelessWidget {
+  final Prestation? prestation;
+  final MigAction migaction;
+  final String? param;
+  final Function(EchangeEquipment? newEq, EchangeEquipment? oldEq) onSubmit;
+  const RechercheManuelle({
+    Key? key,
+    this.prestation,
+    required this.migaction,
+    this.param,
+    required this.onSubmit,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (migaction.type == EnumMigAction.echange) {
+      return _RechercheEquipementEchange(
+        migaction: migaction,
+        onSubmit: onSubmit,
+      );
+    }
+    return _RechercheEquipementSimple(
+      migaction: migaction,
+      onSelected: (param) => onSubmit(param, null),
+    );
+  }
+}
+
+class _RechercheEquipementSimple extends StatefulWidget {
+  final MigAction migaction;
   final Prestation? prestation;
   final String? param;
   final Function(EchangeEquipment equipment)? onSelected;
-  const RechercheEquipement({
+  const _RechercheEquipementSimple({
     Key? key,
+    required this.migaction,
     this.prestation,
     this.param,
     this.onSelected,
   }) : super(key: key);
 
   @override
-  State<RechercheEquipement> createState() => _RechercheEquipementState();
+  State<_RechercheEquipementSimple> createState() =>
+      _RechercheEquipementSimpleState();
 }
 
-class _RechercheEquipementState extends State<RechercheEquipement> {
+class _RechercheEquipementSimpleState
+    extends State<_RechercheEquipementSimple> {
   late final searchcontroller =
       TextEditingController(text: widget.param ?? RechercheParam.param);
   late String? searchPattern = widget.param ?? RechercheParam.param;
@@ -92,6 +126,52 @@ class _RechercheEquipementState extends State<RechercheEquipement> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: buildItems(context),
+    );
+  }
+}
+
+class _RechercheEquipementEchange extends StatefulWidget {
+  final Function(EchangeEquipment? newEq, EchangeEquipment? oldEq) onSubmit;
+  final MigAction migaction;
+  const _RechercheEquipementEchange({
+    Key? key,
+    required this.onSubmit,
+    required this.migaction,
+  }) : super(key: key);
+
+  @override
+  State<_RechercheEquipementEchange> createState() =>
+      _RechercheEquipementEchangeState();
+}
+
+class _RechercheEquipementEchangeState
+    extends State<_RechercheEquipementEchange> {
+  EchangeEquipment? nouvelEquipement;
+  EchangeEquipment? ancienEquipement;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        EchangeEquipementRecap(
+          nouvelEquipement: nouvelEquipement,
+          ancienEquipement: ancienEquipement,
+        ),
+        Expanded(
+          child: _RechercheEquipementSimple(
+              onSelected: (equipement) {
+                var (pnouvelEquipement, pancienEquipement) =
+                    EchangeEquipementRecap.affectEquipement(
+                        equipement, nouvelEquipement, ancienEquipement);
+                setState(() {
+                  nouvelEquipement = pnouvelEquipement;
+                  ancienEquipement = pancienEquipement;
+                });
+
+                widget.onSubmit(nouvelEquipement, ancienEquipement);
+              },
+              migaction: widget.migaction),
+        )
+      ],
     );
   }
 }

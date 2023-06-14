@@ -4,8 +4,6 @@ import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
 
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 
-
-
 class EchangeEquipementRecap extends StatelessWidget {
   final EchangeEquipment? nouvelEquipement;
   final EchangeEquipment? ancienEquipement;
@@ -14,6 +12,21 @@ class EchangeEquipementRecap extends StatelessWidget {
     this.nouvelEquipement,
     this.ancienEquipement,
   }) : super(key: key);
+
+  static (EchangeEquipment?, EchangeEquipment?) affectEquipement(
+      equipement, nouvelEquipement, ancienEquipement) {
+    if (nouvelEquipement != null && ancienEquipement != null) {
+      nouvelEquipement = ancienEquipement = null;
+      nouvelEquipement = equipement;
+      return (nouvelEquipement, ancienEquipement);
+    }
+    if (nouvelEquipement != null) {
+      ancienEquipement = equipement;
+      return (nouvelEquipement, ancienEquipement);
+    }
+    nouvelEquipement = equipement;
+    return (nouvelEquipement, ancienEquipement);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +94,7 @@ class EquipementRecap extends StatelessWidget {
             ),
           ),
         ),
-        Positioned (
+        Positioned(
           right: 0,
           top: 0,
           child: AnimatedContainer(

@@ -142,6 +142,7 @@ class PrestationCard extends StatelessWidget {
   }
 
   goto(MigAction action, BuildContext context) {
+    Navigator.of(context).pop();
     OAuthManager.of(context)?.navigatePush(
         context,
         ActionEquipementScreen(prestation: prestation, migaction: action));

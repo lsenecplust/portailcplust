@@ -39,7 +39,7 @@ class ScannerEquipement extends StatelessWidget {
             
             onDetect: (value) async {
               debugPrint(
-                  "▌│█║▌║▌║scanned : ${value.barcodes.map((e) => e.rawValue).join()}");
+                  "📷▌│█║▌║▌║📷scanned : ${value.barcodes.map((e) => e.rawValue).join()}");
 
               var param = value.barcodes.first.rawValue;
               if (param != null) onSelected?.call(param);

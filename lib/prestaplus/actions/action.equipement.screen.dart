@@ -65,18 +65,15 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
             },
           ),
           const HorizontalTab(label: "Rechercher", icondata: Icons.search):
-              RechercheEquipement(
+              RechercheManuelle(
+            migaction: widget.migaction,
             prestation: widget.prestation,
-            onSelected: (equipment) {
-              onSelected(equipment, null);
-            },
+            onSubmit: onSelected,
           ),
           const HorizontalTab(
               label: "Saisie manuelle",
               icondata: Icons.draw_outlined): SaisieManuelle(
-            onSubmit: (newEq, oldEq) {
-              onSelected(newEq, oldEq);
-            },
+            onSubmit: onSelected,
             migaction: widget.migaction,
           ),
         });
