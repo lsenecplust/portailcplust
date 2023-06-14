@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
-import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
+import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 
 class EchangeEquipementRecap extends StatelessWidget {
-  final EchangeEquipment? nouvelEquipement;
-  final EchangeEquipment? ancienEquipement;
+  final EquipementQuery? nouvelEquipement;
+  final EquipementQuery? ancienEquipement;
   const EchangeEquipementRecap({
     Key? key,
     this.nouvelEquipement,
     this.ancienEquipement,
   }) : super(key: key);
 
-  static (EchangeEquipment?, EchangeEquipment?) affectEquipement(
-      equipement, nouvelEquipement, ancienEquipement) {
+  static (EquipementQuery?, EquipementQuery?) affectEquipement(
+      EquipementQuery? equipement,
+      EquipementQuery? nouvelEquipement,
+      EquipementQuery? ancienEquipement) {
     if (nouvelEquipement != null && ancienEquipement != null) {
       nouvelEquipement = ancienEquipement = null;
       nouvelEquipement = equipement;

@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
+import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/echange.equipement.dart';
 
 class SaisieManuelle extends StatelessWidget {
-  final Function(EchangeEquipment? newEq, EchangeEquipment? oldEq) onSubmit;
+  final Function(EquipementQuery? newEq, EquipementQuery? oldEq) onSubmit;
   final MigAction migaction;
   const SaisieManuelle({
     Key? key,
@@ -30,7 +30,7 @@ class SaisieManuelle extends StatelessWidget {
 }
 
 class _SaisieManuelleSimple extends StatefulWidget {
-  final Function(EchangeEquipment newEq) onSubmit;
+  final Function(EquipementQuery newEq) onSubmit;
   final MigAction migaction;
   const _SaisieManuelleSimple({
     Key? key,
@@ -65,7 +65,7 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
             focusNode: focus,
             autofocus: false,
             onFieldSubmitted: (value) {
-              widget.onSubmit(EchangeEquipment(numdec: value));
+              widget.onSubmit(EquipementQuery(numdec: value));
               setState(() {
                 submited = true;
               });
@@ -94,7 +94,7 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
 }
 
 class _SaisieManuelleEchange extends StatefulWidget {
-  final Function(EchangeEquipment? newEq, EchangeEquipment? oldEq) onSubmit;
+  final Function(EquipementQuery? newEq, EquipementQuery? oldEq) onSubmit;
   final MigAction migaction;
   const _SaisieManuelleEchange({
     Key? key,
@@ -107,8 +107,8 @@ class _SaisieManuelleEchange extends StatefulWidget {
 }
 
 class _SaisieManuelleEchangeState extends State<_SaisieManuelleEchange> {
-  EchangeEquipment? nouvelEquipement;
-  EchangeEquipment? ancienEquipement;
+  EquipementQuery? nouvelEquipement;
+  EquipementQuery? ancienEquipement;
   @override
   Widget build(BuildContext context) {
     return Column(

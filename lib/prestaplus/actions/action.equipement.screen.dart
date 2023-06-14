@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/auth.dart';
-import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
+import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/recherche.equipement.dart';
@@ -14,17 +14,14 @@ import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindica
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 
-class RechercheParam {
-  static String? param;
-}
 
 class ActionEquipementScreen extends StatefulWidget {
   final Prestation prestation;
-  final MigAction migaction;
+  final MigAction migAction;
   const ActionEquipementScreen({
     Key? key,
     required this.prestation,
-    required this.migaction,
+    required this.migAction,
   }) : super(key: key);
 
   @override
@@ -33,40 +30,35 @@ class ActionEquipementScreen extends StatefulWidget {
 
 class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
   GlobalKey<FABAnimatedState> floatingActionButtonKey = GlobalKey();
-  TabControllerWrapper wrapper = TabControllerWrapper();
-  EchangeEquipment? newEchangeEquipment;
-  EchangeEquipment? oldEchangeEquipment;
+  EquipementQuery? newEchangeEquipment;
+  EquipementQuery? oldEchangeEquipment;
 
   @override
   Widget build(BuildContext context) {
-    RechercheParam.param = null;
     return ScaffoldTabs(
-        tabcontroller: wrapper,
         floatingActionButtonKey: floatingActionButtonKey,
         appBar: AppBar(
-          title: Text(widget.migaction.tache),
+          title: Text(widget.migAction.tache),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FilledButton.icon(
             icon: const Icon(Icons.ads_click_sharp),
-            onPressed: () => switch (widget.migaction.type!) {
+            onPressed: () => switch (widget.migAction.type!) {
                   EnumMigAction.affectation => affecter(),
                   EnumMigAction.restitution => restituer(),
                   EnumMigAction.echange => echanger(),
                 },
-            label: Text(widget.migaction.tache)),
+            label: Text(widget.migAction.tache)),
         tabs: {
           const HorizontalTab(label: "Scanner", icondata: Icons.qr_code):
               ScannerEquipement(
             prestation: widget.prestation,
-            onSelected: (param) {
-              wrapper.controller?.animateTo(1);
-              RechercheParam.param = param;
-            },
+            onSubmit: onSelected,
+            migAction: widget.migAction,
           ),
           const HorizontalTab(label: "Rechercher", icondata: Icons.search):
               RechercheManuelle(
-            migaction: widget.migaction,
+            migaction: widget.migAction,
             prestation: widget.prestation,
             onSubmit: onSelected,
           ),
@@ -74,19 +66,19 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
               label: "Saisie manuelle",
               icondata: Icons.draw_outlined): SaisieManuelle(
             onSubmit: onSelected,
-            migaction: widget.migaction,
+            migaction: widget.migAction,
           ),
         });
   }
 
   bool get showButtonAction {
-    if (widget.migaction.type == EnumMigAction.echange) {
+    if (widget.migAction.type == EnumMigAction.echange) {
       return newEchangeEquipment != null && oldEchangeEquipment != null;
     }
     return newEchangeEquipment != null;
   }
 
-  onSelected(EchangeEquipment? newEq, EchangeEquipment? oldEq) {
+  onSelected(EquipementQuery? newEq, EquipementQuery? oldEq) {
     newEchangeEquipment = newEq;
     oldEchangeEquipment = oldEq;
 
@@ -154,7 +146,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
         dialogType: actionok ? DialogType.success : DialogType.error,
         showCloseIcon: true,
         title: actionok ? 'Succes' : 'Error',
-        desc: '${widget.migaction.tache} Terminéee',
+        desc: '${widget.migAction.tache} Terminéee',
         btnOkIcon: Icons.check_circle,
         onDismissCallback: (type) {
           if (actionok) {

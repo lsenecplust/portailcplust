@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
+import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/actions/action.equipement.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/echange.equipement.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
@@ -12,7 +11,7 @@ class RechercheManuelle extends StatelessWidget {
   final Prestation? prestation;
   final MigAction migaction;
   final String? param;
-  final Function(EchangeEquipment? newEq, EchangeEquipment? oldEq) onSubmit;
+  final Function(EquipementQuery? newEq, EquipementQuery? oldEq) onSubmit;
   const RechercheManuelle({
     Key? key,
     this.prestation,
@@ -29,36 +28,29 @@ class RechercheManuelle extends StatelessWidget {
         onSubmit: onSubmit,
       );
     }
-    return _RechercheEquipementSimple(
-      migaction: migaction,
+    return RechercheEquipementSimple(
       onSelected: (param) => onSubmit(param, null),
     );
   }
 }
 
-class _RechercheEquipementSimple extends StatefulWidget {
-  final MigAction migaction;
+class RechercheEquipementSimple extends StatefulWidget {
   final Prestation? prestation;
-  final String? param;
-  final Function(EchangeEquipment equipment)? onSelected;
-  const _RechercheEquipementSimple({
+  final Function(EquipementQuery equipment)? onSelected;
+  const RechercheEquipementSimple({
     Key? key,
-    required this.migaction,
     this.prestation,
-    this.param,
     this.onSelected,
   }) : super(key: key);
 
   @override
-  State<_RechercheEquipementSimple> createState() =>
+  State<RechercheEquipementSimple> createState() =>
       _RechercheEquipementSimpleState();
 }
 
-class _RechercheEquipementSimpleState
-    extends State<_RechercheEquipementSimple> {
-  late final searchcontroller =
-      TextEditingController(text: widget.param ?? RechercheParam.param);
-  late String? searchPattern = widget.param ?? RechercheParam.param;
+class _RechercheEquipementSimpleState extends State<RechercheEquipementSimple> {
+  final searchcontroller = TextEditingController();
+  String? searchPattern;
 
   List<Widget> buildItems(BuildContext context) {
     List<Widget> listItem = List.empty(growable: true);
@@ -131,7 +123,7 @@ class _RechercheEquipementSimpleState
 }
 
 class _RechercheEquipementEchange extends StatefulWidget {
-  final Function(EchangeEquipment? newEq, EchangeEquipment? oldEq) onSubmit;
+  final Function(EquipementQuery? newEq, EquipementQuery? oldEq) onSubmit;
   final MigAction migaction;
   const _RechercheEquipementEchange({
     Key? key,
@@ -146,8 +138,8 @@ class _RechercheEquipementEchange extends StatefulWidget {
 
 class _RechercheEquipementEchangeState
     extends State<_RechercheEquipementEchange> {
-  EchangeEquipment? nouvelEquipement;
-  EchangeEquipment? ancienEquipement;
+  EquipementQuery? nouvelEquipement;
+  EquipementQuery? ancienEquipement;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -157,18 +149,16 @@ class _RechercheEquipementEchangeState
           ancienEquipement: ancienEquipement,
         ),
         Expanded(
-          child: _RechercheEquipementSimple(
-              onSelected: (equipement) {
-                var (pnouvelEquipement, pancienEquipement) =
-                    EchangeEquipementRecap.affectEquipement(
-                        equipement, nouvelEquipement, ancienEquipement);
-                setState(() {
-                  nouvelEquipement = pnouvelEquipement;
-                  ancienEquipement = pancienEquipement;
-                });
-                widget.onSubmit(nouvelEquipement, ancienEquipement);
-              },
-              migaction: widget.migaction),
+          child: RechercheEquipementSimple(onSelected: (equipement) {
+            var (pnouvelEquipement, pancienEquipement) =
+                EchangeEquipementRecap.affectEquipement(
+                    equipement, nouvelEquipement, ancienEquipement);
+            setState(() {
+              nouvelEquipement = pnouvelEquipement;
+              ancienEquipement = pancienEquipement;
+            });
+            widget.onSubmit(nouvelEquipement, ancienEquipement);
+          }),
         )
       ],
     );

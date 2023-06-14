@@ -64,16 +64,16 @@ class OAuthManager extends InheritedWidget {
 
   Future<dynamic> get(BuildContext context, String url,
       {Map<String, String>? params}) {
-    var parsedurl = Uri.parse(url).replace(queryParameters: params);
-    debugPrint("[🌎Url]=$parsedurl");
-    return _sendQuery(context, () => client!.get(parsedurl));
+    var parsedUrl = Uri.parse(url).replace(queryParameters: params);
+    debugPrint("[🌎Url]=$parsedUrl");
+    return _sendQuery(context, () => client!.get(parsedUrl));
   }
 
   Future<dynamic> post(BuildContext context, String url, Object body,
       {Map<String, String>? params}) {
-    var parsedurl = Uri.parse(url).replace(queryParameters: params);
-    debugPrint("[🌎Url]=$parsedurl");
-    return _sendQuery(context, () => client!.post(parsedurl, body: body));
+    var parsedUrl = Uri.parse(url).replace(queryParameters: params);
+    debugPrint("[🌎Url]=$parsedUrl");
+    return _sendQuery(context, () => client!.post(parsedUrl, body: body));
   }
 
   Future<dynamic> _sendQuery(

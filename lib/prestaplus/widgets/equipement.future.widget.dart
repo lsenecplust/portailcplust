@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
+import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
@@ -8,7 +8,7 @@ import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
 class EquipementFuture extends StatelessWidget {
   final String? param;
-  final Function(EchangeEquipment equipment)? onSelectedequipment;
+  final Function(EquipementQuery equipment)? onSelectedequipment;
   const EquipementFuture(
       {super.key, required this.param, this.onSelectedequipment});
 
@@ -47,7 +47,7 @@ class EquipementFuture extends StatelessWidget {
                   equipmentSelected = null;
                   Future.delayed(const Duration(milliseconds: 500)).then((_) =>
                       onSelectedequipment
-                          ?.call(EchangeEquipment(numdec: param!)));
+                          ?.call(EquipementQuery(numdec: param!)));
                   return Center(
                     child: SizedBox(
                       height: 150,
@@ -71,7 +71,7 @@ class EquipementFuture extends StatelessWidget {
                 if (equipements.length == 1) {
                   equipmentSelected = equipements.first;
                   Future.delayed(const Duration(milliseconds: 500)).then((_) =>
-                      onSelectedequipment?.call(EchangeEquipment(
+                      onSelectedequipment?.call(EquipementQuery(
                           equipement: equipmentSelected, numdec: param!)));
                 }
 
@@ -79,7 +79,7 @@ class EquipementFuture extends StatelessWidget {
                   equipements: equipements,
                   onSelected: (value) {
                     equipmentSelected = value;
-                    onSelectedequipment?.call(EchangeEquipment(
+                    onSelectedequipment?.call(EquipementQuery(
                         equipement: equipmentSelected, numdec: param!));
                   },
                 );
