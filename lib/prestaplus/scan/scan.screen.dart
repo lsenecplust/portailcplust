@@ -28,7 +28,7 @@ class _PrestaplusScanScreenState extends State<PrestaplusScanScreen> {
           ),*/
                 //TODO : replace by new tabs separate swidgets
           EquipementFuture(
-            onSelectedequipment: (e,value) {
+            onSelectedequipment: (_) {
               setState(() {
                 //TODO : import client contrat search
                 clientfound =

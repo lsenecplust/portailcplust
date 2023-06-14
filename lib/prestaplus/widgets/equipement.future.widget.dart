@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
 import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
@@ -7,7 +8,7 @@ import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
 class EquipementFuture extends StatelessWidget {
   final String? param;
-  final Function(Equipement? equipement, String? param)? onSelectedequipment;
+  final Function(EchangeEquipment equipment)? onSelectedequipment;
   const EquipementFuture(
       {super.key, required this.param, this.onSelectedequipment});
 
@@ -44,8 +45,9 @@ class EquipementFuture extends StatelessWidget {
                 var equipements = snapshot.data!;
                 if (equipements.isEmpty) {
                   equipmentSelected = null;
-                  Future.delayed(const Duration(milliseconds: 500))
-                      .then((_) => onSelectedequipment?.call(null, param));
+                  Future.delayed(const Duration(milliseconds: 500)).then((_) =>
+                      onSelectedequipment
+                          ?.call(EchangeEquipment(numdec: param!)));
                   return Center(
                     child: SizedBox(
                       height: 150,
@@ -69,14 +71,16 @@ class EquipementFuture extends StatelessWidget {
                 if (equipements.length == 1) {
                   equipmentSelected = equipements.first;
                   Future.delayed(const Duration(milliseconds: 500)).then((_) =>
-                      onSelectedequipment?.call(equipmentSelected, param));
+                      onSelectedequipment?.call(EchangeEquipment(
+                          equipement: equipmentSelected, numdec: param!)));
                 }
 
                 return EquipementList(
                   equipements: equipements,
                   onSelected: (value) {
                     equipmentSelected = value;
-                    onSelectedequipment?.call(equipmentSelected, param);
+                    onSelectedequipment?.call(EchangeEquipment(
+                        equipement: equipmentSelected, numdec: param!));
                   },
                 );
               },

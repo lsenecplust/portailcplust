@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/auth.dart';
+import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
-import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/recherche.equipement.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/saisiemanuelle.equipement.screen.dart';
@@ -34,8 +34,8 @@ class ActionEquipementScreen extends StatefulWidget {
 class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
   GlobalKey<FABAnimatedState> floatingActionButtonKey = GlobalKey();
   TabControllerWrapper wrapper = TabControllerWrapper();
-  String? param;
-  Equipement? equipement;
+  EchangeEquipment? newEchangeEquipment;
+  EchangeEquipment? oldEchangeEquipment;
 
   @override
   Widget build(BuildContext context) {
@@ -67,25 +67,36 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
           const HorizontalTab(label: "Rechercher", icondata: Icons.search):
               RechercheEquipement(
             prestation: widget.prestation,
-            onSelected: onSelected,
+            onSelected: (equipment) {
+              onSelected(equipment, null);
+            },
           ),
           const HorizontalTab(
               label: "Saisie manuelle",
               icondata: Icons.draw_outlined): SaisieManuelle(
-                onSubmit: (param) {
-                onSelected(null, param);
-              }, migaction: widget.migaction,),
-        }
-        );
+            onSubmit: (newEq, oldEq) {
+              onSelected(newEq, oldEq);
+            },
+            migaction: widget.migaction,
+          ),
+        });
   }
 
-  onSelected(Equipement? e, String? param) {
-    equipement = e;
-    param = param;
-    if (e == null && param ==null) {
-      floatingActionButtonKey.currentState?.hide();
-    } else {
+  bool get showButtonAction {
+    if (widget.migaction.type == EnumMigAction.echange) {
+      return newEchangeEquipment != null && oldEchangeEquipment != null;
+    }
+    return newEchangeEquipment != null;
+  }
+
+  onSelected(EchangeEquipment? newEq, EchangeEquipment? oldEq) {
+    newEchangeEquipment = newEq;
+    oldEchangeEquipment = oldEq;
+
+    if (showButtonAction) {
       floatingActionButtonKey.currentState?.show();
+    } else {
+      floatingActionButtonKey.currentState?.hide();
     }
   }
 

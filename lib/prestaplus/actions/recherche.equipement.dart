@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:portail_canalplustelecom_mobile/class/echangeequipement.dart';
 
-import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/action.equipement.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
@@ -9,7 +9,7 @@ import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcar
 class RechercheEquipement extends StatefulWidget {
   final Prestation? prestation;
   final String? param;
-  final Function(Equipement? equipement, String? param)? onSelected;
+  final Function(EchangeEquipment equipment)? onSelected;
   const RechercheEquipement({
     Key? key,
     this.prestation,

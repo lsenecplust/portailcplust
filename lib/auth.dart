@@ -63,25 +63,27 @@ class OAuthManager extends InheritedWidget {
       oldWidget.onHttpInit != onHttpInit;
 
   Future<dynamic> get(BuildContext context, String url,
-          {Map<String, String>? params}) =>
-      _sendQuery(context,
-          () => client!.get(Uri.parse(url).replace(queryParameters: params)));
+      {Map<String, String>? params}) {
+    var parsedurl = Uri.parse(url).replace(queryParameters: params);
+    debugPrint("[🌎Url]=$parsedurl");
+    return _sendQuery(context, () => client!.get(parsedurl));
+  }
 
   Future<dynamic> post(BuildContext context, String url, Object body,
-          {Map<String, String>? params}) =>
-      _sendQuery(
-          context,
-          () => client!.post(Uri.parse(url).replace(queryParameters: params),
-              body: body));
+      {Map<String, String>? params}) {
+    var parsedurl = Uri.parse(url).replace(queryParameters: params);
+    debugPrint("[🌎Url]=$parsedurl");
+    return _sendQuery(context, () => client!.post(parsedurl, body: body));
+  }
 
   Future<dynamic> _sendQuery(
       BuildContext context, Future<http.Response> Function() method) async {
     assert(client != null, "authenticateHttp.client cannot be null");
 
-    debugPrint(client?.credentials.accessToken);
-    debugPrint("[expiration]=${client?.credentials.expiration}");
-    debugPrint("[canRefresh]=${client?.credentials.canRefresh}");
-    debugPrint("[isExpired]=${client?.credentials.isExpired}");
+    debugPrint("🔑 Token :${client?.credentials.accessToken}");
+    debugPrint("[⏱️expiration]=${client?.credentials.expiration}");
+    debugPrint("[⏱️canRefresh]=${client?.credentials.canRefresh}");
+    debugPrint("[⏱️isExpired]=${client?.credentials.isExpired}");
 
     if (isLogged == false) {
       OAuthManager.of(context)?.onHttpInit(null); //Redirige vers la page login
@@ -122,7 +124,7 @@ class OAuthManager extends InheritedWidget {
                 child: child)));
   }
 
-    navigatePushReplacement(BuildContext context, Widget child) {
+  navigatePushReplacement(BuildContext context, Widget child) {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(

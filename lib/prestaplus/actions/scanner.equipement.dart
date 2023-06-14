@@ -36,6 +36,7 @@ class ScannerEquipement extends StatelessWidget {
           width: constraints.maxWidth,
           height: constraints.maxWidth,
           child: BarCodeScanner(
+            
             onDetect: (value) async {
               debugPrint(
                   "▌│█║▌║▌║scanned : ${value.barcodes.map((e) => e.rawValue).join()}");
