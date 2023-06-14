@@ -166,7 +166,6 @@ class _RechercheEquipementEchangeState
                   nouvelEquipement = pnouvelEquipement;
                   ancienEquipement = pancienEquipement;
                 });
-
                 widget.onSubmit(nouvelEquipement, ancienEquipement);
               },
               migaction: widget.migaction),

@@ -118,21 +118,16 @@ class _SaisieManuelleEchangeState extends State<_SaisieManuelleEchange> {
           ancienEquipement: ancienEquipement,
         ),
         _SaisieManuelleSimple(
-            onSubmit: (equipement) {
-              setState(() {
-                if (nouvelEquipement != null && ancienEquipement != null) {
-                  nouvelEquipement = ancienEquipement = null;
-                  nouvelEquipement = equipement;
-                  return;
-                }
-                if (nouvelEquipement != null) {
-                  ancienEquipement = equipement;
-                  return;
-                }
-                nouvelEquipement = equipement;
-              });
-              widget.onSubmit(nouvelEquipement, ancienEquipement);
-            },
+              onSubmit: (equipement) {
+                var (pnouvelEquipement, pancienEquipement) =
+                    EchangeEquipementRecap.affectEquipement(
+                        equipement, nouvelEquipement, ancienEquipement);
+                setState(() {
+                  nouvelEquipement = pnouvelEquipement;
+                  ancienEquipement = pancienEquipement;
+                });
+                widget.onSubmit(nouvelEquipement, ancienEquipement);
+              },
             migaction: widget.migaction)
       ],
     );
