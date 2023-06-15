@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/auth.dart';
+import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
-import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/recherche.equipement.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/saisiemanuelle.equipement.screen.dart';
@@ -14,17 +14,14 @@ import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindica
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 
-class RechercheParam {
-  static String? param;
-}
 
 class ActionEquipementScreen extends StatefulWidget {
   final Prestation prestation;
-  final MigAction migaction;
+  final MigAction migAction;
   const ActionEquipementScreen({
     Key? key,
     required this.prestation,
-    required this.migaction,
+    required this.migAction,
   }) : super(key: key);
 
   @override
@@ -33,59 +30,62 @@ class ActionEquipementScreen extends StatefulWidget {
 
 class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
   GlobalKey<FABAnimatedState> floatingActionButtonKey = GlobalKey();
-  TabControllerWrapper wrapper = TabControllerWrapper();
-  String? param;
-  Equipement? equipement;
+  EquipementQuery? newEchangeEquipment;
+  EquipementQuery? oldEchangeEquipment;
 
   @override
   Widget build(BuildContext context) {
-    RechercheParam.param = null;
     return ScaffoldTabs(
-        tabcontroller: wrapper,
         floatingActionButtonKey: floatingActionButtonKey,
         appBar: AppBar(
-          title: Text(widget.migaction.tache),
+          title: Text(widget.migAction.tache),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FilledButton.icon(
             icon: const Icon(Icons.ads_click_sharp),
-            onPressed: () => switch (widget.migaction.type!) {
+            onPressed: () => switch (widget.migAction.type!) {
                   EnumMigAction.affectation => affecter(),
                   EnumMigAction.restitution => restituer(),
                   EnumMigAction.echange => echanger(),
                 },
-            label: Text(widget.migaction.tache)),
+            label: Text(widget.migAction.tache)),
         tabs: {
           const HorizontalTab(label: "Scanner", icondata: Icons.qr_code):
               ScannerEquipement(
             prestation: widget.prestation,
-            onSelected: (param) {
-              wrapper.controller?.animateTo(1);
-              RechercheParam.param = param;
-            },
+            onSubmit: onSelected,
+            migAction: widget.migAction,
           ),
           const HorizontalTab(label: "Rechercher", icondata: Icons.search):
-              RechercheEquipement(
+              RechercheManuelle(
+            migaction: widget.migAction,
             prestation: widget.prestation,
-            onSelected: onSelected,
+            onSubmit: onSelected,
           ),
           const HorizontalTab(
               label: "Saisie manuelle",
               icondata: Icons.draw_outlined): SaisieManuelle(
-                onSubmit: (param) {
-                onSelected(null, param);
-              }, migaction: widget.migaction,),
-        }
-        );
+            onSubmit: onSelected,
+            migaction: widget.migAction,
+          ),
+        });
   }
 
-  onSelected(Equipement? e, String? param) {
-    equipement = e;
-    param = param;
-    if (e == null && param ==null) {
-      floatingActionButtonKey.currentState?.hide();
-    } else {
+  bool get showButtonAction {
+    if (widget.migAction.type == EnumMigAction.echange) {
+      return newEchangeEquipment != null && oldEchangeEquipment != null;
+    }
+    return newEchangeEquipment != null;
+  }
+
+  onSelected(EquipementQuery? newEq, EquipementQuery? oldEq) {
+    newEchangeEquipment = newEq;
+    oldEchangeEquipment = oldEq;
+
+    if (showButtonAction) {
       floatingActionButtonKey.currentState?.show();
+    } else {
+      floatingActionButtonKey.currentState?.hide();
     }
   }
 
@@ -146,7 +146,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
         dialogType: actionok ? DialogType.success : DialogType.error,
         showCloseIcon: true,
         title: actionok ? 'Succes' : 'Error',
-        desc: '${widget.migaction.tache} Terminéee',
+        desc: '${widget.migAction.tache} Terminéee',
         btnOkIcon: Icons.check_circle,
         onDismissCallback: (type) {
           if (actionok) {
