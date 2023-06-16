@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -142,10 +141,7 @@ class Prestation extends Equatable {
   Future<List<MigAction>> getActions(BuildContext context) async {
     List<MigAction> actions = await getAllActions(context);
 
-    return ({for (var e in actions) e.type: e})
-        .values
-        .where((element) => element.isExecutable)
-        .toList()
+    return actions.where((element) => element.isExecutable).toList()
       ..sort((a, b) => a.tache.compareTo(b.tache));
   }
 

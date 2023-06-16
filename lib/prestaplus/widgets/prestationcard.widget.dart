@@ -1,8 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
-import 'package:portail_canalplustelecom_mobile/auth.dart';
 
+import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
@@ -27,54 +27,9 @@ class PrestationCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
           ),
           builder: (BuildContext subcontext) {
-            return SizedBox(
-              width: double.infinity,
-              height: 250,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      prestation.numPrestation,
-                      style: Theme.of(subcontext).textTheme.headlineMedium,
-                    ),
-                  ),
-                  Expanded(
-                    child: CustomFutureBuilder(
-                        future: prestation.getActions(context),
-                        progressIndicator: Column(children: [
-                          const PortailIndicator(),
-                          Text(
-                            "Recherche des actions possibles...",
-                            style: Theme.of(subcontext).textTheme.bodySmall,
-                          ),
-                        ]),
-                        builder: (subcontext, snapshot) {
-                          var actions = snapshot.data!;
-                          if (actions.isEmpty) {
-                            return const Column(
-                              children: [
-                                Icon(Icons.cancel, size: 50),
-                                Text("Aucune action possible")
-                              ],
-                            );
-                          }
-
-                          return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: List.from(actions.map(
-                                (e) => FilledButton.icon(
-                                    onPressed: () => goto(e, context),
-                                    icon: Icon(e.type!.icon),
-                                    label: SizedBox(
-                                        width: 200,
-                                        child: Center(child: Text(e.tache)))),
-                              )));
-                        }),
-                  ),
-                ],
-              ),
+            return ActionModalSheet(
+              prestation: prestation,
+              oauthContext: context,
             );
           },
         );
@@ -140,11 +95,160 @@ class PrestationCard extends StatelessWidget {
       ),
     );
   }
+}
 
+class ActionModalSheet extends StatefulWidget {
+  final Prestation prestation;
+  final BuildContext? oauthContext;
+  final double tileHeight;
+  const ActionModalSheet({
+    Key? key,
+    required this.prestation,
+    this.oauthContext,
+    this.tileHeight = 100,
+  }) : super(key: key);
+
+  @override
+  State<ActionModalSheet> createState() => _ActionModalSheetState();
+}
+
+class _ActionModalSheetState extends State<ActionModalSheet> {
+  late double height = widget.tileHeight + 70;
+  late Future<List<MigAction>> future =
+      getActions(widget.oauthContext ?? context);
   goto(MigAction action, BuildContext context) {
     Navigator.of(context).pop();
     OAuthManager.of(context)?.navigatePush(
         context,
-        ActionEquipementScreen(prestation: prestation, migAction: action));
+        ActionEquipementScreen(
+            prestation: widget.prestation, migAction: action));
+  }
+
+  Future<List<MigAction>> getActions(context) async {
+    var resp =
+        await widget.prestation.getActions(widget.oauthContext ?? context);
+
+    setState(() {
+      if (resp.length <= 2) {
+        height = widget.tileHeight + 70;
+      } else {
+        height = widget.tileHeight * (resp.length / 2).round() + 70;
+      }
+    });
+    return resp;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      width: double.infinity,
+      height: height,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.prestation.numPrestation,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ),
+          Expanded(
+            child: CustomFutureBuilder(
+                future: future,
+                progressIndicator: Column(children: [
+                  const PortailIndicator(),
+                  Text(
+                    "Recherche des actions possibles...",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ]),
+                builder: (subcontext, snapshot) {
+                  var actions = snapshot.data!;
+                  if (actions.isEmpty) {
+                    return const Column(
+                      children: [
+                        Icon(Icons.cancel, size: 50),
+                        Text("Aucune action possible")
+                      ],
+                    );
+                  }
+                  var splitter =
+                      MediaQuery.of(context).size.width ~/ widget.tileHeight;
+                  if (splitter.isOdd) ++splitter;
+                  crossAxisCellCount(index) {
+                    if (actions.length.isEven) return splitter ~/ 2;
+                    return actions.length - 1 == index
+                        ? splitter
+                        : splitter ~/ 2;
+                  }
+
+                  return StaggeredGrid.count(
+                    axisDirection: AxisDirection.down,
+                    crossAxisCount: splitter,
+                    children: List.generate(
+                      actions.length,
+                      (index) => StaggeredGridTile.count(
+                        crossAxisCellCount: crossAxisCellCount(index),
+                        mainAxisCellCount: 1,
+                        child: InkWell(
+                            onTap: () => goto(
+                                actions[index], widget.oauthContext ?? context),
+                            child: Card(
+                                color: lightColorScheme.primaryContainer,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ActionIcon(
+                                      migaction: actions[index],
+                                    ),
+                                    Text(actions[index].tache),
+                                  ],
+                                ))),
+                      ),
+                    ),
+                  );
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ActionIcon extends StatelessWidget {
+  final MigAction migaction;
+  const ActionIcon({super.key, required this.migaction});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      // mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(
+          width: 195,
+        ),
+        Positioned(
+          left: 45,
+          top: 0,
+          child: Icon(
+            migaction.type!.icon,
+            size: 30,
+            color: switch (migaction.type) {
+              EnumMigAction.affectation => CustomColors.green,
+              EnumMigAction.restitution => CustomColors.red,
+              EnumMigAction.echange => CustomColors.yellow,
+              null => Colors.transparent
+            },
+          ),
+        ),
+        Icon(
+          migaction.typeEquipement == "CPE" ? Icons.router : Icons.tv_outlined,
+          size: 45,
+          color: Colors.black.withOpacity(0.3),
+        ),
+      ],
+    );
   }
 }
