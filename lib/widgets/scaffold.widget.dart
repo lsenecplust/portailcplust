@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +7,6 @@ import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/menu.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/floatingactionbuttonvisible.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
-
 
 class SimpleScaffold extends StatefulWidget {
   final Widget? body;
@@ -246,3 +246,4 @@ class _CplusDrawer extends StatelessWidget {
     ]));
   }
 }
+

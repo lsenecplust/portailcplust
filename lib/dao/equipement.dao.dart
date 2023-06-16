@@ -242,4 +242,7 @@ class Equipement {
         .get(context,"${ApplicationConfiguration.instance!.webapipfs}/equipement/$param");
     return List.from(data.map((e) => Equipement.fromMap(e)));
   }
+
+  
+
 }

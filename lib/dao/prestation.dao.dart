@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -145,8 +146,50 @@ class Prestation extends Equatable {
         .values
         .where((element) => element.isExecutable)
         .toList()
-        ..sort((a, b) => a.tache.compareTo(b.tache))
-        ;
+      ..sort((a, b) => a.tache.compareTo(b.tache));
+  }
 
+  Future<bool> affecterEquipement(
+    BuildContext context, {
+    required String typeEquipement,
+    required String nouveauNumDec,
+  }) async {
+    var data = await OAuthManager.of(context)!.post(context,
+        "${ApplicationConfiguration.instance!.webapipfs}/action/affecter-equipement/$offre/$numPrestation",
+        body: {
+          'typeEquipement': typeEquipement,
+          'nouveauNumDec': nouveauNumDec
+        });
+    return data;
+  }
+
+  Future<bool> restituerEquipement(
+    BuildContext context, {
+    required String typeEquipement,
+    required String nouveauNumDec,
+  }) async {
+    var data = await OAuthManager.of(context)!.post(context,
+        "${ApplicationConfiguration.instance!.webapipfs}/action/restituer-equipement/$offre/$numPrestation",
+        body: {
+          'typeEquipement': typeEquipement,
+          'nouveauNumDec': nouveauNumDec
+        });
+    return data;
+  }
+
+  Future<bool> echangerEquipement(
+    BuildContext context, {
+    required String typeEquipement,
+    required String nouveauNumDec,
+    String? ancienNumDec,
+  }) async {
+    var data = await OAuthManager.of(context)!.post(context,
+        "${ApplicationConfiguration.instance!.webapipfs}/action/echanger-equipement/$offre/$numPrestation",
+        body: {
+          'typeEquipement': typeEquipement,
+          'ancienNumDec': ancienNumDec,
+          'nouveauNumDec': nouveauNumDec
+        });
+    return data;
   }
 }

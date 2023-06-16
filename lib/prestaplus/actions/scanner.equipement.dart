@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
@@ -22,10 +23,12 @@ class ScannerEquipement extends StatelessWidget {
   Widget build(BuildContext context) {
     if (migAction.type == EnumMigAction.echange) {
       return ScannerEquipementEchange(
+        migaction: migAction,
         onSubmit: onSubmit,
       );
     }
     return ScannerEquipementSimple(
+      migaction: migAction,
       onSelected: (param) => onSubmit(param, null),
     );
   }
@@ -33,11 +36,13 @@ class ScannerEquipement extends StatelessWidget {
 
 class ScannerEquipementSimple extends StatelessWidget {
   final Prestation? prestation;
+  final MigAction migaction;
   final Function(EquipementQuery equipment)? onSelected;
 
   const ScannerEquipementSimple({
     Key? key,
     this.prestation,
+    required this.migaction,
     this.onSelected,
   }) : super(key: key);
 
@@ -57,7 +62,9 @@ class ScannerEquipementSimple extends StatelessWidget {
     }
 
     listItem.add(Expanded(
-      child: BarCodeScanner(onSelected: (eq) => onSelected?.call(eq)),
+      child: BarCodeScanner(
+        migaction: migaction,
+        onSelected: (eq) => onSelected?.call(eq)),
     ));
 
     return listItem;
@@ -74,10 +81,12 @@ class ScannerEquipementSimple extends StatelessWidget {
 
 class ScannerEquipementEchange extends StatefulWidget {
   final Prestation? prestation;
+  final MigAction migaction;
   final Function(EquipementQuery? newEq, EquipementQuery? oldEq) onSubmit;
   const ScannerEquipementEchange({
     Key? key,
     this.prestation,
+    required this.migaction,
     required this.onSubmit,
   }) : super(key: key);
 
@@ -99,7 +108,9 @@ class _ScannerEquipementEchangeState extends State<ScannerEquipementEchange> {
           ancienEquipement: ancienEquipement,
         ),
         Expanded(
-          child: ScannerEquipementSimple(onSelected: (equipement) {
+          child: ScannerEquipementSimple(
+            migaction: widget.migaction,
+            onSelected: (equipement) {
             var (pnouvelEquipement, pancienEquipement) =
                 EchangeEquipementRecap.affectEquipement(
                     equipement, nouvelEquipement, ancienEquipement);

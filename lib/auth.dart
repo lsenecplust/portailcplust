@@ -69,8 +69,8 @@ class OAuthManager extends InheritedWidget {
     return _sendQuery(context, () => client!.get(parsedUrl));
   }
 
-  Future<dynamic> post(BuildContext context, String url, Object body,
-      {Map<String, String>? params}) {
+  Future<dynamic> post(BuildContext context, String url,
+      {Object? body, Map<String, String>? params}) {
     var parsedUrl = Uri.parse(url).replace(queryParameters: params);
     debugPrint("[🌎Url]=$parsedUrl");
     return _sendQuery(context, () => client!.post(parsedUrl, body: body));
@@ -96,7 +96,11 @@ class OAuthManager extends InheritedWidget {
       if (response.statusCode == 404) {
         return Future.error(NotFound());
       }
-      return jsonDecode(response.body);
+      try {
+        return jsonDecode(response.body);
+      } catch (_) {
+        return response.body;
+      }
     } on AuthorizationException catch (e) {
       client!.close();
       OAuthManager.of(context)?.onHttpInit(null); //Redirige vers la page login

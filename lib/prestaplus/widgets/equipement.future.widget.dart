@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
+import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipementcard.widget.dart';
@@ -8,9 +9,13 @@ import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
 class EquipementFuture extends StatelessWidget {
   final String? param;
+  final MigAction migaction;
   final Function(EquipementQuery equipment)? onSelectedequipment;
   const EquipementFuture(
-      {super.key, required this.param, this.onSelectedequipment});
+      {super.key,
+      required this.param,
+      this.onSelectedequipment,
+      required this.migaction});
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +51,8 @@ class EquipementFuture extends StatelessWidget {
                 if (equipements.isEmpty) {
                   equipmentSelected = null;
                   Future.delayed(const Duration(milliseconds: 500)).then((_) =>
-                      onSelectedequipment
-                          ?.call(EquipementQuery(numdec: param!)));
+                      onSelectedequipment?.call(EquipementQuery(
+                          numdec: param!, type: migaction.typeEquipement)));
                   return Center(
                     child: SizedBox(
                       height: 150,
@@ -72,7 +77,9 @@ class EquipementFuture extends StatelessWidget {
                   equipmentSelected = equipements.first;
                   Future.delayed(const Duration(milliseconds: 500)).then((_) =>
                       onSelectedequipment?.call(EquipementQuery(
-                          equipement: equipmentSelected, numdec: param!)));
+                          equipement: equipmentSelected,
+                          numdec: param!,
+                          type: migaction.typeEquipement)));
                 }
 
                 return EquipementList(
@@ -80,7 +87,9 @@ class EquipementFuture extends StatelessWidget {
                   onSelected: (value) {
                     equipmentSelected = value;
                     onSelectedequipment?.call(EquipementQuery(
-                        equipement: equipmentSelected, numdec: param!));
+                        equipement: equipmentSelected,
+                        numdec: param!,
+                        type: migaction.typeEquipement));
                   },
                 );
               },

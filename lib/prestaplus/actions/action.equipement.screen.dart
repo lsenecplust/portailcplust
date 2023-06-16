@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/auth.dart';
@@ -13,7 +11,6 @@ import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/floatingactio
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
-
 
 class ActionEquipementScreen extends StatefulWidget {
   final Prestation prestation;
@@ -89,41 +86,32 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
     }
   }
 
-  Future affecter() {
-    Random rnd;
-    int min = 5;
-    int max = 10;
-    rnd = Random();
-
-    return actionDialog(
-        action: () =>
-            Future.delayed(Duration(milliseconds: min + rnd.nextInt(max - min)))
-                .then((value) => rnd.nextInt(max).isEven));
+  Future affecter() async {
+    if (newEchangeEquipment == null) return actionDialog(retour: false);
+    var res = await widget.prestation.affecterEquipement(context,
+        nouveauNumDec: newEchangeEquipment!.getNumdec,
+        typeEquipement: newEchangeEquipment!.getType);
+    return actionDialog(retour: res);
   }
 
   Future restituer() async {
-    Random rnd;
-    int min = 5;
-    int max = 10;
-    rnd = Random();
-    return actionDialog(
-        action: () =>
-            Future.delayed(Duration(milliseconds: min + rnd.nextInt(max - min)))
-                .then((value) => rnd.nextInt(max).isEven));
+    if (newEchangeEquipment == null) return actionDialog(retour: false);
+    var res = await widget.prestation.restituerEquipement(context,
+        nouveauNumDec: newEchangeEquipment!.getNumdec,
+        typeEquipement: newEchangeEquipment!.getType);
+    return actionDialog(retour: res);
   }
 
   Future echanger() async {
-    Random rnd;
-    int min = 5;
-    int max = 10;
-    rnd = Random();
-    return actionDialog(
-        action: () =>
-            Future.delayed(Duration(milliseconds: min + rnd.nextInt(max - min)))
-                .then((value) => rnd.nextInt(max).isEven));
+    if (newEchangeEquipment == null) return actionDialog(retour: false);
+    var res = await widget.prestation.echangerEquipement(context,
+        nouveauNumDec: newEchangeEquipment!.getNumdec,
+        ancienNumDec: oldEchangeEquipment!.getNumdec,
+        typeEquipement: newEchangeEquipment!.getType);
+    return actionDialog(retour: res);
   }
 
-  Future actionDialog({required Future<bool> Function() action}) async {
+  Future actionDialog({required bool retour}) async {
     showDialog(
       context: context,
       builder: (context) {
@@ -135,7 +123,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
         );
       },
     );
-    var actionok = await action();
+
     if (mounted) {
       Navigator.pop(context);
       await AwesomeDialog(
@@ -143,13 +131,13 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
         animType: AnimType.leftSlide,
         headerAnimationLoop: false,
         autoHide: const Duration(seconds: 2),
-        dialogType: actionok ? DialogType.success : DialogType.error,
+        dialogType: retour ? DialogType.success : DialogType.error,
         showCloseIcon: true,
-        title: actionok ? 'Succes' : 'Error',
+        title: retour ? 'Succes' : 'Error',
         desc: '${widget.migAction.tache} Terminéee',
         btnOkIcon: Icons.check_circle,
         onDismissCallback: (type) {
-          if (actionok) {
+          if (retour) {
             OAuthManager.of(context)
                 ?.navigatePush(context, const ScaffoldMenu());
           }

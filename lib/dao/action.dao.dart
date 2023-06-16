@@ -31,6 +31,12 @@ class MigAction extends Equatable {
         _ => null
       };
 
+  String get typeEquipement => switch (codeTache) {
+        'T0010' || 'T0012' || 'T0040' => 'CPE',
+        'T0011' || 'T0013' || 'T0041' => 'ONT',
+        _ => ""
+      };
+
   MigAction copyWith({
     String? tache,
     String? codeTache,

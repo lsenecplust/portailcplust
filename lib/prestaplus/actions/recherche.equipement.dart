@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
@@ -29,6 +30,7 @@ class RechercheManuelle extends StatelessWidget {
       );
     }
     return RechercheEquipementSimple(
+      migaction: migaction,
       onSelected: (param) => onSubmit(param, null),
     );
   }
@@ -36,10 +38,12 @@ class RechercheManuelle extends StatelessWidget {
 
 class RechercheEquipementSimple extends StatefulWidget {
   final Prestation? prestation;
+  final MigAction migaction;
   final Function(EquipementQuery equipment)? onSelected;
   const RechercheEquipementSimple({
     Key? key,
     this.prestation,
+    required this.migaction,
     this.onSelected,
   }) : super(key: key);
 
@@ -104,6 +108,7 @@ class _RechercheEquipementSimpleState extends State<RechercheEquipementSimple> {
       ),
       Expanded(
         child: EquipementFuture(
+          migaction: widget.migaction,
           onSelectedequipment: widget.onSelected,
           param: searchPattern,
         ),
@@ -149,7 +154,9 @@ class _RechercheEquipementEchangeState
           ancienEquipement: ancienEquipement,
         ),
         Expanded(
-          child: RechercheEquipementSimple(onSelected: (equipement) {
+          child: RechercheEquipementSimple(
+            migaction: widget.migaction,
+            onSelected: (equipement) {
             var (pnouvelEquipement, pancienEquipement) =
                 EchangeEquipementRecap.affectEquipement(
                     equipement, nouvelEquipement, ancienEquipement);

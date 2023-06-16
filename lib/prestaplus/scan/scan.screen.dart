@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
 
 class PrestaplusScanScreen extends StatefulWidget {
+  
   const PrestaplusScanScreen({super.key});
 
   @override
@@ -27,7 +27,8 @@ class _PrestaplusScanScreenState extends State<PrestaplusScanScreen> {
             },
           ),*/
                 //TODO : replace by new tabs separate swidgets
-          EquipementFuture(
+       /*   EquipementFuture(
+            migaction: widget.migaction,
             onSelectedequipment: (_) {
               setState(() {
                 //TODO : import client contrat search
@@ -36,7 +37,7 @@ class _PrestaplusScanScreenState extends State<PrestaplusScanScreen> {
               });
             },
             param: searchPattern,
-          ),
+          ),*/
           ClientCard(
             client: clientfound,
           )

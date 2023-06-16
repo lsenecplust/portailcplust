@@ -65,7 +65,7 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
             focusNode: focus,
             autofocus: false,
             onFieldSubmitted: (value) {
-              widget.onSubmit(EquipementQuery(numdec: value));
+              widget.onSubmit(EquipementQuery(numdec: value,type: widget.migaction.typeEquipement));
               setState(() {
                 submited = true;
               });

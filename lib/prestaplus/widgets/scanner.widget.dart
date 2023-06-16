@@ -1,14 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.detail.widget.dart';
 
+import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
+import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.detail.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
 
 class BarCodeScanner extends StatefulWidget {
+  final MigAction migaction;
   final ValueChanged<EquipementQuery> onSelected;
   const BarCodeScanner({
     Key? key,
+    required this.migaction,
     required this.onSelected,
   }) : super(key: key);
 
@@ -37,6 +41,7 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
   late Widget animatedChild = scanner;
 
   Widget equipementfuture() => EquipementFuture(
+        migaction: widget.migaction,
         param: lastparam,
         onSelectedequipment: (equipement) {
           widget.onSelected(equipement);
