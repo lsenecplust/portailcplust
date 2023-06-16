@@ -2,7 +2,7 @@
     package="com.example.portail_canalplustelecom_mobile">
 
     <application
-        android:label="portail_canalplustelecom_mobile"
+        android:label="portail C+T"
         android:usesCleartextTraffic="true"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
