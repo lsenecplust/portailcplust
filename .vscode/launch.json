@@ -10,6 +10,7 @@
             "type": "dart",
             "program": "lib/main.local.dart",
             "flutterMode": "debug",
+            "args": ["--web-port", "8686"]
 
         },
         {
