@@ -3,13 +3,17 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:scandit_flutter_datacapture_barcode/scandit_flutter_datacapture_barcode.dart';
 import 'package:scandit_flutter_datacapture_barcode/scandit_flutter_datacapture_barcode_selection.dart';
 import 'package:scandit_flutter_datacapture_core/scandit_flutter_datacapture_core.dart';
-const String licenseKey = 'AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA==';
 
+const String licenseKey =
+    'AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA==';
 
 class BarcodeSelectionScreen extends StatefulWidget {
+  const BarcodeSelectionScreen({super.key});
+
   // Create data capture context using your license key.
   @override
-  State<StatefulWidget> createState() => _BarcodeSelectionScreenState(DataCaptureContext.forLicenseKey(licenseKey));
+  State<StatefulWidget> createState() => _BarcodeSelectionScreenState(
+      DataCaptureContext.forLicenseKey(licenseKey));
 }
 
 class _BarcodeSelectionScreenState extends State<BarcodeSelectionScreen>
@@ -18,7 +22,7 @@ class _BarcodeSelectionScreenState extends State<BarcodeSelectionScreen>
   final DataCaptureContext _context;
 
   // Use the world-facing (back) camera.
-  Camera? _camera = Camera.defaultCamera;
+  final Camera? _camera = Camera.defaultCamera;
   late BarcodeSelection _barcodeSelection;
   late DataCaptureView _captureView;
   late BarcodeSelectionSettings _selectionSettings;
@@ -67,7 +71,8 @@ class _BarcodeSelectionScreenState extends State<BarcodeSelectionScreen>
     });
 
     // Create new barcode selection mode with the settings created above.
-    _barcodeSelection = BarcodeSelection.forContext(_context, _selectionSettings);
+    _barcodeSelection =
+        BarcodeSelection.forContext(_context, _selectionSettings);
 
     // To visualize the on-going barcode capturing process on screen, setup a data capture view that renders the
     // camera preview. The view must be connected to the data capture context.
@@ -75,7 +80,8 @@ class _BarcodeSelectionScreenState extends State<BarcodeSelectionScreen>
 
     // Add a barcode selection overlay to the data capture view to render the location of captured barcodes on top of the video preview.
     // This is optional, but recommended for better visual feedback.
-    var overlay = BarcodeSelectionBasicOverlay.withBarcodeSelectionForView(_barcodeSelection, _captureView);
+    var overlay = BarcodeSelectionBasicOverlay.withBarcodeSelectionForView(
+        _barcodeSelection, _captureView);
 
     _captureView.addOverlay(overlay);
 
@@ -94,8 +100,9 @@ class _BarcodeSelectionScreenState extends State<BarcodeSelectionScreen>
   Widget build(BuildContext context) {
     Widget child;
     if (_isPermissionMessageVisible) {
-      child = Text('No permission to access the camera!',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black));
+      child = const Text('No permission to access the camera!',
+          style: TextStyle(
+              fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black));
     } else {
       child = _captureView;
     }
@@ -105,13 +112,13 @@ class _BarcodeSelectionScreenState extends State<BarcodeSelectionScreen>
             body: child,
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
-              items: [
-                BottomNavigationBarItem(
-                  icon: new Icon(Icons.qr_code),
+              items: const [
+               BottomNavigationBarItem(
+                  icon: Icon(Icons.qr_code),
                   label: 'Tap to Select',
                 ),
                 BottomNavigationBarItem(
-                  icon: new Icon(Icons.qr_code),
+                  icon: Icon(Icons.qr_code),
                   label: 'Aim to Select',
                 )
               ],
@@ -119,16 +126,18 @@ class _BarcodeSelectionScreenState extends State<BarcodeSelectionScreen>
                 setState(() {
                   // Update selection type and apply new settings
                   if (index == 0) {
-                    _selectionSettings.selectionType = BarcodeSelectionTapSelection();
+                    _selectionSettings.selectionType =
+                        BarcodeSelectionTapSelection();
                   } else {
-                    _selectionSettings.selectionType = BarcodeSelectionAimerSelection();
+                    _selectionSettings.selectionType =
+                        BarcodeSelectionAimerSelection();
                   }
                   _barcodeSelection.applySettings(_selectionSettings);
                   _currentIndex = index;
                 });
               },
-              selectedIconTheme: IconThemeData(opacity: 0.0, size: 0),
-              unselectedIconTheme: IconThemeData(opacity: 0.0, size: 0),
+              selectedIconTheme: const IconThemeData(opacity: 0.0, size: 0),
+              unselectedIconTheme: const IconThemeData(opacity: 0.0, size: 0),
               backgroundColor: Colors.black,
               unselectedItemColor: Colors.white,
             ),
@@ -150,28 +159,31 @@ class _BarcodeSelectionScreenState extends State<BarcodeSelectionScreen>
   }
 
   @override
-  void didUpdateSelection(BarcodeSelection barcodeSelection, BarcodeSelectionSession session) {
+  void didUpdateSelection(
+      BarcodeSelection barcodeSelection, BarcodeSelectionSession session) {
     // Check if we have selected a barcode, if that's the case, show a snackbar with its info.
     var newlySelectedBarcodes = session.newlySelectedBarcodes;
     if (newlySelectedBarcodes.isEmpty) return;
 
     // Get the human readable name of the symbology and assemble the result to be shown.
     var barcode = newlySelectedBarcodes.first;
-    var symbologyReadableName = SymbologyDescription.forSymbology(barcode.symbology).readableName;
+    var symbologyReadableName =
+        SymbologyDescription.forSymbology(barcode.symbology).readableName;
 
     session.getCount(barcode).then((value) {
-      final result = '${symbologyReadableName}: ${barcode.data} \nTimes: ${value}';
+      final result = '$symbologyReadableName: ${barcode.data} \nTimes: $value';
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(result),
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         behavior: SnackBarBehavior.fixed,
       ));
     });
   }
 
   @override
-  void didUpdateSession(BarcodeSelection barcodeCapture, BarcodeSelectionSession session) {}
+  void didUpdateSession(
+      BarcodeSelection barcodeCapture, BarcodeSelectionSession session) {}
 
   @override
   void dispose() {
