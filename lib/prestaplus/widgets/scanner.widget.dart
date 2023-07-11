@@ -4,9 +4,9 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/barcodescanner.scandit.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.detail.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/matrixscan.scandit.dart';
 
 class BarCodeScanner extends StatefulWidget {
   final MigAction migaction;
@@ -25,13 +25,16 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
   EquipementQuery? lastEquipmentQuery;
   String? lastparam;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-  }
- Widget get scanner => BarcodeSelectionScreen();
+  Widget get scanner => MatrixScanScreen(
+        onScanned: (barcodes) {
+          lastparam = barcodes.numdec;
+          if (lastparam != null) {
+            setState(() {
+              animatedChild = equipementfuture();
+            });
+          }
+        },
+      );
 
   Widget get scanner0 => MobileScanner(
         key: ValueKey(DateTime.now().millisecondsSinceEpoch),

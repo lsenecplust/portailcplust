@@ -100,6 +100,14 @@ class _ScaffoldTabsState extends State<ScaffoldTabs>
       TabController(length: widget.tabs?.length ?? 0, vsync: this);
 
   @override
+  void initState() {
+    super.initState();
+    tabcontroller.addListener(() {
+      hideFloatingActionButton();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SimpleScaffold(
       appBar: AppBar(
@@ -246,4 +254,3 @@ class _CplusDrawer extends StatelessWidget {
     ]));
   }
 }
-
