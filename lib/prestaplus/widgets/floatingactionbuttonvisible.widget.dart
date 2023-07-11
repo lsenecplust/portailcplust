@@ -43,9 +43,11 @@ class FABAnimatedState extends State<FABAnimated> {
   @override
   Widget build(BuildContext context) {
     if (widget.floatingActionButton == null) return Container();
-    return AnimatedOpacity(
-        opacity: visible ? 1 : 0,
+    return AnimatedCrossFade(
         duration: const Duration(milliseconds: 500),
-        child: widget.floatingActionButton);
+        crossFadeState:
+            visible ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        secondChild: Container(),
+        firstChild: widget.floatingActionButton ?? Container());
   }
 }

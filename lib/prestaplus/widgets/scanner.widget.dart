@@ -35,22 +35,6 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
           }
         },
       );
-
-  Widget get scanner0 => MobileScanner(
-        key: ValueKey(DateTime.now().millisecondsSinceEpoch),
-        fit: BoxFit.cover,
-        onDetect: (barcode) {
-          lastparam = barcode.barcodes.first.rawValue;
-          debugPrint(
-              "📷scanned : ${barcode.barcodes.map((e) => e.rawValue).join()}");
-          if (lastparam != null) {
-            setState(() {
-              animatedChild = equipementfuture();
-            });
-          }
-        },
-      );
-
   late Widget animatedChild = scanner;
 
   Widget equipementfuture() => EquipementFuture(
