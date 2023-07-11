@@ -9,13 +9,13 @@ import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 
 class EquipementFuture extends StatelessWidget {
   final String? param;
-  final MigAction migaction;
+  final MigAction? migaction;
   final Function(EquipementQuery equipment)? onSelectedequipment;
   const EquipementFuture(
       {super.key,
       required this.param,
       this.onSelectedequipment,
-      required this.migaction});
+      this.migaction});
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +50,6 @@ class EquipementFuture extends StatelessWidget {
                 var equipements = snapshot.data!;
                 if (equipements.isEmpty) {
                   equipmentSelected = null;
-                  Future.delayed(const Duration(milliseconds: 500)).then((_) =>
-                      onSelectedequipment?.call(EquipementQuery(
-                          numdec: param!, type: migaction.typeEquipement)));
                   return Center(
                     child: SizedBox(
                       height: 150,
@@ -75,11 +72,11 @@ class EquipementFuture extends StatelessWidget {
 
                 if (equipements.length == 1) {
                   equipmentSelected = equipements.first;
-                  Future.delayed(const Duration(milliseconds: 500)).then((_) =>
-                      onSelectedequipment?.call(EquipementQuery(
+                  Future.microtask(() => onSelectedequipment?.call(
+                      EquipementQuery(
                           equipement: equipmentSelected,
                           numdec: param!,
-                          type: migaction.typeEquipement)));
+                          type: migaction?.typeEquipement)));
                 }
 
                 return EquipementList(
@@ -89,7 +86,7 @@ class EquipementFuture extends StatelessWidget {
                     onSelectedequipment?.call(EquipementQuery(
                         equipement: equipmentSelected,
                         numdec: param!,
-                        type: migaction.typeEquipement));
+                        type: migaction?.typeEquipement));
                   },
                 );
               },

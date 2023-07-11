@@ -87,28 +87,58 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
   }
 
   Future affecter() async {
-    if (newEchangeEquipment == null) return actionDialog(retour: false);
+    if (newEchangeEquipment == null) {
+      return errorDialog("Aucun équipement sélectioné");
+    }
+    if (newEchangeEquipment!.getType == null) {
+      return errorDialog("Type équimement introuvable");
+    }
     var res = await widget.prestation.affecterEquipement(context,
         nouveauNumDec: newEchangeEquipment!.getNumdec,
-        typeEquipement: newEchangeEquipment!.getType);
+        typeEquipement: newEchangeEquipment!.getType!);
     return actionDialog(retour: res);
   }
 
   Future restituer() async {
-    if (newEchangeEquipment == null) return actionDialog(retour: false);
+    if (newEchangeEquipment == null) {
+      return errorDialog("Aucun équipement sélectioné");
+    }
+    if (newEchangeEquipment!.getType == null) {
+      return errorDialog("Type équimement introuvable");
+    }
     var res = await widget.prestation.restituerEquipement(context,
         nouveauNumDec: newEchangeEquipment!.getNumdec,
-        typeEquipement: newEchangeEquipment!.getType);
+        typeEquipement: newEchangeEquipment!.getType!);
     return actionDialog(retour: res);
   }
 
   Future echanger() async {
-    if (newEchangeEquipment == null) return actionDialog(retour: false);
+    if (newEchangeEquipment == null) {
+      return errorDialog("Aucun équipement sélectioné");
+    }
+    if (newEchangeEquipment!.getType == null) {
+      return errorDialog("Type équimement introuvable");
+    }
+
     var res = await widget.prestation.echangerEquipement(context,
         nouveauNumDec: newEchangeEquipment!.getNumdec,
         ancienNumDec: oldEchangeEquipment!.getNumdec,
-        typeEquipement: newEchangeEquipment!.getType);
+        typeEquipement: newEchangeEquipment!.getType!);
     return actionDialog(retour: res);
+  }
+
+  void errorDialog(String msg) {
+    AwesomeDialog(
+      context: context,
+      animType: AnimType.leftSlide,
+      headerAnimationLoop: false,
+      autoHide: const Duration(seconds: 2),
+      dialogType: DialogType.error,
+      showCloseIcon: true,
+      title: 'Error',
+      desc: msg,
+      btnOkIcon: Icons.check_circle,
+    ).show();
   }
 
   Future actionDialog({required bool retour}) async {
@@ -134,7 +164,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
         dialogType: retour ? DialogType.success : DialogType.error,
         showCloseIcon: true,
         title: retour ? 'Succes' : 'Error',
-        desc: '${widget.migAction.tache} Terminéee',
+        desc: '${widget.migAction.tache} Terminée',
         btnOkIcon: Icons.check_circle,
         onDismissCallback: (type) {
           if (retour) {

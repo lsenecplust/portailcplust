@@ -1,19 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
-
 import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/clientcard.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.detail.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/matrixscan.scandit.dart';
 
 class BarCodeScanner extends StatefulWidget {
-  final MigAction migaction;
+  final MigAction? migaction;
+  final bool showClientCard;
   final ValueChanged<EquipementQuery> onSelected;
   const BarCodeScanner({
     Key? key,
-    required this.migaction,
+    this.migaction,
+    this.showClientCard = false,
     required this.onSelected,
   }) : super(key: key);
 
@@ -76,6 +77,15 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
                   label: const Text("Scan"),
                 )
               ],
+            ),
+          ),
+          Visibility(
+            visible: widget.showClientCard,
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ClientCard(
+                client: "SENE Lary",
+              ),
             ),
           )
         ],

@@ -4,7 +4,7 @@ import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 class EquipementQuery {
   final Equipement? equipement;
   final String numdec;
-  final String type;
+  final String? type;
 
   EquipementQuery({
     this.equipement,
@@ -13,5 +13,5 @@ class EquipementQuery {
   });
 
   String get getNumdec => equipement?.numdec ?? numdec;
-  String get getType => (equipement?.type ?? type).toUpperCase();
+  String? get getType => (equipement?.type ?? type)?.toUpperCase();
 }
