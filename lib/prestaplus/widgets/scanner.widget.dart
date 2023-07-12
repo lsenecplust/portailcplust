@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
+import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
+import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/clientcard.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.detail.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipement.future.widget.dart';
@@ -10,7 +11,7 @@ import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/matrixscan.sc
 class BarCodeScanner extends StatefulWidget {
   final MigAction? migaction;
   final bool showClientCard;
-  final ValueChanged<EquipementQuery> onSelected;
+  final ValueChanged<Equipement> onSelected;
   const BarCodeScanner({
     Key? key,
     this.migaction,
@@ -23,13 +24,13 @@ class BarCodeScanner extends StatefulWidget {
 }
 
 class _BarCodeScannerState extends State<BarCodeScanner> {
-  EquipementQuery? lastEquipmentQuery;
-  String? lastparam;
+  Equipement? lastEquipmentQuery;
+  DeviceBarCodes? lastScan;
 
   Widget get scanner => MatrixScanScreen(
         onScanned: (barcodes) {
-          lastparam = barcodes.numdec;
-          if (lastparam != null) {
+          lastScan = barcodes;
+          if (lastScan?.numdec != null) {
             setState(() {
               animatedChild = equipementfuture();
             });
@@ -40,7 +41,7 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
 
   Widget equipementfuture() => EquipementFuture(
         migaction: widget.migaction,
-        param: lastparam,
+        param: lastScan?.numdec,
         onSelectedequipment: (equipement) {
           widget.onSelected(equipement);
           lastEquipmentQuery = equipement;
@@ -52,7 +53,7 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
 
   Widget get detailView => Column(
         children: [
-          EquipementDetail(equipement: lastEquipmentQuery?.equipement),
+          EquipementDetail(equipement: lastEquipmentQuery),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(

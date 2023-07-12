@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 
@@ -10,7 +9,7 @@ import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
 class EquipementFuture extends StatelessWidget {
   final String? param;
   final MigAction? migaction;
-  final Function(EquipementQuery equipment)? onSelectedequipment;
+  final Function(Equipement equipment)? onSelectedequipment;
   const EquipementFuture(
       {super.key,
       required this.param,
@@ -72,21 +71,15 @@ class EquipementFuture extends StatelessWidget {
 
                 if (equipements.length == 1) {
                   equipmentSelected = equipements.first;
-                  Future.microtask(() => onSelectedequipment?.call(
-                      EquipementQuery(
-                          equipement: equipmentSelected,
-                          numdec: param!,
-                          type: migaction?.typeEquipement)));
+                  Future.microtask(
+                      () => onSelectedequipment?.call(equipmentSelected!));
                 }
 
                 return EquipementList(
                   equipements: equipements,
                   onSelected: (value) {
                     equipmentSelected = value;
-                    onSelectedequipment?.call(EquipementQuery(
-                        equipement: equipmentSelected,
-                        numdec: param!,
-                        type: migaction?.typeEquipement));
+                    onSelectedequipment?.call(equipmentSelected!);
                   },
                 );
               },

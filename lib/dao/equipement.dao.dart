@@ -1,57 +1,59 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
 import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 
 class Equipement {
-  final int id;
-  final String type;
-  final String nomFournisseur;
-  final String referenceProduit;
-  final String typeProduit;
-  final String referenceCommerciale;
-  final String numeroCommande;
-  final String dateCommande;
-  final String dateProductionUsine;
-  final String lotProduction;
-  final String numeroSerie;
-  final String codeEAN;
-  final String adresseMAC;
-  final String versionHardware;
-  final String versionFirmware;
-  final String motdepasseFTP;
-  final String motdepasseAdmin;
-  final int supportWIFI;
-  final String ssid;
-  final String cleWEP;
-  final String typeADSL;
-  final String numdec;
-  final String marque;
+  final int? id;
+  final String? type;
+  final String? nomFournisseur;
+  final String? referenceProduit;
+  final String? typeProduit;
+  final String? referenceCommerciale;
+  final String? numeroCommande;
+  final String? dateCommande;
+  final String? dateProductionUsine;
+  final String? lotProduction;
+  final String? numeroSerie;
+  final String? codeEAN;
+  final String? adresseMAC;
+  final String? versionHardware;
+  final String? versionFirmware;
+  final String? motdepasseFTP;
+  final String? motdepasseAdmin;
+  final int? supportWIFI;
+  final String? ssid;
+  final String? cleWEP;
+  final String? typeADSL;
+  final String? numdec;
+  final String? marque;
   Equipement({
-    required this.id,
-    required this.type,
-    required this.nomFournisseur,
-    required this.referenceProduit,
-    required this.typeProduit,
-    required this.referenceCommerciale,
-    required this.numeroCommande,
-    required this.dateCommande,
-    required this.dateProductionUsine,
-    required this.lotProduction,
-    required this.numeroSerie,
-    required this.codeEAN,
-    required this.adresseMAC,
-    required this.versionHardware,
-    required this.versionFirmware,
-    required this.motdepasseFTP,
-    required this.motdepasseAdmin,
-    required this.supportWIFI,
-    required this.ssid,
-    required this.cleWEP,
-    required this.typeADSL,
-    required this.numdec,
-    required this.marque,
+    this.id,
+    this.type,
+    this.nomFournisseur,
+    this.referenceProduit,
+    this.typeProduit,
+    this.referenceCommerciale,
+    this.numeroCommande,
+    this.dateCommande,
+    this.dateProductionUsine,
+    this.lotProduction,
+    this.numeroSerie,
+    this.codeEAN,
+    this.adresseMAC,
+    this.versionHardware,
+    this.versionFirmware,
+    this.motdepasseFTP,
+    this.motdepasseAdmin,
+    this.supportWIFI,
+    this.ssid,
+    this.cleWEP,
+    this.typeADSL,
+    this.numdec,
+    this.marque,
   });
 
   Equipement copyWith({
@@ -106,29 +108,30 @@ class Equipement {
     );
   }
 
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
       'type': type,
-      'nom_fournisseur': nomFournisseur,
-      'reference_produit': referenceProduit,
-      'type_produit': typeProduit,
-      'reference_commerciale': referenceCommerciale,
-      'numero_commande': numeroCommande,
-      'date_commande': dateCommande,
-      'date_production_usine': dateProductionUsine,
-      'lot_production': lotProduction,
-      'numero_serie': numeroSerie,
-      'code_ean': codeEAN,
-      'adresse_mac': adresseMAC,
-      'version_hardware': versionHardware,
-      'version_firmware': versionFirmware,
-      'motdepasse_ftp': motdepasseFTP,
-      'motdepasse_admin': motdepasseAdmin,
-      'support_wifi': supportWIFI,
+      'nomFournisseur': nomFournisseur,
+      'referenceProduit': referenceProduit,
+      'typeProduit': typeProduit,
+      'referenceCommerciale': referenceCommerciale,
+      'numeroCommande': numeroCommande,
+      'dateCommande': dateCommande,
+      'dateProductionUsine': dateProductionUsine,
+      'lotProduction': lotProduction,
+      'numeroSerie': numeroSerie,
+      'codeEAN': codeEAN,
+      'adresseMAC': adresseMAC,
+      'versionHardware': versionHardware,
+      'versionFirmware': versionFirmware,
+      'motdepasseFTP': motdepasseFTP,
+      'motdepasseAdmin': motdepasseAdmin,
+      'supportWIFI': supportWIFI,
       'ssid': ssid,
-      'cle_wep': cleWEP,
-      'type_adsl': typeADSL,
+      'cleWEP': cleWEP,
+      'typeADSL': typeADSL,
       'numdec': numdec,
       'marque': marque,
     };
@@ -136,29 +139,52 @@ class Equipement {
 
   factory Equipement.fromMap(Map<String, dynamic> map) {
     return Equipement(
-      id: map['id'].toInt() as int,
-      type: map['type'] == null ? "" : map['type'] as String,
-      nomFournisseur: "bcvbcb",
-      referenceProduit: "",
-      typeProduit: "",
-      referenceCommerciale: "",
-      numeroCommande: "",
-      dateCommande: "",
-      dateProductionUsine: "",
-      lotProduction: "",
-      numeroSerie: map['numero_serie'] as String,
-      codeEAN: map['code_ean'] as String,
-      adresseMAC: map['adresse_mac'] as String,
-      versionHardware: "",
-      versionFirmware: "",
-      motdepasseFTP: "",
-      motdepasseAdmin: "",
-      supportWIFI: 0,
-      ssid: map['ssid'] as String,
-      cleWEP: "",
-      typeADSL: "",
-      numdec: map['numdec'] as String,
-      marque: map['marque'] as String,
+      id: map['id'] != null ? map['id'] as int : null,
+      type: map['type'] != null ? map['type'] as String : null,
+      nomFournisseur: map['nomFournisseur'] != null
+          ? map['nomFournisseur'] as String
+          : null,
+      referenceProduit: map['referenceProduit'] != null
+          ? map['referenceProduit'] as String
+          : null,
+      typeProduit:
+          map['typeProduit'] != null ? map['typeProduit'] as String : null,
+      referenceCommerciale: map['referenceCommerciale'] != null
+          ? map['referenceCommerciale'] as String
+          : null,
+      numeroCommande: map['numeroCommande'] != null
+          ? map['numeroCommande'] as String
+          : null,
+      dateCommande:
+          map['dateCommande'] != null ? map['dateCommande'] as String : null,
+      dateProductionUsine: map['dateProductionUsine'] != null
+          ? map['dateProductionUsine'] as String
+          : null,
+      lotProduction:
+          map['lotProduction'] != null ? map['lotProduction'] as String : null,
+      numeroSerie:
+          map['numeroSerie'] != null ? map['numeroSerie'] as String : null,
+      codeEAN: map['codeEAN'] != null ? map['codeEAN'] as String : null,
+      adresseMAC:
+          map['adresseMAC'] != null ? map['adresseMAC'] as String : null,
+      versionHardware: map['versionHardware'] != null
+          ? map['versionHardware'] as String
+          : null,
+      versionFirmware: map['versionFirmware'] != null
+          ? map['versionFirmware'] as String
+          : null,
+      motdepasseFTP:
+          map['motdepasseFTP'] != null ? map['motdepasseFTP'] as String : null,
+      motdepasseAdmin: map['motdepasseAdmin'] != null
+          ? map['motdepasseAdmin'] as String
+          : null,
+      supportWIFI:
+          map['supportWIFI'] != null ? map['supportWIFI'] as int : null,
+      ssid: map['ssid'] != null ? map['ssid'] as String : null,
+      cleWEP: map['cleWEP'] != null ? map['cleWEP'] as String : null,
+      typeADSL: map['typeADSL'] != null ? map['typeADSL'] as String : null,
+      numdec: map['numdec'] != null ? map['numdec'] as String : null,
+      marque: map['marque'] != null ? map['marque'] as String : null,
     );
   }
 
@@ -169,7 +195,7 @@ class Equipement {
 
   @override
   String toString() {
-    return 'Equipement(id: $id, type: $type, nom_fournisseur: $nomFournisseur, reference_produit: $referenceProduit, type_produit: $typeProduit, reference_commerciale: $referenceCommerciale, numero_commande: $numeroCommande, date_commande: $dateCommande, date_production_usine: $dateProductionUsine, lot_production: $lotProduction, numero_serie: $numeroSerie, code_ean: $codeEAN, adresse_mac: $adresseMAC, version_hardware: $versionHardware, version_firmware: $versionFirmware, motdepasse_ftp: $motdepasseFTP, motdepasse_admin: $motdepasseAdmin, support_wifi: $supportWIFI, ssid: $ssid, cle_wep: $cleWEP, type_adsl: $typeADSL, numdec: $numdec, marque: $marque)';
+    return 'Equipement(id: $id, type: $type, nomFournisseur: $nomFournisseur, referenceProduit: $referenceProduit, typeProduit: $typeProduit, referenceCommerciale: $referenceCommerciale, numeroCommande: $numeroCommande, dateCommande: $dateCommande, dateProductionUsine: $dateProductionUsine, lotProduction: $lotProduction, numeroSerie: $numeroSerie, codeEAN: $codeEAN, adresseMAC: $adresseMAC, versionHardware: $versionHardware, versionFirmware: $versionFirmware, motdepasseFTP: $motdepasseFTP, motdepasseAdmin: $motdepasseAdmin, supportWIFI: $supportWIFI, ssid: $ssid, cleWEP: $cleWEP, typeADSL: $typeADSL, numdec: $numdec, marque: $marque)';
   }
 
   @override
@@ -228,7 +254,14 @@ class Equipement {
         marque.hashCode;
   }
 
-  String get formatedAdressMAC => adresseMAC
+  String get getAddressmac => adresseMAC ?? "0000000000";
+  String get getnumdec => numdec ?? "XXXXXXXXXX";
+  String get getnumeroSerie => numeroSerie ?? "0000000000";
+  String get getmarque => marque ?? "- - - - -";
+  String get getcodeEAN => codeEAN ?? "0000000000";
+  String? get getType => type?.toUpperCase();
+
+  String get formatedAddressMAC => getAddressmac
       .splitMapJoin(RegExp(r'[a-zA-Z0-9]{2}'), onMatch: (m) => ':${m[0]}')
       .substring(1);
 
@@ -238,11 +271,8 @@ class Equipement {
 
   static Future<List<Equipement>> get(
       BuildContext context, String param) async {
-    var data = await OAuthManager.of(context)!
-        .get(context,"${ApplicationConfiguration.instance!.webapipfs}/equipement/$param");
+    var data = await OAuthManager.of(context)!.get(context,
+        "${ApplicationConfiguration.instance!.webapipfs}/equipement/$param");
     return List.from(data.map((e) => Equipement.fromMap(e)));
   }
-
-  
-
 }

@@ -71,11 +71,11 @@ class EquipementCard extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(equipement.numdec),
-                      Text(equipement.numeroSerie),
-                      Text(equipement.formatedAdressMAC),
-                      Text(equipement.marque),
-                      Text(equipement.codeEAN),
+                      Text(equipement.getnumdec),
+                      Text(equipement.getnumeroSerie),
+                      Text(equipement.formatedAddressMAC),
+                      Text(equipement.getmarque),
+                      Text(equipement.getcodeEAN),
                     ],
                   ),
                 ],

@@ -7,6 +7,7 @@ import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
+import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 
 class Prestation extends Equatable {
   final String numPrestation;
@@ -147,44 +148,35 @@ class Prestation extends Equatable {
 
   Future<bool> affecterEquipement(
     BuildContext context, {
-    required String typeEquipement,
-    required String nouveauNumDec,
+    required Equipement equipement,
   }) async {
     var data = await OAuthManager.of(context)!.post(context,
         "${ApplicationConfiguration.instance!.webapipfs}/action/affecter-equipement/$offre/$numPrestation",
-        body: {
-          'typeEquipement': typeEquipement,
-          'nouveauNumDec': nouveauNumDec
-        });
+        body: equipement.toMap());
     return data;
   }
 
   Future<bool> restituerEquipement(
     BuildContext context, {
-    required String typeEquipement,
-    required String nouveauNumDec,
+    required Equipement equipement,
   }) async {
     var data = await OAuthManager.of(context)!.post(context,
         "${ApplicationConfiguration.instance!.webapipfs}/action/restituer-equipement/$offre/$numPrestation",
-        body: {
-          'typeEquipement': typeEquipement,
-          'nouveauNumDec': nouveauNumDec
-        });
+        body: equipement.toMap());
     return data;
   }
 
   Future<bool> echangerEquipement(
     BuildContext context, {
-    required String typeEquipement,
-    required String nouveauNumDec,
+    required Equipement ancienEquipement,
+    required Equipement nouveauEquipement,
     String? ancienNumDec,
   }) async {
     var data = await OAuthManager.of(context)!.post(context,
         "${ApplicationConfiguration.instance!.webapipfs}/action/echanger-equipement/$offre/$numPrestation",
         body: {
-          'typeEquipement': typeEquipement,
-          'ancienNumDec': ancienNumDec,
-          'nouveauNumDec': nouveauNumDec
+          'ancienEquipement': ancienEquipement.toMap(),
+          'nouveauEquipement': nouveauEquipement.toMap(),
         });
     return data;
   }

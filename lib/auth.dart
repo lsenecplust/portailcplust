@@ -72,7 +72,7 @@ class OAuthManager extends InheritedWidget {
       {Object? body, Map<String, String>? params}) {
     var parsedUrl = Uri.parse(url).replace(queryParameters: params);
     debugPrint("[🌎Url]=$parsedUrl");
-    return _sendQuery(context, () => client!.post(parsedUrl, body: body));
+    return _sendQuery(context, () => client!.post(parsedUrl, body: json.encode(body)));
   }
 
   Future<dynamic> _sendQuery(
