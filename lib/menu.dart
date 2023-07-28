@@ -9,7 +9,7 @@ import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 
 enum Menu {
   prestaplus(Icons.hail_rounded, "Presta+"),
-  geoeligibitlite(Icons.map, "Géo-Eligitilitée"),
+  geoeligibitlite(Icons.map, "Géo-Eligibilitée"),
   ;
 
   const Menu(
