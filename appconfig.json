@@ -1,14 +1,14 @@
-{    "localbk" : {
+{    "local" : {
     "keycloak" : {
         "issuer" :"https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
         "clientid":"canalbox-apps"
     },
-    "webapipfs": "https://cb4cb07a-eac8-40e8-a58b-4da321905f71.mock.pstmn.io",
+    "webapipfs": "https://16d31c6a-50bc-484c-be3a-d2384762c351.mock.pstmn.io",
     "scandit" : {
         "licenseKey" : "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
     }
 },
-    "local" : {
+    "localbk" : {
         "keycloak" : {
             "issuer" :"https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
             "clientid":"canalbox-apps"
