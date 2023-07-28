@@ -113,11 +113,13 @@ class Prestation extends Equatable {
   /*-----------------------------------------------------------------------------*/
   /*-----------------------------    FETCH METHODS  -----------------------------*/
   /*-----------------------------------------------------------------------------*/
+  static String rdvpath = "api/RendezVous/pro";
+  static String migpath = "api/Mig";
 
   static Future<List<Prestation>> get(BuildContext context) async {
     try {
       var data = await OAuthManager.of(context)!.get(
-          context, "${ApplicationConfiguration.instance!.webapipfs}/pro/list");
+          context, "${ApplicationConfiguration.instance!.webapipfs}/$rdvpath/list");
       return List.from(data.map((e) => Prestation.fromMap(e)));
     } on NotFound catch (_) {
       return List.empty();
@@ -127,13 +129,13 @@ class Prestation extends Equatable {
   static Future<List<Prestation>> search(
       BuildContext context, String param) async {
     var data = await OAuthManager.of(context)!.get(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/pro/search/$param");
+        "${ApplicationConfiguration.instance!.webapipfs}/$rdvpath/search/$param");
     return List.from(data.map((e) => Prestation.fromMap(e)));
   }
 
   Future<List<MigAction>> getAllActions(BuildContext context) async {
     var data = await OAuthManager.of(context)!.get(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/actions/$numPrestation",
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/actions/$numPrestation",
         params: {'prestation': numPrestation, 'offre': offre});
 
     return List.from(data.map((e) => MigAction.fromMap(e)));
@@ -151,7 +153,7 @@ class Prestation extends Equatable {
     required Equipement equipement,
   }) async {
     var data = await OAuthManager.of(context)!.post(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/action/affecter-equipement/$offre/$numPrestation",
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/action/affecter-equipement/$offre/$numPrestation",
         body: equipement.toMap());
     return data;
   }
@@ -161,7 +163,7 @@ class Prestation extends Equatable {
     required Equipement equipement,
   }) async {
     var data = await OAuthManager.of(context)!.post(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/action/restituer-equipement/$offre/$numPrestation",
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/action/restituer-equipement/$offre/$numPrestation",
         body: equipement.toMap());
     return data;
   }
@@ -173,7 +175,7 @@ class Prestation extends Equatable {
     String? ancienNumDec,
   }) async {
     var data = await OAuthManager.of(context)!.post(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/action/echanger-equipement/$offre/$numPrestation",
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/action/echanger-equipement/$offre/$numPrestation",
         body: {
           'ancienEquipement': ancienEquipement.toMap(),
           'nouveauEquipement': nouveauEquipement.toMap(),
