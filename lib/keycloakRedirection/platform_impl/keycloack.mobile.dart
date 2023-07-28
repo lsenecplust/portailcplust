@@ -49,12 +49,22 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
           onNavigationRequest: (NavigationRequest request) async {
             var responseUrl = Uri.parse(request.url);
             debugPrint(responseUrl.toString());
+
             if (responseUrl.queryParameters['execution'] == "UPDATE_PASSWORD") {
               return NavigationDecision.navigate;
             }
+
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Column(
+                children: [
+                  const Text("NavigationDecision.prevent"),
+                  Text(responseUrl.toString()),
+                ],
+              )));
+            }
             OAuthManager.of(context)?.onHttpInit(await widget.grant
                 .handleAuthorizationResponse(responseUrl.queryParameters));
-
             return NavigationDecision.prevent;
           },
         ),
