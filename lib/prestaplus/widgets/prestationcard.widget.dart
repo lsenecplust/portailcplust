@@ -1,9 +1,13 @@
+import 'dart:async';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 
 import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
+import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/action.equipement.screen.dart';
@@ -19,6 +23,22 @@ class PrestationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    handlemodalresult(value) {
+      if (value != null) {
+        AwesomeDialog(
+          context: context,
+          animType: AnimType.leftSlide,
+          headerAnimationLoop: false,
+          autoHide: const Duration(seconds: 2),
+          dialogType: value is NotFound ? DialogType.info : DialogType.error,
+          showCloseIcon: true,
+          title: value is NotFound ? 'Aucune action possible sur cette prestation' : 'Error',
+          desc: value is NotFound ? "" : value.toString(),
+          btnOkIcon: Icons.check_circle,
+        ).show();
+      }
+    }
+
     return InkWell(
       onTap: () {
         showModalBottomSheet<void>(
@@ -32,7 +52,7 @@ class PrestationCard extends StatelessWidget {
               oauthContext: context,
             );
           },
-        );
+        ).then(handlemodalresult);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -127,7 +147,6 @@ class _ActionModalSheetState extends State<ActionModalSheet> {
   Future<List<MigAction>> getActions(context) async {
     var resp =
         await widget.prestation.getActions(widget.oauthContext ?? context);
-
     setState(() {
       if (resp.length <= 2) {
         height = widget.tileHeight + 70;
@@ -163,56 +182,61 @@ class _ActionModalSheetState extends State<ActionModalSheet> {
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ]),
-                builder: (subcontext, snapshot) {
-                  var actions = snapshot.data!;
-                  if (actions.isEmpty) {
-                    return const Column(
-                      children: [
-                        Icon(Icons.cancel, size: 50),
-                        Text("Aucune action possible")
-                      ],
-                    );
-                  }
-                  var splitter =
-                      MediaQuery.of(context).size.width ~/ widget.tileHeight;
-                  if (splitter.isOdd) ++splitter;
-                  crossAxisCellCount(index) {
-                    if (actions.length.isEven) return splitter ~/ 2;
-                    return actions.length - 1 == index
-                        ? splitter
-                        : splitter ~/ 2;
-                  }
-
-                  return StaggeredGrid.count(
-                    axisDirection: AxisDirection.down,
-                    crossAxisCount: splitter,
-                    children: List.generate(
-                      actions.length,
-                      (index) => StaggeredGridTile.count(
-                        crossAxisCellCount: crossAxisCellCount(index),
-                        mainAxisCellCount: 1,
-                        child: InkWell(
-                            onTap: () => goto(
-                                actions[index], widget.oauthContext ?? context),
-                            child: Card(
-                                color: lightColorScheme.primaryContainer,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ActionIcon(
-                                      migaction: actions[index],
-                                    ),
-                                    Text(actions[index].tache),
-                                  ],
-                                ))),
-                      ),
-                    ),
-                  );
-                }),
+                errorBuilder: _errorBuilder,
+                builder: _actionBuilder),
           ),
         ],
       ),
     );
+  }
+
+  Widget _actionBuilder(subcontext, snapshot) {
+    var actions = snapshot.data!;
+    if (actions.isEmpty) {
+      return const Column(
+        children: [
+          Icon(Icons.cancel, size: 50),
+          Text("Aucune action possible")
+        ],
+      );
+    }
+    var splitter = MediaQuery.of(context).size.width ~/ widget.tileHeight;
+    if (splitter.isOdd) ++splitter;
+    crossAxisCellCount(index) {
+      if (actions.length.isEven) return splitter ~/ 2;
+      return actions.length - 1 == index ? splitter : splitter ~/ 2;
+    }
+
+    return StaggeredGrid.count(
+      axisDirection: AxisDirection.down,
+      crossAxisCount: splitter,
+      children: List.generate(
+        actions.length,
+        (index) => StaggeredGridTile.count(
+          crossAxisCellCount: crossAxisCellCount(index),
+          mainAxisCellCount: 1,
+          child: InkWell(
+              onTap: () => goto(actions[index], widget.oauthContext ?? context),
+              child: Card(
+                  color: lightColorScheme.primaryContainer,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ActionIcon(
+                        migaction: actions[index],
+                      ),
+                      Text(actions[index].tache),
+                    ],
+                  ))),
+        ),
+      ),
+    );
+  }
+
+  Widget _errorBuilder(
+      BuildContext subcontext, AsyncSnapshot<List<MigAction>> snapshot) {
+    Navigator.pop(context, snapshot.error);
+    return Container();
   }
 }
 
