@@ -213,17 +213,20 @@ class _ActionModalSheetState extends State<ActionModalSheet> {
     if (actions.length == 1) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
-        child: Card(
-            color: lightColorScheme.primaryContainer,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ActionIcon(
-                  migaction: actions[0],
-                ),
-                Text(actions[0].tache),
-              ],
-            )),
+        child: InkWell(
+              onTap: () => goto(actions[0], widget.oauthContext ?? context),
+          child: Card(
+              color: lightColorScheme.primaryContainer,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ActionIcon(
+                    migaction: actions[0],
+                  ),
+                  Text(actions[0].tache),
+                ],
+              )),
+        ),
       );
     }
 

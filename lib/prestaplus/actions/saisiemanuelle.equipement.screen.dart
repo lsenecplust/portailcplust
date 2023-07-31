@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/echange.equipement.dart';
+import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 
 class SaisieManuelle extends StatelessWidget {
   final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
@@ -43,18 +45,35 @@ class _SaisieManuelleSimple extends StatefulWidget {
 }
 
 class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
-  var numdecctrl = TextEditingController();
-  var macctlr = TextEditingController();
-  var snctrl = TextEditingController();
   bool submited = false;
+  DeviceBarCodes? get currentScannedCode =>
+      ScaffoldTabs.of(context)?.currentScannedCode;
+
+  late TextEditingController numdecctrl = TextEditingController();
+  late TextEditingController macctlr = TextEditingController();
+  late TextEditingController snctrl = TextEditingController();
+
+  initTextFormField() {
+    if (currentScannedCode?.numdec != null) {
+      numdecctrl.text = currentScannedCode!.numdec!;
+    }
+    if (currentScannedCode?.mac != null) {
+      macctlr.text = currentScannedCode!.mac!;
+    }
+    if (currentScannedCode?.serialnumber != null) {
+      snctrl.text = currentScannedCode!.serialnumber!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    initTextFormField();
     validate() {
       widget.onSubmit(Equipement(
           numdec: numdecctrl.text,
           numeroSerie: snctrl.text,
           adresseMAC: macctlr.text,
-          type: widget.migaction.typeEquipement));
+          typeEquipement: widget.migaction.typeEquipement));
       setState(() {
         submited = true;
       });
@@ -62,7 +81,6 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
       closeKeyboard(context);
     }
 
-    ;
     return Column(
       children: [
         Padding(

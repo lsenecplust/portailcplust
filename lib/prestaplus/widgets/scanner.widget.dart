@@ -11,6 +11,7 @@ import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/matrixscan.sc
 class BarCodeScanner extends StatefulWidget {
   final MigAction? migaction;
   final bool showClientCard;
+
   final ValueChanged<Equipement> onSelected;
   const BarCodeScanner({
     Key? key,
@@ -41,7 +42,7 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
 
   Widget equipementfuture() => EquipementFuture(
         migaction: widget.migaction,
-        param: lastScan?.numdec,
+        scannedbarcode: lastScan,
         onSelectedequipment: (equipement) {
           widget.onSelected(equipement);
           lastEquipmentQuery = equipement;

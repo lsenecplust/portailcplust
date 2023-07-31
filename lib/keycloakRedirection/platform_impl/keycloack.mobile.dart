@@ -54,7 +54,7 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
               return NavigationDecision.navigate;
             }
 
-            if (mounted) {
+         /*   if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Column(
                 children: [
@@ -62,7 +62,7 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
                   Text(responseUrl.toString()),
                 ],
               )));
-            }
+            }*/
             OAuthManager.of(context)?.onHttpInit(await widget.grant
                 .handleAuthorizationResponse(responseUrl.queryParameters));
             return NavigationDecision.prevent;

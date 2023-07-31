@@ -8,6 +8,7 @@ import 'package:portail_canalplustelecom_mobile/keycloakRedirection/platform_imp
 
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
+
 class Auth extends StatefulWidget {
   const Auth({
     Key? key,
@@ -72,7 +73,12 @@ class OAuthManager extends InheritedWidget {
       {Object? body, Map<String, String>? params}) {
     var parsedUrl = Uri.parse(url).replace(queryParameters: params);
     debugPrint("[🌎Url]=$parsedUrl");
-    return _sendQuery(context, () => client!.post(parsedUrl, body: json.encode(body)));
+    debugPrint("[💪body]=${json.encode(body)}");
+    return _sendQuery(
+        context,
+        () => client!.post(parsedUrl,
+            body: json.encode(body),
+            headers: {"Content-Type": "application/json"}));
   }
 
   Future<dynamic> _sendQuery(

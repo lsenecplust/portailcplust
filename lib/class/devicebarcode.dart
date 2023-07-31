@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:portail_canalplustelecom_mobile/class/scanresult.dart';
 
 class DeviceBarCodes {
-  final String? serialnumber;
-  final String? mac;
-  final String? numdec;
-  final String? ontSerial;
+   String? serialnumber;
+   String? mac;
+   String? numdec;
+   String? ontSerial;
 
   DeviceBarCodes({
     this.serialnumber,
@@ -19,8 +19,7 @@ class DeviceBarCodes {
   bool get isNull =>
       [mac, serialnumber, numdec].every((element) => element == null);
 
-  static bool isNumdec(String value) =>
-      RegExp(r'^[0-9]*$').hasMatch(value);
+  static bool isNumdec(String value) => RegExp(r'^[0-9]*$').hasMatch(value);
   static bool isOntSerial(String value) => value.startsWith('SMB');
   static bool isSerial(String value) => value.startsWith('N');
 
@@ -50,6 +49,18 @@ class DeviceBarCodes {
     var idx = scanResults.indexWhere((element) => isSerial(element.data));
     if (idx == -1) return (null, scanResults);
     return (scanResults.removeAt(idx).data, scanResults);
+  }
+
+  updateWith({
+    String? serialnumber,
+    String? mac,
+    String? numdec,
+    String? ontSerial,
+  }) {
+    this.serialnumber = serialnumber ?? this.serialnumber;
+    this.mac = mac ?? this.mac;
+    this.numdec = numdec ?? this.numdec;
+    this.ontSerial = ontSerial ?? this.ontSerial;
   }
 
   DeviceBarCodes copyWith({

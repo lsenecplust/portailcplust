@@ -4,6 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
+import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
 import 'package:portail_canalplustelecom_mobile/menu.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/floatingactionbuttonvisible.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
@@ -71,6 +72,7 @@ class ScaffoldTabs extends StatefulWidget {
   final Widget? floatingActionButton;
   final GlobalKey<FABAnimatedState>? floatingActionButtonKey;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final TabController? tabcontroller;
   final Map<HorizontalTab, Widget>? tabs;
   const ScaffoldTabs({
     Key? key,
@@ -79,8 +81,12 @@ class ScaffoldTabs extends StatefulWidget {
     this.floatingActionButton,
     this.floatingActionButtonKey,
     this.floatingActionButtonLocation,
+    this.tabcontroller,
     this.tabs,
   }) : super(key: key);
+
+  static ScaffoldTabsCore? of(BuildContext context) =>
+      ScaffoldTabsCore.of(context);
 
   @override
   State<ScaffoldTabs> createState() => _ScaffoldTabsState();
@@ -88,6 +94,94 @@ class ScaffoldTabs extends StatefulWidget {
 
 class _ScaffoldTabsState extends State<ScaffoldTabs>
     with TickerProviderStateMixin {
+  late TabController tabcontroller =
+      TabController(length: widget.tabs?.length ?? 0, vsync: this);
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaffoldTabsCore(
+      tabcontroller: tabcontroller,
+      child: _ScaffoldTabsWidget(
+        key: widget.key,
+        appBar: widget.appBar,
+        drawer: widget.drawer,
+        floatingActionButton: widget.floatingActionButton,
+        floatingActionButtonKey: widget.floatingActionButtonKey,
+        floatingActionButtonLocation: widget.floatingActionButtonLocation,
+        tabcontroller: tabcontroller,
+        tabs: widget.tabs,
+      ),
+    );
+  }
+}
+
+class ScaffoldTabsCore extends InheritedWidget {
+  final AppBar? appBar;
+  final Widget? drawer;
+  final Widget? floatingActionButton;
+  final GlobalKey<FABAnimatedState>? floatingActionButtonKey;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final TabController tabcontroller;
+  final DeviceBarCodes currentScannedCode = DeviceBarCodes();
+  final Map<HorizontalTab, Widget>? tabs;
+  ScaffoldTabsCore({
+    super.key,
+    required super.child,
+    this.appBar,
+    this.drawer,
+    this.floatingActionButton,
+    this.floatingActionButtonKey,
+    this.floatingActionButtonLocation,
+    required this.tabcontroller,
+    this.tabs,
+  });
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
+    return false;
+  }
+
+  void movetomanual(DeviceBarCodes? scannedBarcode) {
+    tabcontroller.animateTo(2);
+    currentScannedCode.updateWith(
+      numdec: scannedBarcode?.numdec,
+      mac: scannedBarcode?.mac,
+      serialnumber: scannedBarcode?.serialnumber,
+      ontSerial: scannedBarcode?.ontSerial,
+    );
+  }
+
+  static ScaffoldTabsCore? of(BuildContext context) {
+    var core = context.getInheritedWidgetOfExactType<ScaffoldTabsCore>();
+    assert(core != null, "ScaffoldTabsCore not found in widgetTree");
+    return core;
+  }
+}
+
+class _ScaffoldTabsWidget extends StatefulWidget {
+  final AppBar? appBar;
+  final Widget? drawer;
+  final Widget? floatingActionButton;
+  final GlobalKey<FABAnimatedState>? floatingActionButtonKey;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final TabController tabcontroller;
+  final Map<HorizontalTab, Widget>? tabs;
+  const _ScaffoldTabsWidget({
+    Key? key,
+    this.appBar,
+    this.drawer,
+    this.floatingActionButton,
+    this.floatingActionButtonKey,
+    this.floatingActionButtonLocation,
+    required this.tabcontroller,
+    this.tabs,
+  }) : super(key: key);
+
+  @override
+  State<_ScaffoldTabsWidget> createState() => _ScaffoldTabsWidgetState();
+}
+
+class _ScaffoldTabsWidgetState extends State<_ScaffoldTabsWidget> {
   late GlobalKey<FABAnimatedState> floatingActionButtonKey =
       widget.floatingActionButtonKey ?? GlobalKey();
 
@@ -96,13 +190,10 @@ class _ScaffoldTabsState extends State<ScaffoldTabs>
   showFloatingActionButton() => floatingActionButtonKey.currentState?.show();
   hideFloatingActionButton() => floatingActionButtonKey.currentState?.hide();
 
-  late TabController tabcontroller =
-      TabController(length: widget.tabs?.length ?? 0, vsync: this);
-
   @override
   void initState() {
     super.initState();
-    tabcontroller.addListener(() {
+    widget.tabcontroller.addListener(() {
       hideFloatingActionButton();
     });
   }
@@ -122,7 +213,7 @@ class _ScaffoldTabsState extends State<ScaffoldTabs>
                 child: TabBar(
                   isScrollable: true,
                   indicatorColor: lightColorScheme.primary.withOpacity(0.99),
-                  controller: tabcontroller,
+                  controller: widget.tabcontroller,
                   tabs: widget.tabs!.keys.toList(),
                 ),
               ),
@@ -135,7 +226,7 @@ class _ScaffoldTabsState extends State<ScaffoldTabs>
       floatingActionButtonKey: floatingActionButtonKey,
       floatingActionButtonLocation: widget.floatingActionButtonLocation,
       body: TabBarView(
-        controller: tabcontroller,
+        controller: widget.tabcontroller,
         children: widget.tabs!.values.toList(),
       ),
     );

@@ -8,7 +8,7 @@ import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 
 class Equipement {
   final int? id;
-  final String? type;
+  final String? typeEquipement;
   final String? nomFournisseur;
   final String? referenceProduit;
   final String? typeProduit;
@@ -32,7 +32,7 @@ class Equipement {
   final String? marque;
   Equipement({
     this.id,
-    this.type,
+    this.typeEquipement,
     this.nomFournisseur,
     this.referenceProduit,
     this.typeProduit,
@@ -58,7 +58,7 @@ class Equipement {
 
   Equipement copyWith({
     int? id,
-    String? type,
+    String? typeEquipement,
     String? nomFournisseur,
     String? referenceProduit,
     String? typeProduit,
@@ -83,7 +83,7 @@ class Equipement {
   }) {
     return Equipement(
       id: id ?? this.id,
-      type: type ?? this.type,
+      typeEquipement: typeEquipement ?? this.typeEquipement,
       nomFournisseur: nomFournisseur ?? this.nomFournisseur,
       referenceProduit: referenceProduit ?? this.referenceProduit,
       typeProduit: typeProduit ?? this.typeProduit,
@@ -112,7 +112,7 @@ class Equipement {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'type': type,
+      'typeEquipement': typeEquipement,
       'nomFournisseur': nomFournisseur,
       'referenceProduit': referenceProduit,
       'typeProduit': typeProduit,
@@ -140,7 +140,7 @@ class Equipement {
   factory Equipement.fromMap(Map<String, dynamic> map) {
     return Equipement(
       id: map['id'] != null ? map['id'] as int : null,
-      type: map['type'] != null ? map['type'] as String : null,
+      typeEquipement: map['typeEquipement'] != null ? map['typeEquipement'] as String : null,
       nomFournisseur: map['nomFournisseur'] != null
           ? map['nomFournisseur'] as String
           : null,
@@ -195,7 +195,7 @@ class Equipement {
 
   @override
   String toString() {
-    return 'Equipement(id: $id, type: $type, nomFournisseur: $nomFournisseur, referenceProduit: $referenceProduit, typeProduit: $typeProduit, referenceCommerciale: $referenceCommerciale, numeroCommande: $numeroCommande, dateCommande: $dateCommande, dateProductionUsine: $dateProductionUsine, lotProduction: $lotProduction, numeroSerie: $numeroSerie, codeEAN: $codeEAN, adresseMAC: $adresseMAC, versionHardware: $versionHardware, versionFirmware: $versionFirmware, motdepasseFTP: $motdepasseFTP, motdepasseAdmin: $motdepasseAdmin, supportWIFI: $supportWIFI, ssid: $ssid, cleWEP: $cleWEP, typeADSL: $typeADSL, numdec: $numdec, marque: $marque)';
+    return 'Equipement(id: $id, typeEquipement: $typeEquipement, nomFournisseur: $nomFournisseur, referenceProduit: $referenceProduit, typeProduit: $typeProduit, referenceCommerciale: $referenceCommerciale, numeroCommande: $numeroCommande, dateCommande: $dateCommande, dateProductionUsine: $dateProductionUsine, lotProduction: $lotProduction, numeroSerie: $numeroSerie, codeEAN: $codeEAN, adresseMAC: $adresseMAC, versionHardware: $versionHardware, versionFirmware: $versionFirmware, motdepasseFTP: $motdepasseFTP, motdepasseAdmin: $motdepasseAdmin, supportWIFI: $supportWIFI, ssid: $ssid, cleWEP: $cleWEP, typeADSL: $typeADSL, numdec: $numdec, marque: $marque)';
   }
 
   @override
@@ -203,7 +203,7 @@ class Equipement {
     if (identical(this, other)) return true;
 
     return other.id == id &&
-        other.type == type &&
+        other.typeEquipement == typeEquipement &&
         other.nomFournisseur == nomFournisseur &&
         other.referenceProduit == referenceProduit &&
         other.typeProduit == typeProduit &&
@@ -230,7 +230,7 @@ class Equipement {
   @override
   int get hashCode {
     return id.hashCode ^
-        type.hashCode ^
+        typeEquipement.hashCode ^
         nomFournisseur.hashCode ^
         referenceProduit.hashCode ^
         typeProduit.hashCode ^
@@ -259,7 +259,7 @@ class Equipement {
   String get getnumeroSerie => numeroSerie ?? "0000000000";
   String get getmarque => marque ?? "- - - - -";
   String get getcodeEAN => codeEAN ?? "0000000000";
-  String? get getType => type?.toUpperCase();
+  String? get getType => typeEquipement?.toUpperCase();
 
   String get formatedAddressMAC => getAddressmac
       .splitMapJoin(RegExp(r'[a-zA-Z0-9]{2}'), onMatch: (m) => ':${m[0]}')
