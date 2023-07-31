@@ -32,7 +32,9 @@ class PrestationCard extends StatelessWidget {
           autoHide: const Duration(seconds: 2),
           dialogType: value is NotFound ? DialogType.info : DialogType.error,
           showCloseIcon: true,
-          title: value is NotFound ? 'Aucune action possible sur cette prestation' : 'Error',
+          title: value is NotFound
+              ? 'Aucune action possible sur cette prestation'
+              : 'Error',
           desc: value is NotFound ? "" : value.toString(),
           btnOkIcon: Icons.check_circle,
         ).show();
@@ -133,7 +135,8 @@ class ActionModalSheet extends StatefulWidget {
 }
 
 class _ActionModalSheetState extends State<ActionModalSheet> {
-  late double height = widget.tileHeight + 70;
+  double spacing = 80;
+  late double height = widget.tileHeight + spacing;
   late Future<List<MigAction>> future =
       getActions(widget.oauthContext ?? context);
   goto(MigAction action, BuildContext context) {
@@ -149,9 +152,9 @@ class _ActionModalSheetState extends State<ActionModalSheet> {
         await widget.prestation.getActions(widget.oauthContext ?? context);
     setState(() {
       if (resp.length <= 2) {
-        height = widget.tileHeight + 70;
+        height = widget.tileHeight + spacing;
       } else {
-        height = widget.tileHeight * (resp.length / 2).round() + 70;
+        height = widget.tileHeight * (resp.length / 2).round() + spacing;
       }
     });
     return resp;
@@ -205,6 +208,23 @@ class _ActionModalSheetState extends State<ActionModalSheet> {
     crossAxisCellCount(index) {
       if (actions.length.isEven) return splitter ~/ 2;
       return actions.length - 1 == index ? splitter : splitter ~/ 2;
+    }
+
+    if (actions.length == 1) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Card(
+            color: lightColorScheme.primaryContainer,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ActionIcon(
+                  migaction: actions[0],
+                ),
+                Text(actions[0].tache),
+              ],
+            )),
+      );
     }
 
     return StaggeredGrid.count(

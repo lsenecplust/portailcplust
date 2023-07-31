@@ -135,8 +135,7 @@ class Prestation extends Equatable {
 
   Future<List<MigAction>> getAllActions(BuildContext context) async {
     var data = await OAuthManager.of(context)!.get(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/actions/$numPrestation",
-        params: {'prestation': numPrestation, 'offre': offre});
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/actions/$offre/$numPrestation");
 
     return List.from(data.map((e) => MigAction.fromMap(e)));
   }
