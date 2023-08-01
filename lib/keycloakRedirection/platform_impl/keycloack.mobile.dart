@@ -54,15 +54,10 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
               return NavigationDecision.navigate;
             }
 
-         /*   if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Column(
-                children: [
-                  const Text("NavigationDecision.prevent"),
-                  Text(responseUrl.toString()),
-                ],
-              )));
-            }*/
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Redirection...")));
+            }
             OAuthManager.of(context)?.onHttpInit(await widget.grant
                 .handleAuthorizationResponse(responseUrl.queryParameters));
             return NavigationDecision.prevent;
