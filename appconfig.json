@@ -1,55 +1,124 @@
-{    "local" : {
-    "keycloak" : {
-        "issuer" :"https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
-        "clientid":"portail_canalplustelecom"
+{
+    "local": {
+        "keycloak": {
+            "issuer": "https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
+            "clientid": "portail_canalplustelecom"
+        },
+        "webapipfs": "https://16d31c6a-50bc-484c-be3a-d2384762c351.mock.pstmn.io",
+        "scandit": {
+            "licenseKey": "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
+        },
+        "elastic": {
+            "index": "local-pmobile",
+            "nodes": [
+                "http://fr-1vm-elda01.infra.msv:9200/",
+                "http://fr-1vm-elda02.infra.msv:9200/",
+                "http://fr-1vm-elda03.infra.msv:9200/",
+                "http://fr-1vm-elda04.infra.msv:9200/",
+                "http://fr-1vm-elda05.infra.msv:9200/",
+                "http://fr-1vm-elda06.infra.msv:9200/",
+                "http://fr-1vm-elda07.infra.msv:9200/",
+                "http://fr-1vm-elda08.infra.msv:9200/"
+            ]
+        }
     },
-    "webapipfs": "https://16d31c6a-50bc-484c-be3a-d2384762c351.mock.pstmn.io",
-    "scandit" : {
-        "licenseKey" : "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
-    }
-},
-    "localbk" : {
-        "keycloak" : {
-            "issuer" :"https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
-            "clientid":"portail_canalplustelecom"
+    "localbk": {
+        "keycloak": {
+            "issuer": "https://re7.abo.canalplustelecom.com/dev/auth/realms/abonne-recette",
+            "clientid": "portail_canalplustelecom"
         },
         "webapipfs": "https://192.168.110.162:5001",
-        "scandit" : {
-            "licenseKey" : "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
+        "scandit": {
+            "licenseKey": "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
+        },
+        "elastic": {
+            "index": "local-portailcplustmobile",
+            "nodes": [
+                "http://fr-1vm-elda01.infra.msv:9200/",
+                "http://fr-1vm-elda02.infra.msv:9200/",
+                "http://fr-1vm-elda03.infra.msv:9200/",
+                "http://fr-1vm-elda04.infra.msv:9200/",
+                "http://fr-1vm-elda05.infra.msv:9200/",
+                "http://fr-1vm-elda06.infra.msv:9200/",
+                "http://fr-1vm-elda07.infra.msv:9200/",
+                "http://fr-1vm-elda08.infra.msv:9200/"
+            ]
         }
     },
-    "locallemur" : {
-        "keycloak" : {
-            "issuer" :"https://lemur-6.cloud-iam.com/auth/realms/portailcplustelecomtest",
-            "clientid":"portail_canalplustelecom"
+    "locallemur": {
+        "keycloak": {
+            "issuer": "https://lemur-6.cloud-iam.com/auth/realms/portailcplustelecomtest",
+            "clientid": "portail_canalplustelecom"
         },
         "webapipfs": "https://cb4cb07a-eac8-40e8-a58b-4da321905f71.mock.pstmn.io"
-    } ,
-    "development" : {
-        "keycloak" : {
-            "issuer" :"http://fr-1vm-lab-osslb01.infra.msv/dev/auth/realms/OSS-DEV",
-            "clientid":"portail_canalplustelecom"
+    },
+    "development": {
+        "keycloak": {
+            "issuer": "http://fr-1vm-lab-osslb01.infra.msv/dev/auth/realms/OSS-DEV",
+            "clientid": "portail_canalplustelecom"
         },
         "webapipfs": "http://10.105.20.164/webApi_PFS",
-        "scandit" : {
-            "licenseKey" : "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
+        "scandit": {
+            "licenseKey": "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
+        },
+        "elastic": {
+            "index": "dev-portailcplustmobile",
+            "nodes": [
+                "http://fr-1vm-elda01.infra.msv:9200/",
+                "http://fr-1vm-elda02.infra.msv:9200/",
+                "http://fr-1vm-elda03.infra.msv:9200/",
+                "http://fr-1vm-elda04.infra.msv:9200/",
+                "http://fr-1vm-elda05.infra.msv:9200/",
+                "http://fr-1vm-elda06.infra.msv:9200/",
+                "http://fr-1vm-elda07.infra.msv:9200/",
+                "http://fr-1vm-elda08.infra.msv:9200/"
+            ]
         }
-    } ,
-    "recette" : {
-        "keycloak" : {
-            "issuer" :"https://re7.oss.canalplustelecom.com/dev/auth/realms/OSS-RECETTE",
-            "clientid":"portail_canalplustelecom"
+    },
+    "recette": {
+        "keycloak": {
+            "issuer": "https://re7.oss.canalplustelecom.com/dev/auth/realms/OSS-RECETTE",
+            "clientid": "portail_canalplustelecom"
         },
         "webapipfs": "https://re7.oss.canalplustelecom.com/pfs",
-        "scandit" : {
-            "licenseKey" : "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
-        }
-    }  ,
-    "production" : {
-        "keycloak" : {
-            "issuer" :"https://oss.canalplustelecom.com/prod/auth/realms/OSS-PROD",
-            "clientid":"portail_canalplustelecom"
+        "scandit": {
+            "licenseKey": "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
         },
-        "webapipfs": "https://abo.canalplustelecom.com/pfs"
-    }  
+        "elastic": {
+            "index": "recette-portailcplustmobile",
+            "nodes": [
+                "http://fr-1vm-elda01.infra.msv:9200/",
+                "http://fr-1vm-elda02.infra.msv:9200/",
+                "http://fr-1vm-elda03.infra.msv:9200/",
+                "http://fr-1vm-elda04.infra.msv:9200/",
+                "http://fr-1vm-elda05.infra.msv:9200/",
+                "http://fr-1vm-elda06.infra.msv:9200/",
+                "http://fr-1vm-elda07.infra.msv:9200/",
+                "http://fr-1vm-elda08.infra.msv:9200/"
+            ]
+        }
+    },
+    "production": {
+        "keycloak": {
+            "issuer": "https://oss.canalplustelecom.com/prod/auth/realms/OSS-PROD",
+            "clientid": "portail_canalplustelecom"
+        },
+        "webapipfs": "https://abo.canalplustelecom.com/pfs",
+        "scandit": {
+            "licenseKey": "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
+        },
+        "elastic": {
+            "index": "prod-portailcplustmobile",
+            "nodes": [
+                "http://fr-1vm-elda01.infra.msv:9200/",
+                "http://fr-1vm-elda02.infra.msv:9200/",
+                "http://fr-1vm-elda03.infra.msv:9200/",
+                "http://fr-1vm-elda04.infra.msv:9200/",
+                "http://fr-1vm-elda05.infra.msv:9200/",
+                "http://fr-1vm-elda06.infra.msv:9200/",
+                "http://fr-1vm-elda07.infra.msv:9200/",
+                "http://fr-1vm-elda08.infra.msv:9200/"
+            ]
+        }
+    }
 }

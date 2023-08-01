@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart';
 import 'package:portail_canalplustelecom_mobile/auth.dart';
+import 'package:portail_canalplustelecom_mobile/class/log.dart';
 import 'package:portail_canalplustelecom_mobile/keycloakRedirection/platform_impl/keycloack.base.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -53,13 +54,17 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
             if (responseUrl.queryParameters['execution'] == "UPDATE_PASSWORD") {
               return NavigationDecision.navigate;
             }
+            Log.info(
+                "Authentification NavigationDecision.prevent ${responseUrl.toString()}");
 
             if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Redirection...")));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Center(child: Text("Application starting..."))));
+
+              OAuthManager.of(context)?.onHttpInit(await widget.grant
+                  .handleAuthorizationResponse(responseUrl.queryParameters));
             }
-            OAuthManager.of(context)?.onHttpInit(await widget.grant
-                .handleAuthorizationResponse(responseUrl.queryParameters));
+
             return NavigationDecision.prevent;
           },
         ),
