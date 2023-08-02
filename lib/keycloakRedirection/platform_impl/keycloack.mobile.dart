@@ -54,15 +54,26 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
             if (responseUrl.queryParameters['execution'] == "UPDATE_PASSWORD") {
               return NavigationDecision.navigate;
             }
-            Log.info(
-                "Authentification NavigationDecision.prevent ${responseUrl.toString()}");
-
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Center(child: Text("Application starting..."))));
+            }
+            OAuthManager.of(context)?.onHttpInit(await widget.grant
+                .handleAuthorizationResponse(responseUrl.queryParameters));
 
-              OAuthManager.of(context)?.onHttpInit(await widget.grant
-                  .handleAuthorizationResponse(responseUrl.queryParameters));
+            if (mounted) {
+              var shadowuri = Uri.parse(responseUrl.toString());
+              Map<String, String> query = Map.from(shadowuri.queryParameters);
+
+              if (query.containsKey("code")) query["code"] = "***";
+              if (query.containsKey("session_state")) {
+                query["session_state"] = "***";
+              }
+              shadowuri = shadowuri.replace(queryParameters: query);
+              var url =
+                  "${shadowuri.origin}${shadowuri.path}?${Uri.decodeFull(shadowuri.query)}";
+
+              Log.keycloack.info(context, "NavigationDecision.prevent $url");
             }
 
             return NavigationDecision.prevent;
