@@ -43,38 +43,24 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
   void initState() {
     super.initState();
     controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onNavigationRequest: (NavigationRequest request) async {
+          onNavigationRequest: (NavigationRequest request) {
             var responseUrl = Uri.parse(request.url);
             debugPrint(responseUrl.toString());
 
             if (responseUrl.queryParameters['execution'] == "UPDATE_PASSWORD") {
               return NavigationDecision.navigate;
             }
-            if (mounted) {
+            /*  if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Center(child: Text("Application starting..."))));
-            }
-            OAuthManager.of(context)?.onHttpInit(await widget.grant
-                .handleAuthorizationResponse(responseUrl.queryParameters));
-
-            if (mounted) {
-              var shadowuri = Uri.parse(responseUrl.toString());
-              Map<String, String> query = Map.from(shadowuri.queryParameters);
-
-              if (query.containsKey("code")) query["code"] = "***";
-              if (query.containsKey("session_state")) {
-                query["session_state"] = "***";
-              }
-              shadowuri = shadowuri.replace(queryParameters: query);
-              var url =
-                  "${shadowuri.origin}${shadowuri.path}?${Uri.decodeFull(shadowuri.query)}";
-
-              Log.keycloack.info(context, "NavigationDecision.prevent $url");
-            }
+            }*/
+            Future.microtask(() async => OAuthManager.of(context)?.onHttpInit(
+                    await widget.grant.handleAuthorizationResponse(
+                        responseUrl.queryParameters)))
+                .then((_) => loguri(responseUrl));
 
             return NavigationDecision.prevent;
           },
@@ -82,6 +68,25 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
       )
       ..loadRequest(widget.grant.getAuthorizationUrl(widget.keycloakUri));
     //redirect to authorizationEndpoint simplifie la conf keycloack. De plus on intercept le redirect, on le kill et on recup le authCode
+  }
+
+  void loguri(Uri responseUrl) {
+    try {
+      if (mounted) {
+        var shadowuri = Uri.parse(responseUrl.toString());
+        Map<String, String> query = Map.from(shadowuri.queryParameters);
+
+        if (query.containsKey("code")) query["code"] = "***";
+        if (query.containsKey("session_state")) {
+          query["session_state"] = "***";
+        }
+        shadowuri = shadowuri.replace(queryParameters: query);
+        var url =
+            "${shadowuri.origin}${shadowuri.path}?${Uri.decodeFull(shadowuri.query)}";
+
+        Log.keycloack.info(context, "NavigationDecision.prevent $url");
+      }
+    } catch (_) {}
   }
 
   @override
