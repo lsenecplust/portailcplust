@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:equatable/equatable.dart';
-import 'package:portail_canalplustelecom_mobile/class/elastic.config.dart';
 import 'package:portail_canalplustelecom_mobile/class/keycloak.config.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:portail_canalplustelecom_mobile/class/log.dart';
@@ -10,13 +9,11 @@ class ApplicationConfiguration extends Equatable {
   final String webapipfs;
   final Keycloack keycloak;
   final Scandit scandit;
-  final Elastic elastic;
 
   static ApplicationConfiguration? instance;
   const ApplicationConfiguration(
       {required this.webapipfs,
       required this.keycloak,
-      required this.elastic,
       required this.scandit});
   static init({String? environement}) async {
     var input = await rootBundle.loadString("appconfig.json");
@@ -36,7 +33,6 @@ class ApplicationConfiguration extends Equatable {
       webapipfs: map['webapipfs'] ?? '',
       keycloak: Keycloack.fromMap(map['keycloak']),
       scandit: Scandit.fromMap(map['scandit']),
-      elastic: Elastic.fromMap(map['elastic']),
     );
   }
 
