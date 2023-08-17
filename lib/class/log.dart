@@ -5,16 +5,21 @@ import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 
 class PrestaPlus extends LocationLogger {}
 
+
+
 class KeycloackWebview extends LocationLogger {}
 
+
+
+//TODO : permettre de logger sans avoir besoin de s'authentifier sur le keycloak. via une API KEY ?
 class LocationLogger extends Log {
-  void info(BuildContext context, String message) =>
+@Deprecated('read todo')   void info(BuildContext context, String message) =>
       Log._info(context, runtimeType.toString(), message);
-  void error(BuildContext context, String message) =>
+ @Deprecated('read todo') void error(BuildContext context, String message) =>
       Log._error(context, runtimeType.toString(), message);
-  void debug(BuildContext context, String message) =>
+ @Deprecated('read todo') void debug(BuildContext context, String message) =>
       Log._debug(context, runtimeType.toString(), message);
-  void warning(BuildContext context, String message) =>
+@Deprecated('read todo')  void warning(BuildContext context, String message) =>
       Log._warning(context, runtimeType.toString(), message);
 }
 
@@ -42,6 +47,7 @@ class Log {
 
   static Future _logasync(BuildContext context, String level, String location,
       String message) async {
+        return ;
     if (ApplicationConfiguration.instance == null) return;
     try {
       var uri =
