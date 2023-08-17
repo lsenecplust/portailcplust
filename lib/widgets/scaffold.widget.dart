@@ -7,6 +7,7 @@ import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
+import 'package:portail_canalplustelecom_mobile/class/log.dart';
 import 'package:portail_canalplustelecom_mobile/menu.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/floatingactionbuttonvisible.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
@@ -360,7 +361,8 @@ class _CplusDrawer extends StatelessWidget {
               if (value ?? false) OAuthManager.of(context)?.onHttpInit(null);
             });
           },
-        )
+        ),
+        Opacity(opacity: 0.5, child: Text("V${Log.packageInfo?.version}"))
       ],
     ));
   }
