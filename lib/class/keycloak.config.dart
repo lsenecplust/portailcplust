@@ -11,6 +11,7 @@ class Keycloack extends Equatable {
   Uri get authorizationEndpoint =>
       Uri.parse("$issuer/protocol/openid-connect/auth");
   Uri get tokenEndpoint => Uri.parse("$issuer/protocol/openid-connect/token");
+  Uri get logoutEndpoint => Uri.parse("$issuer/protocol/openid-connect/logout");
 
 
   factory Keycloack.fromMap(Map<String, dynamic> map) {

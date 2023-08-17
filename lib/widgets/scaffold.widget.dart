@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:portail_canalplustelecom_mobile/auth.dart';
+import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
@@ -331,17 +333,35 @@ class _CplusDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        child: ListView(children: [
-      Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Center(
-            child: Image.asset(
-          "assets/images/logo.png",
-          width: 150,
-        )),
-      ),
-      const Divider(),
-      ...Menu.values.map((e) => e.tile(context))
-    ]));
+        child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Center(
+              child: Image.asset(
+            "assets/images/logo.png",
+            width: 150,
+          )),
+        ),
+        Expanded(
+          child: ListView(children: [
+            const Divider(),
+            ...Menu.values.map((e) => e.tile(context)),
+          ]),
+        ),
+        ListTile(
+          leading: const Icon(Icons.logout),
+          title: const Text("Deconnection"),
+          onTap: () async {
+            var logoutUrl = ApplicationConfiguration
+                .instance?.keycloak.authorizationEndpoint;
+            debugPrint(logoutUrl.toString());
+            OAuthManager.of(context)?.logout(context).then((value) {
+              if (value ?? false) OAuthManager.of(context)?.onHttpInit(null);
+            });
+          },
+        )
+      ],
+    ));
   }
 }
