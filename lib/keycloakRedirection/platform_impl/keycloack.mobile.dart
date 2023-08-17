@@ -39,7 +39,7 @@ class _KeycloackWebView extends StatefulWidget {
 class _KeycloackWebViewState extends State<_KeycloackWebView> {
   late final WebViewController controller;
   late NavigationDelegate _navigationDelegate;
-  String logmessage = "";
+  String? logmessage = "";
 
   @override
   void initState() {
@@ -51,8 +51,8 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
         log("verify code : ${responseUrl.toString()}");
         debugPrint(responseUrl.toString());
 
-        if (responseUrl.queryParameters['execution'] == "UPDATE_PASSWORD") {
-        log("redirecting to ${responseUrl.toString()}");
+        if (responseUrl.queryParameters['code']?.isEmpty ?? true) {
+          log(null);
           return NavigationDecision.navigate;
         }
         if (OAuthManager.of(context) == null) log("OAuthManager is null");
@@ -75,7 +75,7 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
     //redirect to authorizationEndpoint simplifie la conf keycloack. De plus on intercept le redirect, on le kill et on recup le authCode
   }
 
-  void log(String msg) => setState(() {
+  void log(String? msg) => setState(() {
         logmessage = msg;
       });
   void loguri(Uri responseUrl) {
@@ -103,7 +103,7 @@ class _KeycloackWebViewState extends State<_KeycloackWebView> {
         body: Stack(
       children: [
         WebViewWidget(controller: controller),
-        Align(alignment: Alignment.bottomCenter, child: Text(logmessage))
+        Align(alignment: Alignment.bottomCenter, child: Text(logmessage ?? ""))
       ],
     ));
   }
