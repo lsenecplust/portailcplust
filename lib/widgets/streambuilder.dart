@@ -30,7 +30,7 @@ class CustomStreamBuilder<T> extends StatelessWidget {
                 child: SizedBox(
                   height: 70,
                   child: SomethingWenWrong(
-                    msg: "network issue",
+                    line1: "network issue",
                   ),
                 ),
               );
@@ -49,7 +49,7 @@ class CustomStreamBuilder<T> extends StatelessWidget {
                       child: SizedBox(
                         height: 70,
                         child: SomethingWenWrong(
-                          msg: snapshot.error.toString(),
+                          line1: snapshot.error.toString(),
                         ),
                       ),
                     );
@@ -60,7 +60,7 @@ class CustomStreamBuilder<T> extends StatelessWidget {
                       child: SizedBox(
                         height: 70,
                         child: SomethingWenWrong(
-                          msg: "No Data",
+                          line1: "No Data",
                         ),
                       ),
                     );
