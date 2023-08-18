@@ -16,6 +16,13 @@ class _PrestaplusRechercheScreenState extends State<PrestaplusRechercheScreen> {
   var focus = FocusNode();
   var future = Future.delayed(const Duration(seconds: 0))
       .then((value) => List<Prestation>.empty());
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => gosearch());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -63,25 +70,16 @@ class PresationList extends StatefulWidget {
 }
 
 class _PresationListState extends State<PresationList> {
-  var olderprestation = false;
-  var prestations = List<Prestation>.empty();
-
-  setfilter(List<Prestation> prestationsfound) {
-    prestations = olderprestation
-        ? prestationsfound
-        : prestationsfound
-            .where((e) => e.dateRdv.isAfter(DateTime.now()))
-            .toList();
-  }
+  var showOlderPrestation = false;
 
   @override
   Widget build(BuildContext context) {
     return CustomFutureBuilder(
         future: widget.prestations,
         builder: (context, snapshot) {
-          var prestationsfound = snapshot.data!
+          var prestations = snapshot.data!
             ..sort(((a, b) => b.dateRdv.compareTo(a.dateRdv)));
-          if (prestationsfound.isEmpty) {
+
             return Opacity(
               opacity: 0.5,
               child: Column(
@@ -98,27 +96,30 @@ class _PresationListState extends State<PresationList> {
               ),
             );
           }
-          setfilter(prestationsfound);
+
+          if (showOlderPrestation == false) {
+            prestations = prestations
+                .where((e) => e.dateRdv.isAfter(DateTime.now()))
+                .toList();
+          }
 
           return Column(
             children: [
-              Visibility(
-                visible: prestationsfound
-                    .any((element) => element.dateRdv.isBefore(DateTime.now())),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: SizedBox(
-                    width: 268,
-                    height: 50,
-                    child: SwitchListTile(
-                        title: const Text("Rendez-vous antérieur"),
-                        value: olderprestation,
-                        onChanged: ((value) {
-                          setState(() {
-                            olderprestation = value;
-                          });
-                        })),
-                  ),
+              Align(
+                alignment: Alignment.topRight,
+                child: SizedBox(
+                  width: 268,
+                  height: 50,
+                  child: SwitchListTile(
+                      title: Text(showOlderPrestation
+                          ? "Tous les Rendez-vous"
+                          : "Rendez-vous à venir",style: Theme.of(context).textTheme.bodySmall,),
+                      value: showOlderPrestation,
+                      onChanged: ((value) {
+                        setState(() {
+                          showOlderPrestation = value;
+                        });
+                      })),
                 ),
               ),
               Expanded(
