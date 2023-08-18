@@ -82,7 +82,21 @@ class _PresationListState extends State<PresationList> {
           var prestationsfound = snapshot.data!
             ..sort(((a, b) => b.dateRdv.compareTo(a.dateRdv)));
           if (prestationsfound.isEmpty) {
-            return Container();
+            return Opacity(
+              opacity: 0.5,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(flex: 2, child: Container()),
+                  const Icon(
+                    Icons.no_backpack,
+                    size: 50,
+                  ),
+                  const Text("Aucun résultat"),
+                  Expanded(flex: 5, child: Container()),
+                ],
+              ),
+            );
           }
           setfilter(prestationsfound);
 
