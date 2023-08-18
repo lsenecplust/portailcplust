@@ -96,6 +96,7 @@ class _RechercheEquipementSimpleState extends State<RechercheEquipementSimple> {
         padding: const EdgeInsets.all(8.0),
         child: TextFormField(
           controller: searchcontroller,
+          textInputAction: TextInputAction.search,
           onFieldSubmitted: (value) {
             setState(() {
               searchPattern = value;

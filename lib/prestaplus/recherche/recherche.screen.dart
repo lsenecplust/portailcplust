@@ -24,29 +24,30 @@ class _PrestaplusRechercheScreenState extends State<PrestaplusRechercheScreen> {
           padding: const EdgeInsets.all(20.0),
           child: TextFormField(
             controller: controller,
-            focusNode: focus ,
+            focusNode: focus,
+            textInputAction: TextInputAction.search,
+            onFieldSubmitted: (value) => gosearch(),
             autofocus: false,
             decoration: const InputDecoration(
                 label: Text("Recherche"), suffixIcon: Icon(Icons.search)),
           ),
         ),
-        ElevatedButton(
-          child: const Text("Recherche"),
-          onPressed: () {
-            focus.unfocus();
-            setState(() {
-              future = controller.text.isEmpty
-                  ? Prestation.get(context)
-                  : Prestation.search(context, controller.text);
-            });
-          },
-        ),
+        ElevatedButton(onPressed: gosearch, child: const Text("Recherche")),
         Expanded(
             child: PresationList(
           prestations: future,
         ))
       ],
     );
+  }
+
+  void gosearch() {
+    focus.unfocus();
+    setState(() {
+      future = controller.text.isEmpty
+          ? Prestation.get(context)
+          : Prestation.search(context, controller.text);
+    });
   }
 }
 
