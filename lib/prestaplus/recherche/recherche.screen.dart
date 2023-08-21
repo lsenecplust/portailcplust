@@ -80,6 +80,7 @@ class _PresationListState extends State<PresationList> {
           var prestations = snapshot.data!
             ..sort(((a, b) => b.dateRdv.compareTo(a.dateRdv)));
 
+          if (prestations.isEmpty) {
             return Opacity(
               opacity: 0.5,
               child: Column(
@@ -111,9 +112,12 @@ class _PresationListState extends State<PresationList> {
                   width: 268,
                   height: 50,
                   child: SwitchListTile(
-                      title: Text(showOlderPrestation
-                          ? "Tous les Rendez-vous"
-                          : "Rendez-vous à venir",style: Theme.of(context).textTheme.bodySmall,),
+                      title: Text(
+                        showOlderPrestation
+                            ? "Tous les Rendez-vous"
+                            : "Rendez-vous à venir",
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                       value: showOlderPrestation,
                       onChanged: ((value) {
                         setState(() {
