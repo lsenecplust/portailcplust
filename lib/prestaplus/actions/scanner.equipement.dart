@@ -62,8 +62,7 @@ class ScannerEquipementSimple extends StatelessWidget {
 
     listItem.add(Expanded(
       child: BarCodeScanner(
-        migaction: migaction,
-        onSelected: (eq) => onSelected?.call(eq)),
+          migaction: migaction, onSelected: (eq) => onSelected?.call(eq)),
     ));
 
     return listItem;
@@ -99,26 +98,25 @@ class _ScannerEquipementEchangeState extends State<ScannerEquipementEchange> {
   Equipement? ancienEquipement;
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
-        EchangeEquipementRecap(
+        EchangeEquipementSwitcher(
           nouvelEquipement: nouvelEquipement,
           ancienEquipement: ancienEquipement,
         ),
         Expanded(
           child: ScannerEquipementSimple(
-            migaction: widget.migaction,
-            onSelected: (equipement) {
-            var (pnouvelEquipement, pancienEquipement) =
-                EchangeEquipementRecap.affectEquipement(
-                    equipement, nouvelEquipement, ancienEquipement);
-            setState(() {
-              nouvelEquipement = pnouvelEquipement;
-              ancienEquipement = pancienEquipement;
-            });
-            widget.onSubmit(nouvelEquipement, ancienEquipement);
-          }),
+              migaction: widget.migaction,
+              onSelected: (equipement) {
+                setState(() {
+                  if (EchangeEquipementSwitcher.isNewer) {
+                    nouvelEquipement = equipement;
+                  } else {
+                    ancienEquipement = equipement;
+                  }
+                });
+                widget.onSubmit(nouvelEquipement, ancienEquipement);
+              }),
         )
       ],
     );

@@ -193,21 +193,21 @@ class _SaisieManuelleEchangeState extends State<_SaisieManuelleEchange> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        EchangeEquipementRecap(
+        EchangeEquipementSwitcher(
           nouvelEquipement: nouvelEquipement,
           ancienEquipement: ancienEquipement,
         ),
         _SaisieManuelleSimple(
             onSubmit: (equipement) {
-              var (pnouvelEquipement, pancienEquipement) =
-                  EchangeEquipementRecap.affectEquipement(
-                      equipement, nouvelEquipement, ancienEquipement);
-              setState(() {
-                nouvelEquipement = pnouvelEquipement;
-                ancienEquipement = pancienEquipement;
-              });
-              widget.onSubmit(nouvelEquipement, ancienEquipement);
-            },
+                setState(() {
+                  if (EchangeEquipementSwitcher.isNewer) {
+                    nouvelEquipement = equipement;
+                  } else {
+                    ancienEquipement = equipement;
+                  }
+                });
+                widget.onSubmit(nouvelEquipement, ancienEquipement);
+              },
             migaction: widget.migaction)
       ],
     );

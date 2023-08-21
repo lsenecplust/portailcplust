@@ -149,23 +149,23 @@ class _RechercheEquipementEchangeState
   Widget build(BuildContext context) {
     return Column(
       children: [
-        EchangeEquipementRecap(
+        EchangeEquipementSwitcher(
           nouvelEquipement: nouvelEquipement,
           ancienEquipement: ancienEquipement,
         ),
         Expanded(
           child: RechercheEquipementSimple(
-            migaction: widget.migaction,
-            onSelected: (equipement) {
-            var (pnouvelEquipement, pancienEquipement) =
-                EchangeEquipementRecap.affectEquipement(
-                    equipement, nouvelEquipement, ancienEquipement);
-            setState(() {
-              nouvelEquipement = pnouvelEquipement;
-              ancienEquipement = pancienEquipement;
-            });
-            widget.onSubmit(nouvelEquipement, ancienEquipement);
-          }),
+              migaction: widget.migaction,
+              onSelected: (equipement) {
+                setState(() {
+                  if (EchangeEquipementSwitcher.isNewer) {
+                    nouvelEquipement = equipement;
+                  } else {
+                    ancienEquipement = equipement;
+                  }
+                });
+                widget.onSubmit(nouvelEquipement, ancienEquipement);
+              }),
         )
       ],
     );
