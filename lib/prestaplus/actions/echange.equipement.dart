@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
-import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
-
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 
 class EchangeEquipementRecap extends StatelessWidget {
-  final EquipementQuery? nouvelEquipement;
-  final EquipementQuery? ancienEquipement;
+  final Equipement? nouvelEquipement;
+  final Equipement? ancienEquipement;
   const EchangeEquipementRecap({
     Key? key,
     this.nouvelEquipement,
     this.ancienEquipement,
   }) : super(key: key);
 
-  static (EquipementQuery?, EquipementQuery?) affectEquipement(
-      EquipementQuery? equipement,
-      EquipementQuery? nouvelEquipement,
-      EquipementQuery? ancienEquipement) {
+  static (Equipement?, Equipement?) affectEquipement(Equipement? equipement,
+      Equipement? nouvelEquipement, Equipement? ancienEquipement) {
     if (nouvelEquipement != null && ancienEquipement != null) {
       nouvelEquipement = ancienEquipement = null;
       nouvelEquipement = equipement;
@@ -35,18 +31,15 @@ class EchangeEquipementRecap extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        NouvelEquipementRecap(
-          numdec: nouvelEquipement?.getNumdec,
-          equipement: nouvelEquipement?.equipement,
+        _NouvelEquipementRecap(
+          equipement: nouvelEquipement,
         ),
         Icon(
           Icons.swap_horiz_outlined,
           size: 60,
           color: lightColorScheme.primary,
         ),
-        AncienEquipementRecap(
-            numdec: ancienEquipement?.getNumdec,
-            equipement: ancienEquipement?.equipement),
+        _AncienEquipementRecap(equipement: ancienEquipement),
       ],
     );
   }
@@ -117,40 +110,36 @@ class EquipementRecap extends StatelessWidget {
   }
 }
 
-class NouvelEquipementRecap extends StatelessWidget {
+class _NouvelEquipementRecap extends StatelessWidget {
   final Equipement? equipement;
-  final String? numdec;
 
-  const NouvelEquipementRecap({
+  const _NouvelEquipementRecap({
     Key? key,
     this.equipement,
-    this.numdec,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return EquipementRecap(
       title: "Nouveau",
-      numdec: equipement?.numdec ?? numdec,
+      numdec: equipement?.getnumdec,
     );
   }
 }
 
-class AncienEquipementRecap extends StatelessWidget {
+class _AncienEquipementRecap extends StatelessWidget {
   final Equipement? equipement;
-  final String? numdec;
 
-  const AncienEquipementRecap({
+  const _AncienEquipementRecap({
     Key? key,
     this.equipement,
-    this.numdec,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return EquipementRecap(
       title: "Ancien",
-      numdec: equipement?.numdec ?? numdec,
+      numdec: equipement?.getnumdec,
     );
   }
 }

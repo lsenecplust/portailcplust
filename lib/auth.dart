@@ -8,6 +8,7 @@ import 'package:portail_canalplustelecom_mobile/keycloakRedirection/platform_imp
 
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
+
 class Auth extends StatefulWidget {
   const Auth({
     Key? key,
@@ -72,7 +73,24 @@ class OAuthManager extends InheritedWidget {
       {Object? body, Map<String, String>? params}) {
     var parsedUrl = Uri.parse(url).replace(queryParameters: params);
     debugPrint("[🌎Url]=$parsedUrl");
-    return _sendQuery(context, () => client!.post(parsedUrl, body: body));
+    debugPrint("[💪body]=${json.encode(body)}");
+    return _sendQuery(
+        context,
+        () => client!.post(parsedUrl,
+            body: json.encode(body),
+            headers: {"Content-Type": "application/json"}));
+  }
+
+  Future<dynamic> postform(BuildContext context, String url,
+      {Object? body, Map<String, String>? params}) {
+    var parsedUrl = Uri.parse(url).replace(queryParameters: params);
+    debugPrint("[🌎Url]=$parsedUrl");
+    debugPrint("[💪body]=${json.encode(body)}");
+    return _sendQuery(
+        context,
+        () => client!.post(parsedUrl,
+            body: body,
+            headers: {"Content-Type": "application/x-www-form-urlencoded"}));
   }
 
   Future<dynamic> _sendQuery(
@@ -95,6 +113,9 @@ class OAuthManager extends InheritedWidget {
       if (response.statusCode == 404) {
         return Future.error(NotFound());
       }
+      if(response.statusCode==204) {
+        return Future.value(true);
+      }
       try {
         return jsonDecode(response.body);
       } catch (_) {
@@ -110,6 +131,23 @@ class OAuthManager extends InheritedWidget {
     } catch (e) {
       return Future.error(Internal());
     }
+  }
+
+
+
+  Future<bool?> logout(BuildContext context) async {
+    if (ApplicationConfiguration.instance == null) return Future.value(null);
+    if (client == null) return Future.value(null);
+
+    var url =
+        ApplicationConfiguration.instance!.keycloak.logoutEndpoint.toString();
+    var response = await postform(context, url, body: {
+      "client_id": ApplicationConfiguration.instance!.keycloak.clientid,
+      "refresh_token": client!.credentials.refreshToken
+    });
+
+    debugPrint(json.encode(response));
+    return response;
   }
 
   Client? get client => authenticateHttp.client;
@@ -149,18 +187,19 @@ class _AuthHandler extends StatefulWidget {
 }
 
 class _AuthHandlerState extends State<_AuthHandler> {
-  final grant = AuthorizationCodeGrant(
-    ApplicationConfiguration.instance!.keycloak.clientid,
-    ApplicationConfiguration.instance!.keycloak.authorizationEndpoint,
-    ApplicationConfiguration.instance!.keycloak.tokenEndpoint,
-  );
   var uri = Uri.parse(ApplicationConfiguration.instance!.keycloak.issuer);
 
   @override
   Widget build(BuildContext context) {
     if (OAuthManager.of(context)?.isLogged ?? false) return widget.child;
 
-    return KeycloackRedirection(keycloackUri: uri, grant: grant);
+    return KeycloackRedirection(
+        keycloackUri: uri,
+        grant: AuthorizationCodeGrant(
+          ApplicationConfiguration.instance!.keycloak.clientid,
+          ApplicationConfiguration.instance!.keycloak.authorizationEndpoint,
+          ApplicationConfiguration.instance!.keycloak.tokenEndpoint,
+        ));
   }
 }
 

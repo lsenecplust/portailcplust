@@ -9,6 +9,8 @@ class CustomFutureBuilder<T> extends StatelessWidget {
   final Widget? error;
   final Widget Function(BuildContext context, AsyncSnapshot<T> snapshot)
       builder;
+       final Widget Function(BuildContext context, AsyncSnapshot<T> snapshot)?
+      errorBuilder;
 
   const CustomFutureBuilder(
       {Key? key,
@@ -16,7 +18,7 @@ class CustomFutureBuilder<T> extends StatelessWidget {
       this.progressIndicator,
       this.noelement,
       this.error,
-      required this.builder})
+      required this.builder, this.errorBuilder})
       : super(key: key);
 
   @override
@@ -28,7 +30,7 @@ class CustomFutureBuilder<T> extends StatelessWidget {
             case ConnectionState.none:
               return const Center(
                 child: SomethingWenWrong(
-                  msg: "network issue",
+                  line1: "network issue",
                 ),
               );
             case ConnectionState.waiting:
@@ -41,10 +43,10 @@ class CustomFutureBuilder<T> extends StatelessWidget {
                   ));
             case ConnectionState.done:
               if (snapshot.hasError) {
-                return error ??
+                return errorBuilder?.call(context,snapshot) ?? error ??
                     Center(
                       child: SomethingWenWrong(
-                        msg: snapshot.error.toString(),
+                        line1: snapshot.error.toString(),
                       ),
                     );
               }
@@ -54,7 +56,7 @@ class CustomFutureBuilder<T> extends StatelessWidget {
                       child: SizedBox(
                         height: 70,
                         child: SomethingWenWrong(
-                          msg: "No Data",
+                          line1: "No Data",
                         ),
                       ),
                     );

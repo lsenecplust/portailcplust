@@ -1,35 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
+import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
 import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/equipementcard.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
+import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 
 class EquipementFuture extends StatelessWidget {
+  final DeviceBarCodes? scannedbarcode;
   final String? param;
-  final MigAction migaction;
-  final Function(EquipementQuery equipment)? onSelectedequipment;
+  final MigAction? migaction;
+  final Function(Equipement equipment)? onSelectedequipment;
   const EquipementFuture(
       {super.key,
-      required this.param,
+      this.param,
       this.onSelectedequipment,
-      required this.migaction});
+      this.scannedbarcode,
+      this.migaction});
 
+  String? get numdec => param ?? scannedbarcode?.numdec;
   @override
   Widget build(BuildContext context) {
     Equipement? equipmentSelected;
-    if (param == null) return Container();
-    if (param!.isEmpty) return Container();
+    if (numdec == null) return Container();
 
     Future<List<Equipement>> getEquipement() async {
       try {
-        var eqs = await Equipement.get(context, param!);
+        var eqs = await Equipement.get(context, numdec!);
         return eqs;
       } on NotFound catch (_) {
         return List.empty();
       }
+    }
+
+    void movetomanuel() {
+      ScaffoldTabs.of(context)?.movetomanual(scannedbarcode ?? DeviceBarCodes(numdec: param));
     }
 
     return LayoutBuilder(builder: (context, constraint) {
@@ -38,7 +45,7 @@ class EquipementFuture extends StatelessWidget {
         children: [
           Text(
             //Textheight 40
-            "Résultat(s) de $param",
+            "Résultat(s) de $numdec",
             style: Theme.of(context).textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
@@ -50,21 +57,25 @@ class EquipementFuture extends StatelessWidget {
                 var equipements = snapshot.data!;
                 if (equipements.isEmpty) {
                   equipmentSelected = null;
-                  Future.delayed(const Duration(milliseconds: 500)).then((_) =>
-                      onSelectedequipment?.call(EquipementQuery(
-                          numdec: param!, type: migaction.typeEquipement)));
                   return Center(
-                    child: SizedBox(
-                      height: 150,
+                    child: InkWell(
+                      onTap: movetomanuel,
                       child: Card(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               const Icon(Icons.no_cell_rounded),
                               const Text("équipement introuvable"),
                               Text(
-                                  "si $param est le numdec vous pouvez poursuivre l'opération"),
+                                "si $numdec est le numdec",
+                                textAlign: TextAlign.center,
+                              ),
+                              const Text(
+                                "cliquez pour poursuivre l'opération manuellement",
+                                textAlign: TextAlign.center,
+                              ),
                             ],
                           ),
                         ),
@@ -75,21 +86,15 @@ class EquipementFuture extends StatelessWidget {
 
                 if (equipements.length == 1) {
                   equipmentSelected = equipements.first;
-                  Future.delayed(const Duration(milliseconds: 500)).then((_) =>
-                      onSelectedequipment?.call(EquipementQuery(
-                          equipement: equipmentSelected,
-                          numdec: param!,
-                          type: migaction.typeEquipement)));
+                  Future.microtask(
+                      () => onSelectedequipment?.call(equipmentSelected!));
                 }
 
                 return EquipementList(
                   equipements: equipements,
                   onSelected: (value) {
                     equipmentSelected = value;
-                    onSelectedequipment?.call(EquipementQuery(
-                        equipement: equipmentSelected,
-                        numdec: param!,
-                        type: migaction.typeEquipement));
+                    onSelectedequipment?.call(equipmentSelected!);
                   },
                 );
               },

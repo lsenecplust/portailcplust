@@ -16,6 +16,13 @@ class _PrestaplusRechercheScreenState extends State<PrestaplusRechercheScreen> {
   var focus = FocusNode();
   var future = Future.delayed(const Duration(seconds: 0))
       .then((value) => List<Prestation>.empty());
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => gosearch());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,29 +31,30 @@ class _PrestaplusRechercheScreenState extends State<PrestaplusRechercheScreen> {
           padding: const EdgeInsets.all(20.0),
           child: TextFormField(
             controller: controller,
-            focusNode: focus ,
+            focusNode: focus,
+            textInputAction: TextInputAction.search,
+            onFieldSubmitted: (value) => gosearch(),
             autofocus: false,
             decoration: const InputDecoration(
                 label: Text("Recherche"), suffixIcon: Icon(Icons.search)),
           ),
         ),
-        ElevatedButton(
-          child: const Text("Recherche"),
-          onPressed: () {
-            focus.unfocus();
-            setState(() {
-              future = controller.text.isEmpty
-                  ? Prestation.get(context)
-                  : Prestation.search(context, controller.text);
-            });
-          },
-        ),
+        ElevatedButton(onPressed: gosearch, child: const Text("Recherche")),
         Expanded(
             child: PresationList(
           prestations: future,
         ))
       ],
     );
+  }
+
+  void gosearch() {
+    focus.unfocus();
+    setState(() {
+      future = controller.text.isEmpty
+          ? Prestation.get(context)
+          : Prestation.search(context, controller.text);
+    });
   }
 }
 
@@ -62,48 +70,56 @@ class PresationList extends StatefulWidget {
 }
 
 class _PresationListState extends State<PresationList> {
-  var olderprestation = false;
-  var prestations = List<Prestation>.empty();
-
-  setfilter(List<Prestation> prestationsfound) {
-    prestations = olderprestation
-        ? prestationsfound
-        : prestationsfound
-            .where((e) => e.dateRdv.isAfter(DateTime.now()))
-            .toList();
-  }
+  var showOlderPrestation = false;
 
   @override
   Widget build(BuildContext context) {
     return CustomFutureBuilder(
         future: widget.prestations,
         builder: (context, snapshot) {
-          var prestationsfound = snapshot.data!
+          var prestations = snapshot.data!
             ..sort(((a, b) => b.dateRdv.compareTo(a.dateRdv)));
-          if (prestationsfound.isEmpty) {
-            return Container();
+
+            return Opacity(
+              opacity: 0.5,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(flex: 2, child: Container()),
+                  const Icon(
+                    Icons.no_backpack,
+                    size: 50,
+                  ),
+                  const Text("Aucun résultat"),
+                  Expanded(flex: 5, child: Container()),
+                ],
+              ),
+            );
           }
-          setfilter(prestationsfound);
+
+          if (showOlderPrestation == false) {
+            prestations = prestations
+                .where((e) => e.dateRdv.isAfter(DateTime.now()))
+                .toList();
+          }
 
           return Column(
             children: [
-              Visibility(
-                visible: prestationsfound
-                    .any((element) => element.dateRdv.isBefore(DateTime.now())),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: SizedBox(
-                    width: 268,
-                    height: 50,
-                    child: SwitchListTile(
-                        title: const Text("Rendez-vous antérieur"),
-                        value: olderprestation,
-                        onChanged: ((value) {
-                          setState(() {
-                            olderprestation = value;
-                          });
-                        })),
-                  ),
+              Align(
+                alignment: Alignment.topRight,
+                child: SizedBox(
+                  width: 268,
+                  height: 50,
+                  child: SwitchListTile(
+                      title: Text(showOlderPrestation
+                          ? "Tous les Rendez-vous"
+                          : "Rendez-vous à venir",style: Theme.of(context).textTheme.bodySmall,),
+                      value: showOlderPrestation,
+                      onChanged: ((value) {
+                        setState(() {
+                          showOlderPrestation = value;
+                        });
+                      })),
                 ),
               ),
               Expanded(

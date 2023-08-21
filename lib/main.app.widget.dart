@@ -33,7 +33,7 @@ class MainApp extends StatelessWidget {
         fit: BoxFit.contain,
         name: 'assets/rives/logo.riv',
         next: (context) => const Auth(
-          errorWidget: SomethingWenWrong(msg: "Erreur Auth"),
+          errorWidget: SomethingWenWrong(line1: "Erreur Auth"),
           child: ScaffoldMenu(),
         ),
         isLoading: true,

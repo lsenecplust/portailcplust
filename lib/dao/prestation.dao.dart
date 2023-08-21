@@ -7,6 +7,7 @@ import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
+import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 
 class Prestation extends Equatable {
   final String numPrestation;
@@ -112,11 +113,13 @@ class Prestation extends Equatable {
   /*-----------------------------------------------------------------------------*/
   /*-----------------------------    FETCH METHODS  -----------------------------*/
   /*-----------------------------------------------------------------------------*/
+  static String rdvpath = "api/RendezVous/pro";
+  static String migpath = "api/Mig";
 
   static Future<List<Prestation>> get(BuildContext context) async {
     try {
       var data = await OAuthManager.of(context)!.get(
-          context, "${ApplicationConfiguration.instance!.webapipfs}/pro/list");
+          context, "${ApplicationConfiguration.instance!.webapipfs}/$rdvpath/list");
       return List.from(data.map((e) => Prestation.fromMap(e)));
     } on NotFound catch (_) {
       return List.empty();
@@ -126,14 +129,13 @@ class Prestation extends Equatable {
   static Future<List<Prestation>> search(
       BuildContext context, String param) async {
     var data = await OAuthManager.of(context)!.get(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/pro/search/$param");
+        "${ApplicationConfiguration.instance!.webapipfs}/$rdvpath/search/$param");
     return List.from(data.map((e) => Prestation.fromMap(e)));
   }
 
   Future<List<MigAction>> getAllActions(BuildContext context) async {
     var data = await OAuthManager.of(context)!.get(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/actions/$numPrestation",
-        params: {'prestation': numPrestation, 'offre': offre});
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/actions/$offre/$numPrestation");
 
     return List.from(data.map((e) => MigAction.fromMap(e)));
   }
@@ -147,44 +149,35 @@ class Prestation extends Equatable {
 
   Future<bool> affecterEquipement(
     BuildContext context, {
-    required String typeEquipement,
-    required String nouveauNumDec,
+    required Equipement equipement,
   }) async {
     var data = await OAuthManager.of(context)!.post(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/action/affecter-equipement/$offre/$numPrestation",
-        body: {
-          'typeEquipement': typeEquipement,
-          'nouveauNumDec': nouveauNumDec
-        });
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/action/affecter-equipement/$offre/$numPrestation",
+        body: equipement.toMap());
     return data;
   }
 
   Future<bool> restituerEquipement(
     BuildContext context, {
-    required String typeEquipement,
-    required String nouveauNumDec,
+    required Equipement equipement,
   }) async {
     var data = await OAuthManager.of(context)!.post(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/action/restituer-equipement/$offre/$numPrestation",
-        body: {
-          'typeEquipement': typeEquipement,
-          'nouveauNumDec': nouveauNumDec
-        });
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/action/restituer-equipement/$offre/$numPrestation",
+        body: equipement.toMap());
     return data;
   }
 
   Future<bool> echangerEquipement(
     BuildContext context, {
-    required String typeEquipement,
-    required String nouveauNumDec,
+    required Equipement ancienEquipement,
+    required Equipement nouveauEquipement,
     String? ancienNumDec,
   }) async {
     var data = await OAuthManager.of(context)!.post(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/action/echanger-equipement/$offre/$numPrestation",
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/action/echanger-equipement/$offre/$numPrestation",
         body: {
-          'typeEquipement': typeEquipement,
-          'ancienNumDec': ancienNumDec,
-          'nouveauNumDec': nouveauNumDec
+          'ancienEquipement': ancienEquipement.toMap(),
+          'nouveauEquipement': nouveauEquipement.toMap(),
         });
     return data;
   }

@@ -38,7 +38,7 @@ class EquipementDetail extends StatelessWidget {
               children: [
                 Text(equipement?.numdec ?? "---"),
                 Text(equipement?.numeroSerie ?? "---"),
-                Text(equipement?.formatedAdressMAC ?? "---"),
+                Text(equipement?.formatedAddressMAC ?? "---"),
                 Text(equipement?.marque ?? "---"),
                 Text(equipement?.codeEAN ?? "---"),
               ],

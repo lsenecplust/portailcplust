@@ -1,8 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/auth.dart';
-import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
+import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/recherche.equipement.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/saisiemanuelle.equipement.screen.dart';
@@ -27,8 +27,8 @@ class ActionEquipementScreen extends StatefulWidget {
 
 class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
   GlobalKey<FABAnimatedState> floatingActionButtonKey = GlobalKey();
-  EquipementQuery? newEchangeEquipment;
-  EquipementQuery? oldEchangeEquipment;
+  Equipement? newEchangeEquipment;
+  Equipement? oldEchangeEquipment;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
     return newEchangeEquipment != null;
   }
 
-  onSelected(EquipementQuery? newEq, EquipementQuery? oldEq) {
+  onSelected(Equipement? newEq, Equipement? oldEq) {
     newEchangeEquipment = newEq;
     oldEchangeEquipment = oldEq;
 
@@ -87,28 +87,66 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
   }
 
   Future affecter() async {
-    if (newEchangeEquipment == null) return actionDialog(retour: false);
-    var res = await widget.prestation.affecterEquipement(context,
-        nouveauNumDec: newEchangeEquipment!.getNumdec,
-        typeEquipement: newEchangeEquipment!.getType);
-    return actionDialog(retour: res);
+    try {
+      if (newEchangeEquipment == null) {
+        return errorDialog("Aucun équipement sélectioné");
+      }
+      if (newEchangeEquipment!.getType == null) {
+        return errorDialog("Type équimement introuvable");
+      }
+      var res = await widget.prestation
+          .affecterEquipement(context, equipement: newEchangeEquipment!);
+      return actionDialog(retour: res);
+    } catch (e) {
+       return errorDialog("Erreur API : 0x987415");
+    }
   }
 
   Future restituer() async {
-    if (newEchangeEquipment == null) return actionDialog(retour: false);
-    var res = await widget.prestation.restituerEquipement(context,
-        nouveauNumDec: newEchangeEquipment!.getNumdec,
-        typeEquipement: newEchangeEquipment!.getType);
+    if (newEchangeEquipment == null) {
+      return errorDialog("Aucun équipement sélectioné");
+    }
+    if (newEchangeEquipment!.getType == null) {
+      return errorDialog("Type équimement introuvable");
+    }
+    var res = await widget.prestation
+        .restituerEquipement(context, equipement: newEchangeEquipment!);
     return actionDialog(retour: res);
   }
 
   Future echanger() async {
-    if (newEchangeEquipment == null) return actionDialog(retour: false);
+    if (newEchangeEquipment == null) {
+      return errorDialog("Aucun nouvel équipement sélectioné");
+    }
+
+    if (oldEchangeEquipment == null) {
+      return errorDialog("Aucun ancien équipement sélectioné");
+    }
+    if (newEchangeEquipment!.getType == null) {
+      return errorDialog("Type nouvel équimement introuvable");
+    }
+    if (oldEchangeEquipment!.getType == null) {
+      return errorDialog("Type ancien équimement introuvable");
+    }
+
     var res = await widget.prestation.echangerEquipement(context,
-        nouveauNumDec: newEchangeEquipment!.getNumdec,
-        ancienNumDec: oldEchangeEquipment!.getNumdec,
-        typeEquipement: newEchangeEquipment!.getType);
+        nouveauEquipement: newEchangeEquipment!,
+        ancienEquipement: oldEchangeEquipment!);
     return actionDialog(retour: res);
+  }
+
+  void errorDialog(String msg) {
+    AwesomeDialog(
+      context: context,
+      animType: AnimType.leftSlide,
+      headerAnimationLoop: false,
+      autoHide: const Duration(seconds: 2),
+      dialogType: DialogType.error,
+      showCloseIcon: true,
+      title: 'Error',
+      desc: msg,
+      btnOkIcon: Icons.check_circle,
+    ).show();
   }
 
   Future actionDialog({required bool retour}) async {
@@ -134,7 +172,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
         dialogType: retour ? DialogType.success : DialogType.error,
         showCloseIcon: true,
         title: retour ? 'Succes' : 'Error',
-        desc: '${widget.migAction.tache} Terminéee',
+        desc: '${widget.migAction.tache} Terminée',
         btnOkIcon: Icons.check_circle,
         onDismissCallback: (type) {
           if (retour) {

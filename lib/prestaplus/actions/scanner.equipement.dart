@@ -1,8 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
-import 'package:portail_canalplustelecom_mobile/class/equipementquery.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
+import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/echange.equipement.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
@@ -11,7 +10,7 @@ import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/scanner.widge
 class ScannerEquipement extends StatelessWidget {
   final Prestation? prestation;
   final MigAction migAction;
-  final Function(EquipementQuery? newEq, EquipementQuery? oldEq) onSubmit;
+  final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
   const ScannerEquipement({
     Key? key,
     this.prestation,
@@ -37,7 +36,7 @@ class ScannerEquipement extends StatelessWidget {
 class ScannerEquipementSimple extends StatelessWidget {
   final Prestation? prestation;
   final MigAction migaction;
-  final Function(EquipementQuery equipment)? onSelected;
+  final Function(Equipement equipment)? onSelected;
 
   const ScannerEquipementSimple({
     Key? key,
@@ -82,7 +81,7 @@ class ScannerEquipementSimple extends StatelessWidget {
 class ScannerEquipementEchange extends StatefulWidget {
   final Prestation? prestation;
   final MigAction migaction;
-  final Function(EquipementQuery? newEq, EquipementQuery? oldEq) onSubmit;
+  final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
   const ScannerEquipementEchange({
     Key? key,
     this.prestation,
@@ -96,8 +95,8 @@ class ScannerEquipementEchange extends StatefulWidget {
 }
 
 class _ScannerEquipementEchangeState extends State<ScannerEquipementEchange> {
-  EquipementQuery? nouvelEquipement;
-  EquipementQuery? ancienEquipement;
+  Equipement? nouvelEquipement;
+  Equipement? ancienEquipement;
   @override
   Widget build(BuildContext context) {
 

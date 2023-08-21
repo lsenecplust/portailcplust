@@ -1,14 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class SomethingWenWrong extends StatelessWidget {
   const SomethingWenWrong({
     Key? key,
-    this.msg,
-    this.msg2,
+    this.line1,
+    this.line2,
+    this.iconsize,
   }) : super(key: key);
 
-  final String? msg;
-  final String? msg2;
+  final String? line1;
+  final String? line2;
+  final double? iconsize;
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +19,17 @@ class SomethingWenWrong extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Icon(
+        Icon(
           Icons.warning,
           color: Colors.yellow,
+          size: iconsize,
         ),
         SelectableText(
-          msg ?? 'Une Erreure est survenue...',
+          line1 ?? 'Une Erreure est survenue...',
           textAlign: TextAlign.center,
           style: const TextStyle(color: Colors.redAccent),
         ),
-        SelectableText(msg2 == null ? "" : msg!,
+        SelectableText(line2 ?? "",
             style: const TextStyle(
                 color: Colors.redAccent,
                 fontStyle: FontStyle.italic,
