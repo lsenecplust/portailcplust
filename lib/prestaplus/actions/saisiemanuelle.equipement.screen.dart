@@ -15,6 +15,10 @@ class SaisieManuelle extends StatelessWidget {
     required this.migaction,
   }) : super(key: key);
 
+  static TextEditingController numdecctrl = TextEditingController();
+  static TextEditingController macctlr = TextEditingController();
+  static TextEditingController snctrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     if (migaction.type == EnumMigAction.echange) {
@@ -49,30 +53,14 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
   DeviceBarCodes? get currentScannedCode =>
       ScaffoldTabs.of(context)?.currentScannedCode;
 
-  late TextEditingController numdecctrl = TextEditingController();
-  late TextEditingController macctlr = TextEditingController();
-  late TextEditingController snctrl = TextEditingController();
-
-  initTextFormField() {
-    if (currentScannedCode?.numdec != null) {
-      numdecctrl.text = currentScannedCode!.numdec!;
-    }
-    if (currentScannedCode?.mac != null) {
-      macctlr.text = currentScannedCode!.mac!;
-    }
-    if (currentScannedCode?.serialnumber != null) {
-      snctrl.text = currentScannedCode!.serialnumber!;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    initTextFormField();
     validate() {
       widget.onSubmit(Equipement(
-          numdec: numdecctrl.text,
-          numeroSerie: snctrl.text,
-          adresseMAC: macctlr.text,
+          numdec: SaisieManuelle.numdecctrl.text,
+          numeroSerie: SaisieManuelle.snctrl.text,
+          adresseMAC: SaisieManuelle.macctlr.text,
           typeEquipement: widget.migaction.typeEquipement));
       setState(() {
         submited = true;
@@ -92,20 +80,27 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
         ),
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child: TextFormField(
-            controller: numdecctrl,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-                label: Text("Numdec"),
-                hintText: '123456789',
-                prefixIcon: Icon(Icons.onetwothree_outlined)),
+          child: Focus(
+            child: TextFormField(
+               autofocus: true,
+              controller: SaisieManuelle.numdecctrl,
+              keyboardType: TextInputType.number,
+              onChanged: (value) =>
+                  EchangeEquipementSwitcher.update(numdec: value),
+              decoration: const InputDecoration(
+                  label: Text("Numdec"),
+                  hintText: '123456789',
+                  prefixIcon: Icon(Icons.onetwothree_outlined)),
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: TextFormField(
-            controller: snctrl,
+            controller: SaisieManuelle.snctrl,
             keyboardType: TextInputType.number,
+            onChanged: (value) =>
+                EchangeEquipementSwitcher.update(numeroSerie: value),
             decoration: const InputDecoration(
                 label: Text("N° de Série"),
                 hintText: "N123456789",
@@ -115,8 +110,10 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: TextFormField(
-            controller: macctlr,
+            controller: SaisieManuelle.macctlr,
             keyboardType: TextInputType.number,
+            onChanged: (value) =>
+                EchangeEquipementSwitcher.update(adresseMAC: value),
             decoration: const InputDecoration(
                 label: Text("Address MAC"),
                 hintText: "0AB8C7F8G9",
@@ -141,17 +138,23 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
                     Text(widget.migaction.tache),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [const Text("Numdec :"), Text(numdecctrl.text)],
+                      children: [
+                        const Text("Numdec :"),
+                        Text(SaisieManuelle.numdecctrl.text)
+                      ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [const Text("N° Série :"), Text(snctrl.text)],
+                      children: [
+                        const Text("N° Série :"),
+                        Text(SaisieManuelle.snctrl.text)
+                      ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text("Addresse MAC :"),
-                        Text(macctlr.text)
+                        Text(SaisieManuelle.macctlr.text)
                       ],
                     ),
                   ],
@@ -189,25 +192,29 @@ class _SaisieManuelleEchange extends StatefulWidget {
 class _SaisieManuelleEchangeState extends State<_SaisieManuelleEchange> {
   Equipement? nouvelEquipement;
   Equipement? ancienEquipement;
+  Equipement? currentEquipement;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         EchangeEquipementSwitcher(
-          nouvelEquipement: nouvelEquipement,
-          ancienEquipement: ancienEquipement,
+          onSwitch: (equipement) {
+            SaisieManuelle.macctlr.text = equipement?.adresseMAC ?? "";
+            SaisieManuelle.snctrl.text = equipement?.numeroSerie ?? "";
+            SaisieManuelle.numdecctrl.text = equipement?.numdec ?? "";
+          },
         ),
         _SaisieManuelleSimple(
             onSubmit: (equipement) {
-                setState(() {
-                  if (EchangeEquipementSwitcher.isNewer) {
-                    nouvelEquipement = equipement;
-                  } else {
-                    ancienEquipement = equipement;
-                  }
-                });
-                widget.onSubmit(nouvelEquipement, ancienEquipement);
-              },
+              setState(() {
+                if (EchangeEquipementSwitcher.isNewer) {
+                  nouvelEquipement = equipement;
+                } else {
+                  ancienEquipement = equipement;
+                }
+              });
+              widget.onSubmit(nouvelEquipement, ancienEquipement);
+            },
             migaction: widget.migaction)
       ],
     );

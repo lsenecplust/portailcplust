@@ -100,10 +100,10 @@ class _ScannerEquipementEchangeState extends State<ScannerEquipementEchange> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        EchangeEquipementSwitcher(
-          nouvelEquipement: nouvelEquipement,
-          ancienEquipement: ancienEquipement,
-        ),
+        EchangeEquipementSwitcher(onSwitch: (value) {
+           print(value);
+          
+        },),
         Expanded(
           child: ScannerEquipementSimple(
               migaction: widget.migaction,

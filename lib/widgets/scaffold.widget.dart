@@ -146,6 +146,7 @@ class ScaffoldTabsCore extends InheritedWidget {
 
   void movetomanual(DeviceBarCodes? scannedBarcode) {
     tabcontroller.animateTo(2);
+    
     currentScannedCode.updateWith(
       numdec: scannedBarcode?.numdec,
       mac: scannedBarcode?.mac,

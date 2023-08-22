@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:portail_canalplustelecom_mobile/class/scanresult.dart';
 
 class DeviceBarCodes {
-   String? serialnumber;
-   String? mac;
-   String? numdec;
-   String? ontSerial;
+  String? serialnumber;
+  String? mac;
+  String? numdec;
+  String? ontSerial;
 
   DeviceBarCodes({
     this.serialnumber,
@@ -57,10 +57,10 @@ class DeviceBarCodes {
     String? numdec,
     String? ontSerial,
   }) {
-    this.serialnumber = serialnumber ?? this.serialnumber;
-    this.mac = mac ?? this.mac;
-    this.numdec = numdec ?? this.numdec;
-    this.ontSerial = ontSerial ?? this.ontSerial;
+    this.serialnumber = serialnumber;
+    this.mac = mac;
+    this.numdec = numdec;
+    this.ontSerial = ontSerial;
   }
 
   DeviceBarCodes copyWith({

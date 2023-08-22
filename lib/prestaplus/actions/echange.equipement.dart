@@ -6,17 +6,41 @@ import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 enum SelectedEquipement { older, newer }
 
 class EchangeEquipementSwitcher extends StatefulWidget {
-  final Equipement? nouvelEquipement;
-  final Equipement? ancienEquipement;
+  final Function(Equipement? equipment) onSwitch;
+  static Equipement? nouvelEquipement;
+  static Equipement? ancienEquipement;
   static SelectedEquipement selectedEquipement = SelectedEquipement.newer;
 
   static bool get isNewer => selectedEquipement == SelectedEquipement.newer;
   static bool get isOlder => !isNewer;
 
+  static updateolder(
+      {String? numdec, String? numeroSerie, String? adresseMAC}) {
+    ancienEquipement ??= Equipement();
+    ancienEquipement = ancienEquipement?.copyWith(
+        numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
+  }
+
+  static updatenewer(
+      {String? numdec, String? numeroSerie, String? adresseMAC}) {
+    nouvelEquipement ??= Equipement();
+    nouvelEquipement = nouvelEquipement?.copyWith(
+        numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
+  }
+
+  static update({String? numdec, String? numeroSerie, String? adresseMAC}) {
+    if (isNewer) {
+      updatenewer(
+          numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
+    } else {
+      updateolder(
+          numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
+    }
+  }
+
   const EchangeEquipementSwitcher({
     Key? key,
-    this.nouvelEquipement,
-    this.ancienEquipement,
+    required this.onSwitch,
   }) : super(key: key);
 
   @override
@@ -28,22 +52,34 @@ class _EchangeEquipementSwitcherState extends State<EchangeEquipementSwitcher> {
   late SelectedEquipement selectedEquipement =
       EchangeEquipementSwitcher.selectedEquipement;
 
+  nouvelEquipementOnTap() {
+    if (mounted) {
+      setState(() {
+        selectedEquipement = SelectedEquipement.newer;
+        EchangeEquipementSwitcher.selectedEquipement = selectedEquipement;
+      });
+      widget.onSwitch(EchangeEquipementSwitcher.nouvelEquipement);
+    }
+  }
+
+  ancienEquipementOnTap() {
+    if (mounted) {
+      setState(() {
+        selectedEquipement = SelectedEquipement.older;
+        EchangeEquipementSwitcher.selectedEquipement = selectedEquipement;
+      });
+      widget.onSwitch(EchangeEquipementSwitcher.ancienEquipement);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _NouvelEquipementRecap(
-            equipement: widget.nouvelEquipement,
-            ontap: () {
-              if (mounted) {
-                setState(() {
-                  selectedEquipement = SelectedEquipement.newer;
-                  EchangeEquipementSwitcher.selectedEquipement =
-                      selectedEquipement;
-                });
-              }
-            },
+            equipement: EchangeEquipementSwitcher.nouvelEquipement,
+            ontap: nouvelEquipementOnTap,
             selectedEquipement: selectedEquipement),
         Icon(
           Icons.swap_horiz_outlined,
@@ -51,16 +87,8 @@ class _EchangeEquipementSwitcherState extends State<EchangeEquipementSwitcher> {
           color: lightColorScheme.primary,
         ),
         _AncienEquipementRecap(
-            equipement: widget.ancienEquipement,
-            ontap: () {
-              if (mounted) {
-                setState(() {
-                  selectedEquipement = SelectedEquipement.older;
-                  EchangeEquipementSwitcher.selectedEquipement =
-                      selectedEquipement;
-                });
-              }
-            },
+            equipement: EchangeEquipementSwitcher.ancienEquipement,
+            ontap: ancienEquipementOnTap,
             selectedEquipement: selectedEquipement),
       ],
     );

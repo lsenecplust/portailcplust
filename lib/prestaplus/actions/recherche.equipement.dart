@@ -150,8 +150,9 @@ class _RechercheEquipementEchangeState
     return Column(
       children: [
         EchangeEquipementSwitcher(
-          nouvelEquipement: nouvelEquipement,
-          ancienEquipement: ancienEquipement,
+          onSwitch: (value) {
+            print(value);
+          },
         ),
         Expanded(
           child: RechercheEquipementSimple(
