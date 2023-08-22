@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:portail_canalplustelecom_mobile/class/theme.config.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 import 'package:rive_splash_screen/rive_splash_screen.dart';
@@ -36,9 +37,9 @@ class MainApp extends StatelessWidget {
           errorWidget: SomethingWenWrong(line1: "Erreur Auth"),
           child: ScaffoldMenu(),
         ),
-        isLoading: true,
+        isLoading: false,
         backgroundColor: Colors.white,
-        startAnimation: "Splash",
+        startAnimation: ApplicationConfiguration.instance?.speedAnimations ?? false ? "SplashSpeed" : "Splash",
       ),
     );
   }

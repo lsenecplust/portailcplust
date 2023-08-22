@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
@@ -36,12 +37,14 @@ class SaisieManuelle extends StatelessWidget {
 
 class _SaisieManuelleSimple extends StatefulWidget {
   final Function(Equipement newEq) onSubmit;
+  final bool modeEchange;
 
   final MigAction migaction;
   const _SaisieManuelleSimple({
     Key? key,
     required this.onSubmit,
     required this.migaction,
+    this.modeEchange = false,
   }) : super(key: key);
 
   @override
@@ -49,25 +52,34 @@ class _SaisieManuelleSimple extends StatefulWidget {
 }
 
 class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
+  Equipement? currentEquipement;
   bool submited = false;
   DeviceBarCodes? get currentScannedCode =>
       ScaffoldTabs.of(context)?.currentScannedCode;
 
 
-  @override
-  Widget build(BuildContext context) {
     validate() {
-      widget.onSubmit(Equipement(
+      var eq = Equipement(
           numdec: SaisieManuelle.numdecctrl.text,
           numeroSerie: SaisieManuelle.snctrl.text,
           adresseMAC: SaisieManuelle.macctlr.text,
-          typeEquipement: widget.migaction.typeEquipement));
+          typeEquipement: widget.migaction.typeEquipement);
+      widget.onSubmit(eq);
       setState(() {
-        submited = true;
+        currentEquipement = eq;
+        if (widget.modeEchange == false) {
+          submited = true;
+        } else {
+          EchangeEquipementSwitcher.setCurrentEquipement = eq;
+        }
       });
 
       closeKeyboard(context);
     }
+
+  @override
+  Widget build(BuildContext context) {
+
 
     return Column(
       children: [
@@ -82,7 +94,7 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
           padding: const EdgeInsets.all(10.0),
           child: Focus(
             child: TextFormField(
-               autofocus: true,
+              autofocus: true,
               controller: SaisieManuelle.numdecctrl,
               keyboardType: TextInputType.number,
               onChanged: (value) =>
@@ -127,7 +139,9 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
         ),
         AnimatedOpacity(
           duration: const Duration(milliseconds: 500),
-          opacity: submited ? 1 : 0,
+          opacity: widget.modeEchange
+              ? (currentEquipement != null ? 1 : 0)
+              : (submited ? 1 : 0),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
@@ -140,21 +154,21 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text("Numdec :"),
-                        Text(SaisieManuelle.numdecctrl.text)
+                        Text(currentEquipement?.numdec ?? "")
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text("N° Série :"),
-                        Text(SaisieManuelle.snctrl.text)
+                        Text(currentEquipement?.numeroSerie ?? "")
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text("Addresse MAC :"),
-                        Text(SaisieManuelle.macctlr.text)
+                        Text(currentEquipement?.adresseMAC ?? "")
                       ],
                     ),
                   ],
@@ -202,9 +216,14 @@ class _SaisieManuelleEchangeState extends State<_SaisieManuelleEchange> {
             SaisieManuelle.macctlr.text = equipement?.adresseMAC ?? "";
             SaisieManuelle.snctrl.text = equipement?.numeroSerie ?? "";
             SaisieManuelle.numdecctrl.text = equipement?.numdec ?? "";
+            setState(() {
+              currentEquipement = equipement;
+            });
           },
         ),
         _SaisieManuelleSimple(
+            currentEquipement: currentEquipement,
+            modeEchange: true,
             onSubmit: (equipement) {
               setState(() {
                 if (EchangeEquipementSwitcher.isNewer) {

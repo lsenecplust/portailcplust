@@ -9,13 +9,14 @@ class ApplicationConfiguration extends Equatable {
   final String webapipfs;
   final Keycloack keycloak;
   final Scandit scandit;
-
+  final bool speedAnimations;
   static ApplicationConfiguration? instance;
   const ApplicationConfiguration(
       {required this.webapipfs,
       required this.keycloak,
-      required this.scandit});
-  static init({String? environement}) async {
+      required this.scandit,
+      this.speedAnimations = false});
+  static init({String? environement,bool? speedAnimations}) async {
     var input = await rootBundle.loadString("appconfig.json");
     var map = jsonDecode(input);
     instance =
@@ -33,6 +34,7 @@ class ApplicationConfiguration extends Equatable {
       webapipfs: map['webapipfs'] ?? '',
       keycloak: Keycloack.fromMap(map['keycloak']),
       scandit: Scandit.fromMap(map['scandit']),
+      speedAnimations: map['speedAnimations'] ?? false,
     );
   }
 

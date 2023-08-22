@@ -7,7 +7,8 @@
         "webapipfs": "https://192.168.0.14:5001",
         "scandit": {
             "licenseKey": "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
-        }
+        },
+        "speedAnimations": true
     },
     "localbk": {
         "keycloak": {
@@ -17,9 +18,11 @@
         "webapipfs": "https://192.168.110.162:5001",
         "scandit": {
             "licenseKey": "AZNDIAjCK/HXG0dKbEC3fq0UzbCfDa9b2HFv+11VhN3NdH1gTgKrEqhjug+GUcHvMURSdjpgINCTUTdrRU32G2w7Yo2xQQm/onqPYpNKOHB3aYIao2VOX+l+6U1jZcV042zp7J8ozkvxSu9NOQoAhSALIJuHJIdfmyrLnva6NBrluCvSIxJSQoO2hYmWsDnLIWdzfnGGZBHT/IFddFn+QkXtyZ6tIXNNU7ZEoarCrc46TcwkxzudJHczYQaursmHaGCrOeWWukfIq2WhkDqvFgzdurbkgzuwyaVhet7fL0mG00xC+OfwrcgK3CDUBnxxkwuRAvC5hxRNhdduY7OSteqHMUuHl28evPeXmjbTVh5jbCFCnhElx+RgBKZKnhAFJvRGgv1W01FJRpiK0W8VeZrucNI42i7NkyIOFWESDyGp3eeTxazCqoekcGLl+/NVrRo7qenk1oAhMfl4eWmM2S4nK/ZKE6usJuWpH3OlrELjAH2aKhme3wkeo7uyxpUvt3rrK5bcX0FeWRxy8YreDZRoN12rbGvJld9BpGN9B6lx8d6M8EIxFlfaNDsiCsF0FibbrGsaMcqua5JojjZBC5V7uX/8/435jW4bYCPls0o3mEQG0pm4kDqhkK+cZuuBCq+QeFCYOcCokI7L4QVF6Kv9xZatx1hIoAd6AEqMEncZ2+Hex8WOIEJFcwo56iysqKZEUXMQELptLI8/LQ3oyf5itIhu9biATLLYIaFEyYoGLTgTc8CG7XkL3iPqWI26pyViiHEFFsvgigyGVh+cV2NqdAk8FdEGCB3hYfqD960iEd1dHYDmxPiLQELqluqQxLSzAfh8G2/ikpyWRA=="
-        }
+        },
+        "speedAnimations": true
     },
     "locallemur": {
+        "speedAnimations": true,
         "keycloak": {
             "issuer": "https://lemur-6.cloud-iam.com/auth/realms/portailcplustelecomtest",
             "clientid": "portail_canalplustelecom"
@@ -27,6 +30,7 @@
         "webapipfs": "https://cb4cb07a-eac8-40e8-a58b-4da321905f71.mock.pstmn.io"
     },
     "development": {
+        "speedAnimations": true,
         "keycloak": {
             "issuer": "http://fr-1vm-lab-osslb01.infra.msv/dev/auth/realms/OSS-DEV",
             "clientid": "portail_canalplustelecom"
@@ -37,6 +41,7 @@
         }
     },
     "recette": {
+        "speedAnimations": true,
         "keycloak": {
             "issuer": "https://re7.oss.canalplustelecom.com/dev/auth/realms/OSS-RECETTE",
             "clientid": "portail_canalplustelecom"

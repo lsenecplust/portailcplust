@@ -7,6 +7,8 @@ enum SelectedEquipement { older, newer }
 
 class EchangeEquipementSwitcher extends StatefulWidget {
   final Function(Equipement? equipment) onSwitch;
+  static Equipement? nouvelEquipementEnCoursDeSaisie;
+  static Equipement? ancienEquipementEnCoursDeSaisie;
   static Equipement? nouvelEquipement;
   static Equipement? ancienEquipement;
   static SelectedEquipement selectedEquipement = SelectedEquipement.newer;
@@ -14,26 +16,38 @@ class EchangeEquipementSwitcher extends StatefulWidget {
   static bool get isNewer => selectedEquipement == SelectedEquipement.newer;
   static bool get isOlder => !isNewer;
 
-  static updateolder(
+  static Equipement? get getCurrentEquipement => isNewer
+      ? nouvelEquipementEnCoursDeSaisie
+      : ancienEquipementEnCoursDeSaisie;
+  static set setCurrentEquipement(Equipement value) => isNewer
+      ? nouvelEquipementEnCoursDeSaisie = value
+      : ancienEquipementEnCoursDeSaisie = value;
+
+  static _updateolder(
       {String? numdec, String? numeroSerie, String? adresseMAC}) {
-    ancienEquipement ??= Equipement();
-    ancienEquipement = ancienEquipement?.copyWith(
+    nouvelEquipementEnCoursDeSaisie ??= Equipement();
+    ancienEquipementEnCoursDeSaisie = ancienEquipementEnCoursDeSaisie?.copyWith(
         numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
   }
 
-  static updatenewer(
+  static _updatenewer(
       {String? numdec, String? numeroSerie, String? adresseMAC}) {
-    nouvelEquipement ??= Equipement();
-    nouvelEquipement = nouvelEquipement?.copyWith(
+    nouvelEquipementEnCoursDeSaisie ??= Equipement();
+    nouvelEquipementEnCoursDeSaisie = nouvelEquipementEnCoursDeSaisie?.copyWith(
         numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
   }
 
   static update({String? numdec, String? numeroSerie, String? adresseMAC}) {
+    assert(ancienEquipementEnCoursDeSaisie == null,
+        "ancienEquipement shoud not be null");
+    assert(nouvelEquipementEnCoursDeSaisie == null,
+        "nouvelEquipement shoud not be null");
+
     if (isNewer) {
-      updatenewer(
+      _updatenewer(
           numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
     } else {
-      updateolder(
+      _updateolder(
           numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
     }
   }
@@ -58,7 +72,8 @@ class _EchangeEquipementSwitcherState extends State<EchangeEquipementSwitcher> {
         selectedEquipement = SelectedEquipement.newer;
         EchangeEquipementSwitcher.selectedEquipement = selectedEquipement;
       });
-      widget.onSwitch(EchangeEquipementSwitcher.nouvelEquipement);
+      widget
+          .onSwitch(EchangeEquipementSwitcher.nouvelEquipementEnCoursDeSaisie);
     }
   }
 
@@ -68,7 +83,8 @@ class _EchangeEquipementSwitcherState extends State<EchangeEquipementSwitcher> {
         selectedEquipement = SelectedEquipement.older;
         EchangeEquipementSwitcher.selectedEquipement = selectedEquipement;
       });
-      widget.onSwitch(EchangeEquipementSwitcher.ancienEquipement);
+      widget
+          .onSwitch(EchangeEquipementSwitcher.ancienEquipementEnCoursDeSaisie);
     }
   }
 
@@ -78,7 +94,8 @@ class _EchangeEquipementSwitcherState extends State<EchangeEquipementSwitcher> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _NouvelEquipementRecap(
-            equipement: EchangeEquipementSwitcher.nouvelEquipement,
+            equipement:
+                EchangeEquipementSwitcher.nouvelEquipementEnCoursDeSaisie,
             ontap: nouvelEquipementOnTap,
             selectedEquipement: selectedEquipement),
         Icon(
@@ -87,7 +104,8 @@ class _EchangeEquipementSwitcherState extends State<EchangeEquipementSwitcher> {
           color: lightColorScheme.primary,
         ),
         _AncienEquipementRecap(
-            equipement: EchangeEquipementSwitcher.ancienEquipement,
+            equipement:
+                EchangeEquipementSwitcher.ancienEquipementEnCoursDeSaisie,
             ontap: ancienEquipementOnTap,
             selectedEquipement: selectedEquipement),
       ],
