@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:portail_canalplustelecom_mobile/class/exchange.equipement.controller.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
@@ -94,28 +95,26 @@ class ScannerEquipementEchange extends StatefulWidget {
 }
 
 class _ScannerEquipementEchangeState extends State<ScannerEquipementEchange> {
-  Equipement? nouvelEquipement;
-  Equipement? ancienEquipement;
+  Equipement? currentEquipement;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        EchangeEquipementSwitcher(onSwitch: (value) {
-           print(value);
-          
-        },),
+        EchangeEquipementSwitcher(
+          onswitch: (equipement) => setState(() {
+            currentEquipement = equipement;
+          }),
+        ),
         Expanded(
           child: ScannerEquipementSimple(
               migaction: widget.migaction,
               onSelected: (equipement) {
-                setState(() {
-                  if (EchangeEquipementSwitcher.isNewer) {
-                    nouvelEquipement = equipement;
-                  } else {
-                    ancienEquipement = equipement;
-                  }
-                });
-                widget.onSubmit(nouvelEquipement, ancienEquipement);
+                setState(() {});
+                context.exchangeEquipementController?.setValidatedEquipement =
+                    equipement.copyWith(
+                        typeEquipement: widget.migaction.typeEquipement);
+                widget.onSubmit(context.equipementValidated?.newerEquipement,
+                    context.equipementValidated?.olderEquipement);
               }),
         )
       ],

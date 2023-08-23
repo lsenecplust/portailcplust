@@ -14,3 +14,13 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+# Debug over Wifi
+
+- Connect your device to your machine using USB
+- Open terminal and type the following
+- adb kill-server
+- adb tcpip 5555
+- adb connect <YOUR_IP>:5555
+

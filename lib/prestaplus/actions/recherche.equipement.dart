@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portail_canalplustelecom_mobile/class/exchange.equipement.controller.dart';
 
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
@@ -38,12 +39,14 @@ class RechercheManuelle extends StatelessWidget {
 class RechercheEquipementSimple extends StatefulWidget {
   final Prestation? prestation;
   final MigAction migaction;
+  final bool modeEchange;
   final Function(Equipement equipment)? onSelected;
   const RechercheEquipementSimple({
     Key? key,
     this.prestation,
     required this.migaction,
     this.onSelected,
+    this.modeEchange = false,
   }) : super(key: key);
 
   @override
@@ -53,6 +56,8 @@ class RechercheEquipementSimple extends StatefulWidget {
 
 class _RechercheEquipementSimpleState extends State<RechercheEquipementSimple> {
   final searchcontroller = TextEditingController();
+  late Future<List<Equipement>> futureEquipement =
+      Equipement.get(context, null);
   String? searchPattern;
 
   List<Widget> buildItems(BuildContext context) {
@@ -100,6 +105,7 @@ class _RechercheEquipementSimpleState extends State<RechercheEquipementSimple> {
           onFieldSubmitted: (value) {
             setState(() {
               searchPattern = value;
+              futureEquipement = Equipement.get(context, searchPattern);
             });
           },
           decoration: const InputDecoration(
@@ -109,7 +115,9 @@ class _RechercheEquipementSimpleState extends State<RechercheEquipementSimple> {
       Expanded(
         child: EquipementFuture(
           migaction: widget.migaction,
+          modeEchange: widget.modeEchange,
           onSelectedequipment: widget.onSelected,
+          future: futureEquipement,
           param: searchPattern,
         ),
       ),
@@ -143,29 +151,27 @@ class _RechercheEquipementEchange extends StatefulWidget {
 
 class _RechercheEquipementEchangeState
     extends State<_RechercheEquipementEchange> {
-  Equipement? nouvelEquipement;
-  Equipement? ancienEquipement;
+  Equipement? currentEquipement;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         EchangeEquipementSwitcher(
-          onSwitch: (value) {
-            print(value);
-          },
+          onswitch: (equipement) => setState(() {
+            currentEquipement = equipement;
+          }),
         ),
         Expanded(
           child: RechercheEquipementSimple(
               migaction: widget.migaction,
+              modeEchange: true,
               onSelected: (equipement) {
-                setState(() {
-                  if (EchangeEquipementSwitcher.isNewer) {
-                    nouvelEquipement = equipement;
-                  } else {
-                    ancienEquipement = equipement;
-                  }
-                });
-                widget.onSubmit(nouvelEquipement, ancienEquipement);
+                setState(() {});
+                context.exchangeEquipementController?.setValidatedEquipement =
+                    equipement.copyWith(
+                        typeEquipement: widget.migaction.typeEquipement);
+                widget.onSubmit(context.equipementValidated?.newerEquipement,
+                    context.equipementValidated?.olderEquipement);
               }),
         )
       ],

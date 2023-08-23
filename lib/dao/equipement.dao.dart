@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
+import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 
 class Equipement {
   final int? id;
@@ -108,7 +109,6 @@ class Equipement {
     );
   }
 
-
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -140,7 +140,9 @@ class Equipement {
   factory Equipement.fromMap(Map<String, dynamic> map) {
     return Equipement(
       id: map['id'] != null ? map['id'] as int : null,
-      typeEquipement: map['typeEquipement'] != null ? map['typeEquipement'] as String : null,
+      typeEquipement: map['typeEquipement'] != null
+          ? map['typeEquipement'] as String
+          : null,
       nomFournisseur: map['nomFournisseur'] != null
           ? map['nomFournisseur'] as String
           : null,
@@ -268,11 +270,25 @@ class Equipement {
   /*-----------------------------------------------------------------------------*/
   /*-----------------------------    FETCH METHODS  -----------------------------*/
   /*-----------------------------------------------------------------------------*/
+  static String migpath = "api/Mig";
+  static Future<List<Equipement>> _get(
+      BuildContext context, String param) async {
+    if (param.isEmpty) {
+      return Future.error(UnExpectedPath(message: "Invalid Url"));
+    }
+    var data = await OAuthManager.of(context)!.get(context,
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/equipement/$param");
+    return List.from(data.map((e) => Equipement.fromMap(e)));
+  }
 
   static Future<List<Equipement>> get(
-      BuildContext context, String param) async {
-    var data = await OAuthManager.of(context)!.get(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/equipement/$param");
-    return List.from(data.map((e) => Equipement.fromMap(e)));
+      BuildContext context, String? param) async {
+    if (param == null) return Future.value(List.empty());
+    try {
+      var eqs = await _get(context, param);
+      return eqs;
+    } on NotFound catch (_) {
+      return List.empty();
+    }
   }
 }

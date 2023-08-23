@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
-import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
+import 'package:librairies/futurebuilder.dart';
 
 class PrestaplusRechercheScreen extends StatefulWidget {
   const PrestaplusRechercheScreen({super.key});
@@ -74,7 +75,8 @@ class _PresationListState extends State<PresationList> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomFutureBuilder(
+    return EnhancedFutureBuilder(
+        progressIndicator: const PortailIndicator(),
         future: widget.prestations,
         builder: (context, snapshot) {
           var prestations = snapshot.data!

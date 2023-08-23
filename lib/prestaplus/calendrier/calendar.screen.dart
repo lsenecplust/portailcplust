@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.sfdatasource.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
-import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
+import 'package:librairies/futurebuilder.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalanderdarScreen extends StatelessWidget {
@@ -11,7 +12,8 @@ class CalanderdarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomFutureBuilder(
+    return EnhancedFutureBuilder(
+        progressIndicator: const PortailIndicator(),
         future: Prestation.get(context),
         builder: (context, snapshot) {
           return SfCalendar(

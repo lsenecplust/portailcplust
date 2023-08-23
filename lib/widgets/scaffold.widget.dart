@@ -7,6 +7,7 @@ import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
+import 'package:portail_canalplustelecom_mobile/class/exchange.equipement.controller.dart';
 import 'package:portail_canalplustelecom_mobile/class/log.dart';
 import 'package:portail_canalplustelecom_mobile/menu.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/floatingactionbuttonvisible.widget.dart';
@@ -125,7 +126,8 @@ class ScaffoldTabsCore extends InheritedWidget {
   final GlobalKey<FABAnimatedState>? floatingActionButtonKey;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
   final TabController tabcontroller;
-  final DeviceBarCodes currentScannedCode = DeviceBarCodes();
+  final ExchangeEquipementController exchangeEquipementController =
+      ExchangeEquipementController();
   final Map<HorizontalTab, Widget>? tabs;
   ScaffoldTabsCore({
     super.key,
@@ -146,13 +148,12 @@ class ScaffoldTabsCore extends InheritedWidget {
 
   void movetomanual(DeviceBarCodes? scannedBarcode) {
     tabcontroller.animateTo(2);
-    
-    currentScannedCode.updateWith(
-      numdec: scannedBarcode?.numdec,
-      mac: scannedBarcode?.mac,
-      serialnumber: scannedBarcode?.serialnumber,
-      ontSerial: scannedBarcode?.ontSerial,
-    );
+
+    exchangeEquipementController.lastScan = DeviceBarCodes(
+        numdec: scannedBarcode?.numdec,
+        adresseMAC: scannedBarcode?.adresseMAC,
+        numeroSerie: scannedBarcode?.numeroSerie,
+        ontSerial: scannedBarcode?.ontSerial);
   }
 
   static ScaffoldTabsCore? of(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:oauth2/oauth2.dart';
 import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/log.dart';
 import 'package:portail_canalplustelecom_mobile/keycloakRedirection/platform_impl/keycloack.base.dart';
-import 'package:portail_canalplustelecom_mobile/widgets/somethingwentwrong.dart';
+import 'package:librairies/somethingwentwrong.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class KeycloackImpl extends BaseLogin {

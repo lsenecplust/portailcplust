@@ -42,6 +42,7 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
 
   Widget equipementfuture() => EquipementFuture(
         migaction: widget.migaction,
+        future: Equipement.get(context, lastScan?.numdec),
         scannedbarcode: lastScan,
         onSelectedequipment: (equipement) {
           widget.onSelected(equipement);

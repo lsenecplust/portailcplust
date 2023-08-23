@@ -1,6 +1,15 @@
 sealed class ApiException  implements Exception {
 }
 
+class UnExpectedPath extends ApiException {
+  final String? message;
+  UnExpectedPath({this.message});
+  @override
+  String toString() {
+    return 'UnExpectedPath: $message';
+  }
+}
+
 class NotFound extends ApiException {
   final String? message;
   NotFound({this.message});

@@ -4,27 +4,27 @@ import 'dart:convert';
 import 'package:portail_canalplustelecom_mobile/class/scanresult.dart';
 
 class DeviceBarCodes {
-  String? serialnumber;
-  String? mac;
+  String? numeroSerie;
+  String? adresseMAC;
   String? numdec;
   String? ontSerial;
 
   DeviceBarCodes({
-    this.serialnumber,
-    this.mac,
+    this.numeroSerie,
+    this.adresseMAC,
     this.numdec,
     this.ontSerial,
   });
 
   bool get isNull =>
-      [mac, serialnumber, numdec].every((element) => element == null);
+      [adresseMAC, numeroSerie, numdec].every((element) => element == null);
 
   static bool isNumdec(String value) => RegExp(r'^[0-9]*$').hasMatch(value);
   static bool isOntSerial(String value) => value.startsWith('SMB');
   static bool isSerial(String value) => value.startsWith('N');
 
   static bool isMac(String value) =>
-      RegExp(r'^([0-9A-Fa-f]{2}){5}[0-9A-Fa-f]{2}$').hasMatch(value);
+      RegExp(r'^([0-9A-Fa-f]{2}){6}$').hasMatch(value);
 
   static (String?, List<ScanResult>) getNumdec(List<ScanResult> scanResults) {
     var idx = scanResults.indexWhere((element) => isNumdec(element.data));
@@ -51,18 +51,6 @@ class DeviceBarCodes {
     return (scanResults.removeAt(idx).data, scanResults);
   }
 
-  updateWith({
-    String? serialnumber,
-    String? mac,
-    String? numdec,
-    String? ontSerial,
-  }) {
-    this.serialnumber = serialnumber;
-    this.mac = mac;
-    this.numdec = numdec;
-    this.ontSerial = ontSerial;
-  }
-
   DeviceBarCodes copyWith({
     String? serialnumber,
     String? mac,
@@ -70,8 +58,8 @@ class DeviceBarCodes {
     String? ontSerial,
   }) {
     return DeviceBarCodes(
-      serialnumber: serialnumber ?? this.serialnumber,
-      mac: mac ?? this.mac,
+      numeroSerie: serialnumber ?? numeroSerie,
+      adresseMAC: mac ?? adresseMAC,
       numdec: numdec ?? this.numdec,
       ontSerial: ontSerial ?? this.ontSerial,
     );
@@ -79,8 +67,8 @@ class DeviceBarCodes {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'serialnumber': serialnumber,
-      'mac': mac,
+      'serialnumber': numeroSerie,
+      'mac': adresseMAC,
       'numdec': numdec,
       'ontSerial': ontSerial,
     };
@@ -96,14 +84,14 @@ class DeviceBarCodes {
     (serial, scr) = DeviceBarCodes.getSerial(scr);
 
     return DeviceBarCodes(
-        numdec: numdec, mac: mac, serialnumber: serial, ontSerial: ontSerial);
+        numdec: numdec, adresseMAC: mac, numeroSerie: serial, ontSerial: ontSerial);
   }
 
   factory DeviceBarCodes.fromMap(Map<String, dynamic> map) {
     return DeviceBarCodes(
-      serialnumber:
+      numeroSerie:
           map['serialnumber'] != null ? map['serialnumber'] as String : null,
-      mac: map['mac'] != null ? map['mac'] as String : null,
+      adresseMAC: map['mac'] != null ? map['mac'] as String : null,
       numdec: map['numdec'] != null ? map['numdec'] as String : null,
       ontSerial: map['ontSerial'] != null ? map['ontSerial'] as String : null,
     );
@@ -116,23 +104,23 @@ class DeviceBarCodes {
 
   @override
   String toString() {
-    return 'DeviceBarCodes(serialnumber: $serialnumber, mac: $mac, numdec: $numdec, ontSerial: $ontSerial)';
+    return 'DeviceBarCodes(serialnumber: $numeroSerie, mac: $adresseMAC, numdec: $numdec, ontSerial: $ontSerial)';
   }
 
   @override
   bool operator ==(covariant DeviceBarCodes other) {
     if (identical(this, other)) return true;
 
-    return other.serialnumber == serialnumber &&
-        other.mac == mac &&
+    return other.numeroSerie == numeroSerie &&
+        other.adresseMAC == adresseMAC &&
         other.numdec == numdec &&
         other.ontSerial == ontSerial;
   }
 
   @override
   int get hashCode {
-    return serialnumber.hashCode ^
-        mac.hashCode ^
+    return numeroSerie.hashCode ^
+        adresseMAC.hashCode ^
         numdec.hashCode ^
         ontSerial.hashCode;
   }

@@ -8,22 +8,30 @@ class CustomTheme {
 
 class LightTheme {
   final ThemeData theme = ThemeData(
-    useMaterial3: true,
-    appBarTheme:  AppBarTheme(
-      backgroundColor: lightColorScheme.primary,
-      foregroundColor: Colors.white,
-    ),
-    colorScheme: lightColorScheme,
-  );
+      useMaterial3: true,
+      appBarTheme: AppBarTheme(
+        backgroundColor: lightColorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
+      colorScheme: lightColorScheme,
+      inputDecorationTheme: InputDecorationTheme(
+          hintStyle: TextStyle(
+              color: lightColorScheme.outline.withOpacity(0.7),
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w200)));
 }
 
 class DarkTheme {
   final ThemeData theme = ThemeData(
-    useMaterial3: true,
-    appBarTheme:  AppBarTheme(
-      backgroundColor: lightColorScheme.primary,
-      foregroundColor: Colors.white,
-    ),
-    colorScheme: darkColorScheme,
-  );
+      useMaterial3: true,
+      appBarTheme: AppBarTheme(
+        backgroundColor: lightColorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
+      colorScheme: darkColorScheme,
+      inputDecorationTheme: InputDecorationTheme(
+          hintStyle: TextStyle(
+              color: lightColorScheme.outline.withOpacity(0.7),
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w200)));
 }

@@ -1,60 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
+import 'package:portail_canalplustelecom_mobile/class/exchange.equipement.controller.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 
-enum SelectedEquipement { older, newer }
-
 class EchangeEquipementSwitcher extends StatefulWidget {
-  final Function(Equipement? equipment) onSwitch;
-  static Equipement? nouvelEquipementEnCoursDeSaisie;
-  static Equipement? ancienEquipementEnCoursDeSaisie;
-  static Equipement? nouvelEquipement;
-  static Equipement? ancienEquipement;
-  static SelectedEquipement selectedEquipement = SelectedEquipement.newer;
-
-  static bool get isNewer => selectedEquipement == SelectedEquipement.newer;
-  static bool get isOlder => !isNewer;
-
-  static Equipement? get getCurrentEquipement => isNewer
-      ? nouvelEquipementEnCoursDeSaisie
-      : ancienEquipementEnCoursDeSaisie;
-  static set setCurrentEquipement(Equipement value) => isNewer
-      ? nouvelEquipementEnCoursDeSaisie = value
-      : ancienEquipementEnCoursDeSaisie = value;
-
-  static _updateolder(
-      {String? numdec, String? numeroSerie, String? adresseMAC}) {
-    nouvelEquipementEnCoursDeSaisie ??= Equipement();
-    ancienEquipementEnCoursDeSaisie = ancienEquipementEnCoursDeSaisie?.copyWith(
-        numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
-  }
-
-  static _updatenewer(
-      {String? numdec, String? numeroSerie, String? adresseMAC}) {
-    nouvelEquipementEnCoursDeSaisie ??= Equipement();
-    nouvelEquipementEnCoursDeSaisie = nouvelEquipementEnCoursDeSaisie?.copyWith(
-        numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
-  }
-
-  static update({String? numdec, String? numeroSerie, String? adresseMAC}) {
-    assert(ancienEquipementEnCoursDeSaisie == null,
-        "ancienEquipement shoud not be null");
-    assert(nouvelEquipementEnCoursDeSaisie == null,
-        "nouvelEquipement shoud not be null");
-
-    if (isNewer) {
-      _updatenewer(
-          numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
-    } else {
-      _updateolder(
-          numdec: numdec, numeroSerie: numeroSerie, adresseMAC: adresseMAC);
-    }
-  }
+    final void Function(Equipement? equipment)? onswitch;
 
   const EchangeEquipementSwitcher({
     Key? key,
-    required this.onSwitch,
+    this.onswitch,
   }) : super(key: key);
 
   @override
@@ -63,28 +18,21 @@ class EchangeEquipementSwitcher extends StatefulWidget {
 }
 
 class _EchangeEquipementSwitcherState extends State<EchangeEquipementSwitcher> {
-  late SelectedEquipement selectedEquipement =
-      EchangeEquipementSwitcher.selectedEquipement;
-
   nouvelEquipementOnTap() {
-    if (mounted) {
-      setState(() {
-        selectedEquipement = SelectedEquipement.newer;
-        EchangeEquipementSwitcher.selectedEquipement = selectedEquipement;
-      });
-      widget
-          .onSwitch(EchangeEquipementSwitcher.nouvelEquipementEnCoursDeSaisie);
+    if(mounted){
+    setState(() {
+      context.selectedEquipement = SelectedEquipement.newer;
+    });
+    widget.onswitch?.call(context.exchangeEquipementController?.getCurrentEquipement);
     }
   }
 
   ancienEquipementOnTap() {
-    if (mounted) {
-      setState(() {
-        selectedEquipement = SelectedEquipement.older;
-        EchangeEquipementSwitcher.selectedEquipement = selectedEquipement;
-      });
-      widget
-          .onSwitch(EchangeEquipementSwitcher.ancienEquipementEnCoursDeSaisie);
+    if(mounted) {
+    setState(() {
+      context.selectedEquipement = SelectedEquipement.older;
+    });
+    widget.onswitch?.call(context.exchangeEquipementController?.getCurrentEquipement);
     }
   }
 
@@ -93,21 +41,13 @@ class _EchangeEquipementSwitcherState extends State<EchangeEquipementSwitcher> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _NouvelEquipementRecap(
-            equipement:
-                EchangeEquipementSwitcher.nouvelEquipementEnCoursDeSaisie,
-            ontap: nouvelEquipementOnTap,
-            selectedEquipement: selectedEquipement),
+        _NouvelEquipementRecap(ontap: nouvelEquipementOnTap),
         Icon(
           Icons.swap_horiz_outlined,
           size: 60,
           color: lightColorScheme.primary,
         ),
-        _AncienEquipementRecap(
-            equipement:
-                EchangeEquipementSwitcher.ancienEquipementEnCoursDeSaisie,
-            ontap: ancienEquipementOnTap,
-            selectedEquipement: selectedEquipement),
+        _AncienEquipementRecap(ontap: ancienEquipementOnTap),
       ],
     );
   }
@@ -190,14 +130,10 @@ class EquipementRecap extends StatelessWidget {
 }
 
 class _NouvelEquipementRecap extends StatelessWidget {
-  final Equipement? equipement;
-  final SelectedEquipement selectedEquipement;
   final Function()? ontap;
 
   const _NouvelEquipementRecap({
     Key? key,
-    this.equipement,
-    required this.selectedEquipement,
     this.ontap,
   }) : super(key: key);
 
@@ -206,21 +142,17 @@ class _NouvelEquipementRecap extends StatelessWidget {
     return EquipementRecap(
       title: "Nouveau",
       ontap: ontap,
-      isSelected: selectedEquipement == SelectedEquipement.newer,
-      numdec: equipement?.getnumdec,
+      isSelected: context.selectedEquipement == SelectedEquipement.newer,
+      numdec: context.equipementValidated?.newerEquipement?.getnumdec,
     );
   }
 }
 
 class _AncienEquipementRecap extends StatelessWidget {
-  final Equipement? equipement;
-  final SelectedEquipement selectedEquipement;
   final Function()? ontap;
 
   const _AncienEquipementRecap({
     Key? key,
-    this.equipement,
-    required this.selectedEquipement,
     this.ontap,
   }) : super(key: key);
 
@@ -229,8 +161,8 @@ class _AncienEquipementRecap extends StatelessWidget {
     return EquipementRecap(
       ontap: ontap,
       title: "Ancien",
-      isSelected: selectedEquipement == SelectedEquipement.older,
-      numdec: equipement?.getnumdec,
+      isSelected: context.selectedEquipement == SelectedEquipement.older,
+      numdec: context.equipementValidated?.olderEquipement?.getnumdec,
     );
   }
 }

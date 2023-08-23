@@ -98,7 +98,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
           .affecterEquipement(context, equipement: newEchangeEquipment!);
       return actionDialog(retour: res);
     } catch (e) {
-       return errorDialog("Erreur API : 0x987415");
+      return errorDialog("Erreur API : 0x987415");
     }
   }
 
@@ -115,6 +115,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
   }
 
   Future echanger() async {
+    //TODO ########## set erreur if codeOffre vide
     if (newEchangeEquipment == null) {
       return errorDialog("Aucun nouvel équipement sélectioné");
     }

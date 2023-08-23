@@ -118,8 +118,8 @@ class Prestation extends Equatable {
 
   static Future<List<Prestation>> get(BuildContext context) async {
     try {
-      var data = await OAuthManager.of(context)!.get(
-          context, "${ApplicationConfiguration.instance!.webapipfs}/$rdvpath/list");
+      var data = await OAuthManager.of(context)!.get(context,
+          "${ApplicationConfiguration.instance!.webapipfs}/$rdvpath/list");
       return List.from(data.map((e) => Prestation.fromMap(e)));
     } on NotFound catch (_) {
       return List.empty();
@@ -128,12 +128,18 @@ class Prestation extends Equatable {
 
   static Future<List<Prestation>> search(
       BuildContext context, String param) async {
+    if (param.isEmpty) {
+      return Future.error(UnExpectedPath(message: "Invalid Url"));
+    }
     var data = await OAuthManager.of(context)!.get(context,
         "${ApplicationConfiguration.instance!.webapipfs}/$rdvpath/search/$param");
     return List.from(data.map((e) => Prestation.fromMap(e)));
   }
 
   Future<List<MigAction>> getAllActions(BuildContext context) async {
+    if (numPrestation.isEmpty) {
+      return Future.error(UnExpectedPath(message: "Invalid Url"));
+    }
     var data = await OAuthManager.of(context)!.get(context,
         "${ApplicationConfiguration.instance!.webapipfs}/$migpath/actions/$offre/$numPrestation");
 
@@ -151,6 +157,9 @@ class Prestation extends Equatable {
     BuildContext context, {
     required Equipement equipement,
   }) async {
+    if (numPrestation.isEmpty || offre.isEmpty) {
+      return Future.error(UnExpectedPath(message: "Invalid Url"));
+    }
     var data = await OAuthManager.of(context)!.post(context,
         "${ApplicationConfiguration.instance!.webapipfs}/$migpath/action/affecter-equipement/$offre/$numPrestation",
         body: equipement.toMap());
@@ -161,6 +170,9 @@ class Prestation extends Equatable {
     BuildContext context, {
     required Equipement equipement,
   }) async {
+    if (numPrestation.isEmpty || offre.isEmpty) {
+      return Future.error(UnExpectedPath(message: "Invalid Url"));
+    }
     var data = await OAuthManager.of(context)!.post(context,
         "${ApplicationConfiguration.instance!.webapipfs}/$migpath/action/restituer-equipement/$offre/$numPrestation",
         body: equipement.toMap());
@@ -173,6 +185,9 @@ class Prestation extends Equatable {
     required Equipement nouveauEquipement,
     String? ancienNumDec,
   }) async {
+    if (numPrestation.isEmpty || offre.isEmpty) {
+      return Future.error(UnExpectedPath(message: "Invalid Url"));
+    }
     var data = await OAuthManager.of(context)!.post(context,
         "${ApplicationConfiguration.instance!.webapipfs}/$migpath/action/echanger-equipement/$offre/$numPrestation",
         body: {

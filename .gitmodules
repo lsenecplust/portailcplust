@@ -1,0 +1,3 @@
+[submodule "librairies"]
+	path = librairies
+	url = git@gitlab.infra.msv:PFS/dart/librairies.git

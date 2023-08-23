@@ -6,7 +6,7 @@ import 'package:portail_canalplustelecom_mobile/class/theme.config.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 import 'package:rive_splash_screen/rive_splash_screen.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
-import 'package:portail_canalplustelecom_mobile/widgets/somethingwentwrong.dart';
+import 'package:librairies/somethingwentwrong.dart';
 
 import 'auth.dart';
 

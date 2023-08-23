@@ -12,7 +12,7 @@ import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/action.equipement.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
-import 'package:portail_canalplustelecom_mobile/widgets/futurebuilder.dart';
+import 'package:librairies/futurebuilder.dart';
 
 class PrestationCard extends StatelessWidget {
   final Prestation prestation;
@@ -176,7 +176,7 @@ class _ActionModalSheetState extends State<ActionModalSheet> {
             ),
           ),
           Expanded(
-            child: CustomFutureBuilder(
+            child: EnhancedFutureBuilder(
                 future: future,
                 progressIndicator: Column(children: [
                   const PortailIndicator(),

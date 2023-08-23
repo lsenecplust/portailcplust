@@ -56,6 +56,9 @@ dependencies:
   scandit_flutter_datacapture_barcode: ^6.18.0
   permission_handler: ^10.4.3
   scandit_flutter_datacapture_core: ^6.18.0
+  librairies:
+    path: ./librairies
+  mask_text_input_formatter: ^2.5.0
 
 dev_dependencies:
   flutter_test:
