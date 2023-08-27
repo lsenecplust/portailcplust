@@ -60,7 +60,7 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
       type: MaskAutoCompletionType.eager);
 
   final numeroSeriemask = MaskTextInputFormatter(
-      mask: 'N############',
+      mask: 'N##############',
       filter: {"#": RegExp(r'[0-9]*')},
       type: MaskAutoCompletionType.eager);
 
@@ -137,6 +137,7 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
               controller: numdecctrl,
+              maxLength: 12,
               validator: ValidationBuilder()
                   .required("Le Numdec est obligatoire")
                   .build(),
@@ -154,6 +155,7 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
             child: TextFormField(
               inputFormatters: [numeroSeriemask],
               controller: numeroSeriectrl,
+              maxLength: 15,
               keyboardType: TextInputType.number,
               onChanged: (value) => context.exchangeEquipementController
                   ?.updateCurrent(numeroSerie: value),
@@ -167,6 +169,7 @@ class _SaisieManuelleSimpleState extends State<_SaisieManuelleSimple> {
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
               controller: adresseMACctlr,
+              maxLength: 17,
               textCapitalization: TextCapitalization.characters,
               inputFormatters: [macmask],
               validator: ValidationBuilder(optional: true)
