@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
@@ -42,7 +41,7 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
 
   Widget equipementfuture() => EquipementFuture(
         migaction: widget.migaction,
-        future: Equipement.get(context, lastScan?.numdec),
+        future: Equipement.find(context, lastScan?.numdec),
         scannedbarcode: lastScan,
         onSelectedequipment: (equipement) {
           widget.onSelected(equipement);

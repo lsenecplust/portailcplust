@@ -113,7 +113,7 @@ class OAuthManager extends InheritedWidget {
       if (response.statusCode == 404) {
         return Future.error(NotFound());
       }
-      if(response.statusCode==204) {
+      if (response.statusCode == 204) {
         return Future.value(true);
       }
       try {
@@ -123,7 +123,8 @@ class OAuthManager extends InheritedWidget {
       }
     } on AuthorizationException catch (e) {
       client!.close();
-      OAuthManager.of(context)?.onHttpInit(null); //Redirige vers la page login
+      Future.microtask(() => OAuthManager.of(context)
+          ?.onHttpInit(null)); //Redirige vers la page login
       return Future.error(
           UnAuthorise(message: "${e.error} : ${e.description}"));
     } on TimeoutException catch (_) {
@@ -132,8 +133,6 @@ class OAuthManager extends InheritedWidget {
       return Future.error(Internal());
     }
   }
-
-
 
   Future<bool?> logout(BuildContext context) async {
     if (ApplicationConfiguration.instance == null) return Future.value(null);

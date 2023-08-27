@@ -40,12 +40,12 @@ class RechercheEquipementSimple extends StatefulWidget {
   final Prestation? prestation;
   final MigAction migaction;
   final bool modeEchange;
-  final Function(Equipement equipment)? onSelected;
+  final Function(Equipement equipment) onSelected;
   const RechercheEquipementSimple({
     Key? key,
     this.prestation,
     required this.migaction,
-    this.onSelected,
+    required this.onSelected,
     this.modeEchange = false,
   }) : super(key: key);
 
@@ -56,8 +56,7 @@ class RechercheEquipementSimple extends StatefulWidget {
 
 class _RechercheEquipementSimpleState extends State<RechercheEquipementSimple> {
   final searchcontroller = TextEditingController();
-  late Future<List<Equipement>> futureEquipement =
-      Equipement.get(context, null);
+  late Future<List<Equipement>> futureEquipement = Future.value(List.empty());
   String? searchPattern;
 
   List<Widget> buildItems(BuildContext context) {
@@ -105,7 +104,7 @@ class _RechercheEquipementSimpleState extends State<RechercheEquipementSimple> {
           onFieldSubmitted: (value) {
             setState(() {
               searchPattern = value;
-              futureEquipement = Equipement.get(context, searchPattern);
+              futureEquipement = Equipement.search(context, searchPattern);
             });
           },
           decoration: const InputDecoration(

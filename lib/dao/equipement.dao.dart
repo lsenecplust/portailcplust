@@ -271,24 +271,39 @@ class Equipement {
   /*-----------------------------    FETCH METHODS  -----------------------------*/
   /*-----------------------------------------------------------------------------*/
   static String migpath = "api/Mig";
-  static Future<List<Equipement>> _get(
-      BuildContext context, String param) async {
-    if (param.isEmpty) {
-      return Future.error(UnExpectedPath(message: "Invalid Url"));
+  static Future<List<Equipement>> _search(
+      BuildContext context, String? param) async {
+    if (param?.isEmpty ?? true) {
+      return Future.error(
+          UnExpectedPath(message: "Equipement Reference cannot be null or empty"));
     }
     var data = await OAuthManager.of(context)!.get(context,
-        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/equipement/$param");
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/equipement/search/$param");
     return List.from(data.map((e) => Equipement.fromMap(e)));
   }
 
-  static Future<List<Equipement>> get(
+  static Future<List<Equipement>> search(
       BuildContext context, String? param) async {
-    if (param == null) return Future.value(List.empty());
     try {
-      var eqs = await _get(context, param);
+      var eqs = await _search(context, param);
       return eqs;
     } on NotFound catch (_) {
       return List.empty();
     }
   }
+
+  static Future<Equipement> find(BuildContext context, String? param) async {
+    if (param?.isEmpty ?? true) {
+      return Future.error(UnExpectedPath(message: "Pattern cannot be null or empty"));
+    }
+    if (param!.length < 3) {
+      return Future.error(
+          UnExpectedPath(message: "search need at least 4 character"));
+    }
+    var data = await OAuthManager.of(context)!.get(context,
+        "${ApplicationConfiguration.instance!.webapipfs}/$migpath/equipement/$param");
+    return Equipement.fromMap(data);
+  }
+
+
 }

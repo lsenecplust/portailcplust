@@ -59,7 +59,7 @@ class EquipementCard extends StatelessWidget {
                       )),
                   const Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("numdec"),
                       Text("S/N"),
@@ -68,15 +68,19 @@ class EquipementCard extends StatelessWidget {
                       Text("EAN"),
                     ],
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(equipement.getnumdec),
-                      Text(equipement.getnumeroSerie),
-                      Text(equipement.formatedAddressMAC),
-                      Text(equipement.getmarque),
-                      Text(equipement.getcodeEAN),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(right : 30.0),
+                    child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(equipement.getnumdec),
+                        Text(equipement.getnumeroSerie),
+                        Text(equipement.formatedAddressMAC),
+                        Text(equipement.getmarque),
+                        Text(equipement.getcodeEAN),
+                      ],
+                    ),
                   ),
                 ],
               )),
