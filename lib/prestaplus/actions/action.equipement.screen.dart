@@ -1,9 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:librairies/streambuilder.dart';
+import 'package:web_socket_channel/io.dart';
+
 import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
@@ -16,8 +18,6 @@ import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/floatingactio
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ActionEquipementScreen extends StatefulWidget {
   final Prestation prestation;
@@ -89,7 +89,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
     }
   }
 
-  Stream migStreamWebsocket() async* {
+  Stream<List<MigWebSocketServerMessage>> migStreamWebsocket() async* {
     List<MigWebSocketServerMessage> histo = [];
     final channel = IOWebSocketChannel.connect(
         Uri.parse("ws://192.168.0.14/api/Mig/action-equipement/ws/"),
@@ -114,7 +114,6 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
       histo.add(MigWebSocketServerMessage.fromJson(msg));
       yield histo;
     }
-
   }
 
   Future openWebSocketForAction(MigAction action) async {
@@ -144,7 +143,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
             duration: const Duration(milliseconds: 500),
             width: MediaQuery.of(context).size.height * 0.8,
             height: MediaQuery.of(context).size.height * .25,
-            child: EnhancedStreamBuilder(
+            child: EnhancedStreamBuilder<List<MigWebSocketServerMessage>>(
               progressIndicator: const PortailIndicator(),
               stream: migStreamWebsocket(),
               builder: (context, snapshot) {
@@ -154,7 +153,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
                     resultDialog(true, "Good");
                   }));
                 }
-                return Center(child: Text(snapshot.data ?? "0"));
+                return HistoAction(actions: snapshot.data!);
               },
             ),
           ),
@@ -195,5 +194,33 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
         }
       },
     ).show();
+  }
+}
+
+class HistoAction extends StatelessWidget {
+  const HistoAction({
+    Key? key,
+    required this.actions,
+  }) : super(key: key);
+  final List<MigWebSocketServerMessage> actions;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: List.from(actions.map((e) => Action(message: e))));
+  }
+}
+
+class Action extends StatelessWidget {
+  final MigWebSocketServerMessage message;
+  const Action({
+    Key? key,
+    required this.message,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(message.message);
   }
 }
