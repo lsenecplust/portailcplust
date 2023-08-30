@@ -214,7 +214,7 @@ class _ActionModalSheetState extends State<ActionModalSheet> {
       return Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: InkWell(
-              onTap: () => goto(actions[0], widget.oauthContext ?? context),
+          onTap: () => goto(actions[0], widget.oauthContext ?? context),
           child: Card(
               color: lightColorScheme.primaryContainer,
               child: Column(
