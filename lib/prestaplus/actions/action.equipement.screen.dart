@@ -1,21 +1,16 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:librairies/streambuilder.dart';
-import 'package:web_socket_channel/io.dart';
-
 import 'package:portail_canalplustelecom_mobile/auth.dart';
+
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
-import 'package:portail_canalplustelecom_mobile/dao/websokect.server.message.dart';
+import 'package:portail_canalplustelecom_mobile/dao/websocket.client.message.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/recherche.equipement.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/actions/running.action.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/saisiemanuelle.equipement.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/actions/scanner.equipement.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/floatingactionbuttonvisible.widget.dart';
-import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/tab.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 
@@ -89,34 +84,7 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
     }
   }
 
-  Stream<List<MigWebSocketServerMessage>> migStreamWebsocket() async* {
-    List<MigWebSocketServerMessage> histo = [];
-    final channel = IOWebSocketChannel.connect(
-        Uri.parse("ws://192.168.0.14/api/Mig/action-equipement/ws/"),
-        headers: {
-          'Authorization':
-              "Bearer ${OAuthManager.of(context)?.client?.credentials.accessToken}"
-        });
-
-    channel.sink.add(json.encode({
-      "prestationRef": "EPR2391953",
-      "CodeTache": "T0013",
-      "Offre": "FIBCOFINU",
-      "nouvelEquipement": {
-        "typeEquipement": "ONT",
-        "numDec": "693000043113",
-        "adresseMAC": "693000043113",
-        "numeroSerie": "693000043113"
-      }
-    }));
-
-    await for (var msg in channel.stream) {
-      histo.add(MigWebSocketServerMessage.fromJson(msg));
-      yield histo;
-    }
-  }
-
-  Future openWebSocketForAction(MigAction action) async {
+  openWebSocketForAction(MigAction action) {
     if (newEchangeEquipment == null) {
       return errorDialog("Aucun équipement sélectioné");
     }
@@ -132,35 +100,18 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
       }
     }
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(32.0))),
-          contentPadding: const EdgeInsets.only(top: 10.0),
-          content: AnimatedContainer(
-            duration: const Duration(milliseconds: 500),
-            width: MediaQuery.of(context).size.height * 0.8,
-            height: MediaQuery.of(context).size.height * .25,
-            child: EnhancedStreamBuilder<List<MigWebSocketServerMessage>>(
-              progressIndicator: const PortailIndicator(),
-              stream: migStreamWebsocket(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  Future.microtask((() {
-                    Navigator.pop(context);
-                    resultDialog(true, "Good");
-                  }));
-                }
-                return HistoAction(actions: snapshot.data!);
-              },
-            ),
-          ),
-        );
-      },
-    );
-    return Future.value(null);
+    OAuthManager.of(context)?.navigatePush(
+        context,
+        RunningActionScreen(
+          prestation: widget.prestation,
+          migAction: action,
+          message: MigWebSocketClientMessage(
+              prestationRef: widget.prestation.numPrestation,
+              codeTache: widget.migAction.codeTache,
+              offre: widget.prestation.offre,
+              nouvelEquipement: newEchangeEquipment,
+              ancienEquipement: oldEchangeEquipment),
+        ));
   }
 
   void errorDialog(String msg) {
@@ -175,52 +126,5 @@ class _ActionEquipementScreenState extends State<ActionEquipementScreen> {
       desc: msg,
       btnOkIcon: Icons.check_circle,
     ).show();
-  }
-
-  void resultDialog(bool retour, String msg) {
-    AwesomeDialog(
-      context: context,
-      animType: AnimType.leftSlide,
-      headerAnimationLoop: false,
-      autoHide: const Duration(seconds: 2),
-      dialogType: retour ? DialogType.success : DialogType.error,
-      showCloseIcon: true,
-      title: retour ? 'Succes' : 'Error',
-      desc: '${widget.migAction.tache} Terminée',
-      btnOkIcon: Icons.check_circle,
-      onDismissCallback: (type) {
-        if (retour) {
-          OAuthManager.of(context)?.navigatePush(context, const ScaffoldMenu());
-        }
-      },
-    ).show();
-  }
-}
-
-class HistoAction extends StatelessWidget {
-  const HistoAction({
-    Key? key,
-    required this.actions,
-  }) : super(key: key);
-  final List<MigWebSocketServerMessage> actions;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: List.from(actions.map((e) => Action(message: e))));
-  }
-}
-
-class Action extends StatelessWidget {
-  final MigWebSocketServerMessage message;
-  const Action({
-    Key? key,
-    required this.message,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(message.message);
   }
 }

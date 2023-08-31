@@ -2,23 +2,61 @@ import 'package:flutter/material.dart';
 import 'package:rive_loading/rive_loading.dart';
 
 class PortailIndicator extends StatelessWidget {
-  const PortailIndicator({super.key});
+  final double? width;
+  final double? height;
+  const PortailIndicator({
+    Key? key,
+    this.width,
+    this.height,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 100,maxHeight: 100),
-        child: RiveLoading(
-            name: 'assets/rives/logo.riv',
-            loopAnimation: 'loading',
-            onSuccess: (_) {
-              debugPrint('Finished');
-            },
-            onError: (err, stack) {
-              debugPrint('onError');
-            }),
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 100, maxHeight: 100),
+          child: RiveLoading(
+              name: 'assets/rives/logo.riv',
+              loopAnimation: 'loading',
+              onSuccess: (_) {
+                debugPrint('Finished');
+              },
+              onError: (err, stack) {
+                debugPrint('onError');
+              }),
+        ),
       ),
+    );
+  }
+}
+
+
+class Processindicator extends StatelessWidget {
+  final double? width;
+  final double? height;
+  const Processindicator({
+    Key? key,
+    this.width,
+    this.height,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: RiveLoading(
+          name: 'assets/rives/process_indicator.riv',
+          loopAnimation: 'Timeline 1',
+          onSuccess: (_) {
+            debugPrint('Finished');
+          },
+          onError: (err, stack) {
+            debugPrint('onError');
+          }),
     );
   }
 }

@@ -22,15 +22,15 @@ class MigWebSocketServerMessage extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'message': message,
-      'error': error,
+      'Message': message,
+      'Error': error,
     };
   }
 
   factory MigWebSocketServerMessage.fromMap(Map<String, dynamic> map) {
     return MigWebSocketServerMessage(
-      message: map['message'] ?? '',
-      error: map['error'] ?? false,
+      message: map['Message'] ?? '',
+      error: map['Error'] ?? false,
     );
   }
 
