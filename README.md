@@ -24,3 +24,11 @@ samples, guidance on mobile development, and a full API reference.
 - adb tcpip 5555
 - adb connect <YOUR_IP>:5555
 
+# Release a Version
+flutter build apk --release -t ./lib/main.recette.dart
+or
+flutter build apk --release -t ./lib/main.production.dart
+
+# Release a Store Version
+flutter build appbundle --release -t ./lib/main.production.dart
+

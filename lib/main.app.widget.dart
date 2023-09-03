@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:librairies/keycloack_auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:portail_canalplustelecom_mobile/class/theme.config.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 import 'package:rive_splash_screen/rive_splash_screen.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:librairies/somethingwentwrong.dart';
 
-import 'auth.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -33,9 +34,11 @@ class MainApp extends StatelessWidget {
       home: SplashScreen.navigate(
         fit: BoxFit.contain,
         name: 'assets/rives/logo.riv',
-        next: (context) => const Auth(
-          errorWidget: SomethingWenWrong(line1: "Erreur Auth"),
-          child: ScaffoldMenu(),
+        next: (context) =>  KeycloakAuth(
+          indicator: const PortailIndicator(),
+          keycloakConfig: ApplicationConfiguration.instance!.keycloakConfig,
+          errorWidget: const SomethingWenWrong(line1: "Erreur Auth"),
+          child: const ScaffoldMenu(),
         ),
         isLoading: false,
         backgroundColor: Colors.white,

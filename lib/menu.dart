@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portail_canalplustelecom_mobile/auth.dart';
+import 'package:librairies/keycloack_auth.dart';
 import 'package:portail_canalplustelecom_mobile/geoeligibilite/geoeligibilites.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/calendrier/calendar.screen.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/recherche/recherche.screen.dart';

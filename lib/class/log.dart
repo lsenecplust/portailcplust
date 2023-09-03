@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:librairies/keycloack_auth.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 
 class PrestaPlus extends LocationLogger {}

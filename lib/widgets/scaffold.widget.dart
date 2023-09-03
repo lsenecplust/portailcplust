@@ -2,9 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:portail_canalplustelecom_mobile/auth.dart';
+import 'package:librairies/keycloack_auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
-
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
 import 'package:portail_canalplustelecom_mobile/class/exchange.equipement.controller.dart';
@@ -357,7 +356,7 @@ class _CplusDrawer extends StatelessWidget {
           title: const Text("Deconnection"),
           onTap: () async {
             var logoutUrl = ApplicationConfiguration
-                .instance?.keycloak.authorizationEndpoint;
+                .instance?.keycloakConfig.authorizationEndpoint;
             debugPrint(logoutUrl.toString());
             OAuthManager.of(context)?.logout(context).then((value) {
               if (value ?? false) OAuthManager.of(context)?.onHttpInit(null);

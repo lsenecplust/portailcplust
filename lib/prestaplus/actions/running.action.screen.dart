@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:librairies/keycloack_auth.dart';
 import 'package:librairies/streambuilder.dart';
 import 'package:timelines/timelines.dart';
 import 'package:web_socket_channel/io.dart';
-
-import 'package:portail_canalplustelecom_mobile/auth.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/websocket.client.message.dart';

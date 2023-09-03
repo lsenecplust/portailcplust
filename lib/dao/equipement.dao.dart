@@ -3,9 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:portail_canalplustelecom_mobile/auth.dart';
+import 'package:librairies/keycloack_auth.dart';
 import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
-import 'package:portail_canalplustelecom_mobile/class/exceptions.dart';
 
 class Equipement {
   final int? id;
