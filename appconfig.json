@@ -41,7 +41,7 @@
         }
     },
     "recette": {
-        "speedAnimations": true,
+        "speedAnimations": false,
         "keycloak": {
             "issuer": "https://re7.oss.canalplustelecom.com/dev/auth/realms/OSS-RECETTE",
             "clientid": "portail_canalplustelecom"

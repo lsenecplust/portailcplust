@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librairies/keycloack_auth.dart';
 import 'package:librairies/streambuilder.dart';
+import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:timelines/timelines.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
@@ -26,7 +27,8 @@ class RunningActionScreen extends StatelessWidget {
     Stream<List<MigWebSocketServerMessage>> migStreamWebsocket() async* {
       List<MigWebSocketServerMessage> histo = [];
       final channel = IOWebSocketChannel.connect(
-        Uri.parse("wss://192.168.0.14:5001/api/Mig/action-equipement/ws"),
+      //  Uri.parse("wss://${ApplicationConfiguration.instance!.webapipfs}/api/Mig/action-equipement/ws"),
+        Uri.parse("ws://fr-1vm-crmws13-r7/webApi_PFS/api/Mig/action-equipement/ws"),
         headers: {
           'Authorization':
               'Bearer ${OAuthManager.of(context)?.client?.credentials.accessToken}'
