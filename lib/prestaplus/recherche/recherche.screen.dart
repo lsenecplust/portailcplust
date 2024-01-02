@@ -3,6 +3,7 @@ import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
 import 'package:librairies/futurebuilder.dart';
+import 'package:portail_canalplustelecom_mobile/widgets/toggle.buttons.widget.dart';
 
 class PrestaplusRechercheScreen extends StatefulWidget {
   const PrestaplusRechercheScreen({super.key});
@@ -108,24 +109,18 @@ class _PresationListState extends State<PresationList> {
 
           return Column(
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: SizedBox(
-                  width: 268,
-                  height: 50,
-                  child: SwitchListTile(
-                      title: Text(
-                        showOlderPrestation
-                            ? "Tous les Rendez-vous"
-                            : "Rendez-vous à venir",
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      value: showOlderPrestation,
-                      onChanged: ((value) {
-                        setState(() {
-                          showOlderPrestation = value;
-                        });
-                      })),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ToogleButtons(
+                  buttons: [
+                    ToogleButton(text: "Rendez-vous futures"),
+                    ToogleButton(text: "Tous les Rendez-vous"),
+                  ],
+                  onSelectIndexChanged: (selectedindex) {
+                    setState(() {
+                      showOlderPrestation = selectedindex==1;
+                    });
+                  },
                 ),
               ),
               Expanded(
