@@ -328,9 +328,7 @@ class _Background extends StatelessWidget {
 }
 
 class _CplusDrawer extends StatelessWidget {
-  const _CplusDrawer({
-    super.key,
-  });
+  const _CplusDrawer();
 
   @override
   Widget build(BuildContext context) {

@@ -138,7 +138,6 @@ class _RechercheEquipementEchange extends StatefulWidget {
   final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
   final MigAction migaction;
   const _RechercheEquipementEchange({
-    super.key,
     required this.onSubmit,
     required this.migaction,
   });

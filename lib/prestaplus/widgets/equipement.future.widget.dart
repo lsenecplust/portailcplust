@@ -193,7 +193,6 @@ class _NotfoundEquipement extends StatelessWidget {
   final void Function()? movetomanual;
 
   const _NotfoundEquipement({
-    super.key,
     required this.numdec,
     required this.movetomanual,
   });

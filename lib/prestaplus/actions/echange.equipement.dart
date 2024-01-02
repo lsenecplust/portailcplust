@@ -133,7 +133,6 @@ class _NouvelEquipementRecap extends StatelessWidget {
   final Function()? ontap;
 
   const _NouvelEquipementRecap({
-    super.key,
     this.ontap,
   });
 
@@ -152,7 +151,6 @@ class _AncienEquipementRecap extends StatelessWidget {
   final Function()? ontap;
 
   const _AncienEquipementRecap({
-    super.key,
     this.ontap,
   });
 

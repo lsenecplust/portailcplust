@@ -38,7 +38,6 @@ class _SaisieManuelleSimple extends StatefulWidget {
 
   final MigAction migaction;
   const _SaisieManuelleSimple({
-    super.key,
     required this.onSubmit,
     this.currentEquipement,
     this.modeEchange = false,
@@ -246,7 +245,6 @@ class _SaisieManuelleEchange extends StatefulWidget {
   final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
   final MigAction migaction;
   const _SaisieManuelleEchange({
-    super.key,
     required this.onSubmit,
     required this.migaction,
   });
