@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:librairies/keycloack_auth.dart';
 import 'package:librairies/streambuilder.dart';
@@ -10,6 +12,7 @@ import 'package:portail_canalplustelecom_mobile/dao/websocket.client.message.dar
 import 'package:portail_canalplustelecom_mobile/dao/websokect.server.message.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class RunningActionScreen extends StatelessWidget {
   final Prestation prestation;
@@ -27,18 +30,26 @@ class RunningActionScreen extends StatelessWidget {
     Stream<List<MigWebSocketServerMessage>> migStreamWebsocket() async* {
       List<MigWebSocketServerMessage> histo = [];
       final channel = IOWebSocketChannel.connect(
-      //  Uri.parse("wss://${ApplicationConfiguration.instance!.webapipfs}/api/Mig/action-equipement/ws"),
-        Uri.parse("ws://fr-1vm-crmws13-r7/webApi_PFS/api/Mig/action-equipement/ws"),
+        Uri.parse("wss://re7.oss.canalplustelecom.com/pfs/websocket"),
+        //  Uri.parse("wss://${ApplicationConfiguration.instance!.webapipfs}/api/Mig/action-equipement/ws"),
+        //  Uri.parse("ws://fr-1vm-crmws13-r7/webApi_PFS/api/Mig/action-equipement/ws"),
+        //  Uri.parse("wss://192.168.0.11:5001/websocket/mig/action/equipement"),
+        //  Uri.parse("ws://fr-1vm-crmws13-r7/webApi_PFS/websocket/mig/action/equipement"),
         headers: {
-          'Authorization':
-              'Bearer ${OAuthManager.of(context)?.client?.credentials.accessToken}'
+          'X-AUTH-TOKEN' :"Bearer ${OAuthManager.of(context)?.client?.credentials.accessToken}",
+          "Upgrade": "websocket",
+          "Connection": "Upgrade",
+         /* 'Authorization':
+              'Bearer ${OAuthManager.of(context)?.client?.credentials.accessToken}'*/
         },
       );
 
-      channel.sink.add(message.toJson());
+      //  channel.sink.add(message.toJson());
 
       await for (var msg in channel.stream) {
-        histo.add(MigWebSocketServerMessage.fromJson(msg));
+        // histo.add(MigWebSocketServerMessage.
+        // fromJson(msg));
+        print(msg);
         yield histo;
       }
     }
@@ -60,8 +71,9 @@ class RunningActionScreen extends StatelessWidget {
         ),
         stream: migStreamWebsocket(),
         builder: (context, snapshot) {
+          if (snapshot.data?.isEmpty == true) return Container();
           bool isDone = snapshot.connectionState == ConnectionState.done;
-          bool isError = snapshot.data!.last.error;
+          bool isError = snapshot.data?.last.error ?? false;
           return Column(
             children: [
               Builder(builder: (context) {

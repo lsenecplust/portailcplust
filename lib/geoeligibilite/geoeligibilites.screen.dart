@@ -10,7 +10,7 @@ class GeoEligibiliteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
    return FlutterMap(
     options: MapOptions(
-        center: LatLng(16.1922065, -61.27238249999999),
+        center: const LatLng(16.1922065, -61.27238249999999),
         zoom: 8.5,
     ),
     children: [
