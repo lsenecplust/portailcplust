@@ -1,4 +1,4 @@
-package com.example.portail_canalplustelecom_mobile
+package com.canalplustelecom.portail_canalplustelecom_mobile
 
 import io.flutter.embedding.android.FlutterActivity
 

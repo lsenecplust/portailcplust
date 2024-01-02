@@ -44,7 +44,7 @@ class FABAnimatedState extends State<FABAnimated> {
   Widget build(BuildContext context) {
     if (widget.floatingActionButton == null) return Container();
     return AnimatedCrossFade(
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 100),
         crossFadeState:
             visible ? CrossFadeState.showFirst : CrossFadeState.showSecond,
         secondChild: Container(),
