@@ -16,9 +16,9 @@ import 'package:librairies/futurebuilder.dart';
 class PrestationCard extends StatelessWidget {
   final Prestation prestation;
   const PrestationCard({
-    Key? key,
+    super.key,
     required this.prestation,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -123,11 +123,11 @@ class ActionModalSheet extends StatefulWidget {
   final BuildContext? oauthContext;
   final double tileHeight;
   const ActionModalSheet({
-    Key? key,
+    super.key,
     required this.prestation,
     this.oauthContext,
     this.tileHeight = 100,
-  }) : super(key: key);
+  });
 
   @override
   State<ActionModalSheet> createState() => _ActionModalSheetState();

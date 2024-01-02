@@ -20,14 +20,14 @@ class SimpleScaffold extends StatefulWidget {
   final GlobalKey<FABAnimatedState>? floatingActionButtonKey;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
   const SimpleScaffold({
-    Key? key,
+    super.key,
     this.body,
     required this.appBar,
     this.drawer,
     this.floatingActionButton,
     this.floatingActionButtonKey,
     this.floatingActionButtonLocation,
-  }) : super(key: key);
+  });
 
   @override
   State<SimpleScaffold> createState() => _SimpleScaffoldState();
@@ -78,7 +78,7 @@ class ScaffoldTabs extends StatefulWidget {
   final TabController? tabcontroller;
   final Map<HorizontalTab, Widget>? tabs;
   const ScaffoldTabs({
-    Key? key,
+    super.key,
     this.appBar,
     this.drawer,
     this.floatingActionButton,
@@ -86,7 +86,7 @@ class ScaffoldTabs extends StatefulWidget {
     this.floatingActionButtonLocation,
     this.tabcontroller,
     this.tabs,
-  }) : super(key: key);
+  });
 
   static ScaffoldTabsCore? of(BuildContext context) =>
       ScaffoldTabsCore.of(context);
@@ -171,7 +171,7 @@ class _ScaffoldTabsWidget extends StatefulWidget {
   final TabController tabcontroller;
   final Map<HorizontalTab, Widget>? tabs;
   const _ScaffoldTabsWidget({
-    Key? key,
+    super.key,
     this.appBar,
     this.drawer,
     this.floatingActionButton,
@@ -179,7 +179,7 @@ class _ScaffoldTabsWidget extends StatefulWidget {
     this.floatingActionButtonLocation,
     required this.tabcontroller,
     this.tabs,
-  }) : super(key: key);
+  });
 
   @override
   State<_ScaffoldTabsWidget> createState() => _ScaffoldTabsWidgetState();
@@ -245,14 +245,14 @@ class ScaffoldMenu extends StatefulWidget {
   final Menu selectedmenu;
   final String title;
   const ScaffoldMenu({
-    Key? key,
+    super.key,
     this.child,
     this.floatingActionButton,
     this.floatingActionButtonLocation,
     this.floatingActionButtonKey,
     this.selectedmenu = Menu.prestaplus,
     this.title = 'Portail C+T',
-  }) : super(key: key);
+  });
 
   @override
   State<ScaffoldMenu> createState() => ScaffoldMenuState();
@@ -329,8 +329,8 @@ class _Background extends StatelessWidget {
 
 class _CplusDrawer extends StatelessWidget {
   const _CplusDrawer({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

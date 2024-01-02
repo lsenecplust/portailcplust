@@ -13,11 +13,11 @@ class BarCodeScanner extends StatefulWidget {
 
   final ValueChanged<Equipement> onSelected;
   const BarCodeScanner({
-    Key? key,
+    super.key,
     this.migaction,
     this.showClientCard = false,
     required this.onSelected,
-  }) : super(key: key);
+  });
 
   @override
   State<BarCodeScanner> createState() => _BarCodeScannerState();

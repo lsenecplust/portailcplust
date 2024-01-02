@@ -18,9 +18,9 @@ class MatrixScanScreen extends StatefulWidget {
   final Function(DeviceBarCodes)? onScanned;
 
   const MatrixScanScreen({
-    Key? key,
+    super.key,
     this.onScanned,
-  }) : super(key: key);
+  });
 
   // Create data capture context using your license key.
   @override

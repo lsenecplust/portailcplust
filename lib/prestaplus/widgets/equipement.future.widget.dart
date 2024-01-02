@@ -19,7 +19,7 @@ class EquipementFuture extends StatelessWidget {
 
   final Function(Equipement equipment) onSelectedequipment;
   const EquipementFuture({
-    Key? key,
+    super.key,
     this.scannedbarcode,
     this.modeEchange = false,
     this.param,
@@ -27,8 +27,7 @@ class EquipementFuture extends StatelessWidget {
     this.migaction,
     required this.onSelectedequipment,
   })  : assert(
-            future is Future<Equipement> || future is Future<List<Equipement>>),
-        super(key: key);
+            future is Future<Equipement> || future is Future<List<Equipement>>);
 
   String? get numdec => param ?? scannedbarcode?.numdec;
 
@@ -89,7 +88,7 @@ class _EquipementFuture extends StatelessWidget {
   final void Function()? movetomanual;
 
   const _EquipementFuture({
-    Key? key,
+    super.key,
     this.scannedbarcode,
     required this.modeEchange,
     required this.future,
@@ -97,7 +96,7 @@ class _EquipementFuture extends StatelessWidget {
     this.numdec,
     required this.onSelectedequipment,
     this.movetomanual,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -194,10 +193,10 @@ class _NotfoundEquipement extends StatelessWidget {
   final void Function()? movetomanual;
 
   const _NotfoundEquipement({
-    Key? key,
+    super.key,
     required this.numdec,
     required this.movetomanual,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -235,11 +234,11 @@ class EquipementList extends StatefulWidget {
   final bool modeEchange;
 
   const EquipementList({
-    Key? key,
+    super.key,
     required this.equipements,
     required this.onSelected,
     this.modeEchange = false,
-  }) : super(key: key);
+  });
 
   @override
   State<EquipementList> createState() => _EquipementListState();

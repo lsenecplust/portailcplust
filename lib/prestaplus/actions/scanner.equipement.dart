@@ -13,11 +13,11 @@ class ScannerEquipement extends StatelessWidget {
   final MigAction migAction;
   final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
   const ScannerEquipement({
-    Key? key,
+    super.key,
     this.prestation,
     required this.migAction,
     required this.onSubmit,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +40,11 @@ class ScannerEquipementSimple extends StatelessWidget {
   final Function(Equipement equipment)? onSelected;
 
   const ScannerEquipementSimple({
-    Key? key,
+    super.key,
     this.prestation,
     required this.migaction,
     this.onSelected,
-  }) : super(key: key);
+  });
 
   List<Widget> buildItems(BuildContext context) {
     List<Widget> listItem = List.empty(growable: true);
@@ -83,11 +83,11 @@ class ScannerEquipementEchange extends StatefulWidget {
   final MigAction migaction;
   final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
   const ScannerEquipementEchange({
-    Key? key,
+    super.key,
     this.prestation,
     required this.migaction,
     required this.onSubmit,
-  }) : super(key: key);
+  });
 
   @override
   State<ScannerEquipementEchange> createState() =>

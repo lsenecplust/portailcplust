@@ -7,10 +7,10 @@ class Echange extends StatelessWidget {
     final Prestation prestation;
   final MigAction migaction;
   const Echange({
-    Key? key,
+    super.key,
     required this.prestation,
     required this.migaction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

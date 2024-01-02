@@ -16,11 +16,11 @@ class RunningActionScreen extends StatelessWidget {
   final MigAction migAction;
   final MigWebSocketClientMessage message;
   const RunningActionScreen({
-    Key? key,
+    super.key,
     required this.prestation,
     required this.migAction,
     required this.message,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -118,9 +118,9 @@ Widget errorWidget = const Padding(
 
 class HistoAction extends StatelessWidget {
   const HistoAction({
-    Key? key,
+    super.key,
     required this.actions,
-  }) : super(key: key);
+  });
   final List<MigWebSocketServerMessage> actions;
 
   @override

@@ -17,10 +17,10 @@ class ActionEquipementScreen extends StatefulWidget {
   final Prestation prestation;
   final MigAction migAction;
   const ActionEquipementScreen({
-    Key? key,
+    super.key,
     required this.prestation,
     required this.migAction,
-  }) : super(key: key);
+  });
 
   @override
   State<ActionEquipementScreen> createState() => _ActionEquipementScreenState();

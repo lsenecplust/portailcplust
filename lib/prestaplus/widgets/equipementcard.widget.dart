@@ -8,11 +8,11 @@ class EquipementCard extends StatelessWidget {
   final bool isSelected;
   final Function(Equipement equipement) ontap;
   const EquipementCard({
-    Key? key,
+    super.key,
     required this.equipement,
     this.isSelected = false,
     required this.ontap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

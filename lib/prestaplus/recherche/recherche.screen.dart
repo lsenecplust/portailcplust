@@ -62,9 +62,9 @@ class _PrestaplusRechercheScreenState extends State<PrestaplusRechercheScreen> {
 class PresationList extends StatefulWidget {
   final Future<List<Prestation>> prestations;
   const PresationList({
-    Key? key,
+    super.key,
     required this.prestations,
-  }) : super(key: key);
+  });
 
   @override
   State<PresationList> createState() => _PresationListState();

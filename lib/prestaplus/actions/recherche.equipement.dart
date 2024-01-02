@@ -14,12 +14,12 @@ class RechercheManuelle extends StatelessWidget {
   final String? param;
   final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
   const RechercheManuelle({
-    Key? key,
+    super.key,
     this.prestation,
     required this.migaction,
     this.param,
     required this.onSubmit,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +42,12 @@ class RechercheEquipementSimple extends StatefulWidget {
   final bool modeEchange;
   final Function(Equipement equipment) onSelected;
   const RechercheEquipementSimple({
-    Key? key,
+    super.key,
     this.prestation,
     required this.migaction,
     required this.onSelected,
     this.modeEchange = false,
-  }) : super(key: key);
+  });
 
   @override
   State<RechercheEquipementSimple> createState() =>
@@ -138,10 +138,10 @@ class _RechercheEquipementEchange extends StatefulWidget {
   final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
   final MigAction migaction;
   const _RechercheEquipementEchange({
-    Key? key,
+    super.key,
     required this.onSubmit,
     required this.migaction,
-  }) : super(key: key);
+  });
 
   @override
   State<_RechercheEquipementEchange> createState() =>

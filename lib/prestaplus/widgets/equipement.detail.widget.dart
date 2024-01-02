@@ -6,9 +6,9 @@ import 'package:portail_canalplustelecom_mobile/dao/equipement.dao.dart';
 class EquipementDetail extends StatelessWidget {
   final Equipement? equipement;
   const EquipementDetail({
-    Key? key,
+    super.key,
     this.equipement,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

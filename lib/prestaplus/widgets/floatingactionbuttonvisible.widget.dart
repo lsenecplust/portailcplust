@@ -4,10 +4,10 @@ class FABAnimated extends StatefulWidget {
   final Widget? floatingActionButton;
   final bool visible;
   const FABAnimated({
-    Key? key,
+    super.key,
     this.visible = false,
     this.floatingActionButton,
-  }) : super(key: key);
+  });
 
   @override
   State<FABAnimated> createState() => FABAnimatedState();

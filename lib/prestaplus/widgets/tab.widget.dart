@@ -4,10 +4,10 @@ class HorizontalTab extends StatelessWidget {
   final IconData icondata;
   final String label;
   const HorizontalTab({
-    Key? key,
+    super.key,
     required this.icondata,
     required this.label,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

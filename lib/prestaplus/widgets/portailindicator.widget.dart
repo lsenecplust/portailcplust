@@ -5,10 +5,10 @@ class PortailIndicator extends StatelessWidget {
   final double? width;
   final double? height;
   const PortailIndicator({
-    Key? key,
+    super.key,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +38,10 @@ class Processindicator extends StatelessWidget {
   final double? width;
   final double? height;
   const Processindicator({
-    Key? key,
+    super.key,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

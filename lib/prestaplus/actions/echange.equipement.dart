@@ -8,9 +8,9 @@ class EchangeEquipementSwitcher extends StatefulWidget {
     final void Function(Equipement? equipment)? onswitch;
 
   const EchangeEquipementSwitcher({
-    Key? key,
+    super.key,
     this.onswitch,
-  }) : super(key: key);
+  });
 
   @override
   State<EchangeEquipementSwitcher> createState() =>
@@ -60,12 +60,12 @@ class EquipementRecap extends StatelessWidget {
   final Function()? ontap;
 
   const EquipementRecap({
-    Key? key,
+    super.key,
     required this.title,
     this.numdec,
     required this.isSelected,
     this.ontap,
-  }) : super(key: key);
+  });
 
   bool get isNumdecNull => numdec == null;
   Color get backgroundColor =>
@@ -133,9 +133,9 @@ class _NouvelEquipementRecap extends StatelessWidget {
   final Function()? ontap;
 
   const _NouvelEquipementRecap({
-    Key? key,
+    super.key,
     this.ontap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -152,9 +152,9 @@ class _AncienEquipementRecap extends StatelessWidget {
   final Function()? ontap;
 
   const _AncienEquipementRecap({
-    Key? key,
+    super.key,
     this.ontap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

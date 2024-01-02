@@ -11,10 +11,10 @@ class SaisieManuelle extends StatelessWidget {
   final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
   final MigAction migaction;
   const SaisieManuelle({
-    Key? key,
+    super.key,
     required this.onSubmit,
     required this.migaction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +38,12 @@ class _SaisieManuelleSimple extends StatefulWidget {
 
   final MigAction migaction;
   const _SaisieManuelleSimple({
-    Key? key,
+    super.key,
     required this.onSubmit,
     this.currentEquipement,
     this.modeEchange = false,
     required this.migaction,
-  }) : super(key: key);
+  });
 
   @override
   State<_SaisieManuelleSimple> createState() => _SaisieManuelleSimpleState();
@@ -246,10 +246,10 @@ class _SaisieManuelleEchange extends StatefulWidget {
   final Function(Equipement? newEq, Equipement? oldEq) onSubmit;
   final MigAction migaction;
   const _SaisieManuelleEchange({
-    Key? key,
+    super.key,
     required this.onSubmit,
     required this.migaction,
-  }) : super(key: key);
+  });
 
   @override
   State<_SaisieManuelleEchange> createState() => _SaisieManuelleEchangeState();

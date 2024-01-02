@@ -6,9 +6,9 @@ import 'package:portail_canalplustelecom_mobile/class/colors.dart';
 class ClientCard extends StatelessWidget {
   final String? client;
   const ClientCard({
-    Key? key,
+    super.key,
     required this.client,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
