@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:librairies/keycloack_auth.dart';
 import 'package:librairies/streambuilder.dart';
-import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
 import 'package:timelines/timelines.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
@@ -12,7 +10,6 @@ import 'package:portail_canalplustelecom_mobile/dao/websocket.client.message.dar
 import 'package:portail_canalplustelecom_mobile/dao/websokect.server.message.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class RunningActionScreen extends StatelessWidget {
   final Prestation prestation;
