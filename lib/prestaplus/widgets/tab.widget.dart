@@ -12,16 +12,8 @@ class HorizontalTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tab(
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(icondata),
-            ),
-            Text(label),
-          ],
-        ),
+      icon: Icon(icondata),
+      text: label,
     );
   }
 }

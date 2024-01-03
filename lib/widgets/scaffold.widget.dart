@@ -213,13 +213,13 @@ class _ScaffoldTabsWidgetState extends State<_ScaffoldTabsWidget> {
             return Container(
               color: Colors.white,
               constraints: BoxConstraints(minWidth: constraints.maxWidth),
-              child: Center(
-                child: TabBar(
-                  isScrollable: true,
-                  indicatorColor: lightColorScheme.primary.withOpacity(0.99),
-                  controller: widget.tabcontroller,
-                  tabs: widget.tabs!.keys.toList(),
-                ),
+              child: TabBar(
+                indicatorColor: lightColorScheme.primary.withOpacity(0.99),
+                controller: widget.tabcontroller,
+                tabs: widget.tabs!.keys.toList(),
+                padding: EdgeInsets.zero,
+                indicatorPadding: EdgeInsets.zero,
+                labelPadding: EdgeInsets.zero,
               ),
             );
           }),
