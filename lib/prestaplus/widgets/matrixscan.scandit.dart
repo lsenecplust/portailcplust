@@ -1,51 +1,42 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-/*
- * This file is part of the Scandit Data Capture SDK
- *
- * Copyright (C) 2021- Scandit AG. All rights reserved.
- */
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
-import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
-import 'package:portail_canalplustelecom_mobile/class/scanresult.dart';
 import 'package:scandit_flutter_datacapture_barcode/scandit_flutter_datacapture_barcode.dart';
 import 'package:scandit_flutter_datacapture_barcode/scandit_flutter_datacapture_barcode_tracking.dart';
 import 'package:scandit_flutter_datacapture_core/scandit_flutter_datacapture_core.dart';
 
+import 'package:portail_canalplustelecom_mobile/class/app.config.dart';
+import 'package:portail_canalplustelecom_mobile/class/colors.dart';
+import 'package:portail_canalplustelecom_mobile/class/devicebarcode.dart';
+import 'package:portail_canalplustelecom_mobile/class/scanresult.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/scan.info.result.dart';
+
 class MatrixScanScreen extends StatefulWidget {
   final Function(DeviceBarCodes)? onScanned;
-
   const MatrixScanScreen({
     super.key,
     this.onScanned,
   });
 
-  // Create data capture context using your license key.
   @override
-  State<StatefulWidget> createState() =>
-      // ignore: no_logic_in_create_state
-      _MatrixScanScreenState(DataCaptureContext.forLicenseKey(
-          ApplicationConfiguration.instance!.scandit.licenseKey));
+  State<StatefulWidget> createState() => _MatrixScanScreenState();
 }
 
 class _MatrixScanScreenState extends State<MatrixScanScreen>
     with WidgetsBindingObserver
     implements BarcodeTrackingListener {
-  DeviceBarCodes barcodes = DeviceBarCodes();
-  final DataCaptureContext _context;
+  final DataCaptureContext _context = DataCaptureContext.forLicenseKey(
+      ApplicationConfiguration.instance!.scandit.licenseKey);
 
   // Use the world-facing (back) camera.
   final Camera? _camera = Camera.defaultCamera;
   late BarcodeTracking _barcodeTracking;
   late DataCaptureView _captureView;
-
   bool _isPermissionMessageVisible = false;
 
-  List<ScanResult> scanResults = [];
+  final ScaninfosResult scanResults = ScaninfosResult();
 
-  _MatrixScanScreenState(this._context);
+  _MatrixScanScreenState();
 
   void _checkPermission() {
     Permission.camera.request().isGranted.then((value) => setState(() {
@@ -59,7 +50,7 @@ class _MatrixScanScreenState extends State<MatrixScanScreen>
   @override
   void initState() {
     super.initState();
-    _ambiguate(WidgetsBinding.instance)?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     // Use the recommended camera settings for the BarcodeTracking mode.
     var cameraSettings = BarcodeTracking.recommendedCameraSettings;
@@ -102,7 +93,7 @@ class _MatrixScanScreenState extends State<MatrixScanScreen>
         BarcodeTrackingBasicOverlay.withBarcodeTrackingForViewWithStyle(
             _barcodeTracking,
             _captureView,
-            BarcodeTrackingBasicOverlayStyle.frame));
+            BarcodeTrackingBasicOverlayStyle.legacy));
 
     // Set the default camera as the frame source of the context. The camera is off by
     // default and must be turned on to start streaming frames to the data capture context for recognition.
@@ -121,31 +112,49 @@ class _MatrixScanScreenState extends State<MatrixScanScreen>
           style: TextStyle(
               fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black));
     } else {
+      var bottomPadding = 48 + MediaQuery.of(context).padding.bottom;
+      var containerPadding = defaultTargetPlatform == TargetPlatform.iOS
+          ? EdgeInsets.fromLTRB(48, 48, 48, bottomPadding)
+          : const EdgeInsets.all(48);
       child = Stack(children: [
         _captureView,
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: InkWell(
-            onTap: () => _showScanResults(context),
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white),
-                    borderRadius: const BorderRadius.all(Radius.circular(100))),
-                child: const Icon(
-                  Icons.circle,
-                  size: 90,
-                  color: Colors.white,
-                ),
-              ),
+        Container(
+          alignment: Alignment.bottomCenter,
+          padding: containerPadding,
+          child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                  onPressed: () => _showScanResults(context),
+                  style: TextButton.styleFrom(
+                      backgroundColor: lightColorScheme.primary,
+                      padding: const EdgeInsets.all(15),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                          side:
+                              const BorderSide(color: Colors.white, width: 0))),
+                  child: const Text(
+                    'Terminer',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ))),
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ListenableBuilder(
+              listenable: scanResults,
+              builder: (context, child) {
+                var result = DeviceBarCodes.fromScanResult(scanResults.results);
+                return ScanInfosResultBubble(result: result);
+              },
             ),
           ),
-        ),
+        )
       ]);
     }
+    // ignore: deprecated_member_use
     return WillPopScope(
-        child: child,
+        child: Scaffold(body: child),
         onWillPop: () {
           dispose();
           return Future.value(true);
@@ -174,7 +183,7 @@ class _MatrixScanScreenState extends State<MatrixScanScreen>
 
   @override
   void dispose() {
-    _ambiguate(WidgetsBinding.instance)?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     _barcodeTracking.removeListener(this);
     _barcodeTracking.isEnabled = false;
     _camera?.switchToDesiredState(FrameSourceState.off);
@@ -184,15 +193,49 @@ class _MatrixScanScreenState extends State<MatrixScanScreen>
 
   void _showScanResults(BuildContext context) {
     _barcodeTracking.isEnabled = false;
-    barcodes = DeviceBarCodes.fromScanResult(scanResults);
+    widget.onScanned?.call(DeviceBarCodes.fromScanResult(scanResults.results));
     _resetScanResults();
-    widget.onScanned?.call(barcodes);
   }
 
   void _resetScanResults() {
     scanResults.clear();
     _barcodeTracking.isEnabled = true;
   }
+}
 
-  T? _ambiguate<T>(T? value) => value;
+class ScanInfosResultBubble extends StatelessWidget {
+  final DeviceBarCodes result;
+  const ScanInfosResultBubble({
+    super.key,
+    required this.result,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var uderline = Theme.of(context)
+        .textTheme
+        .labelLarge
+        ?.copyWith(decoration: TextDecoration.underline);
+    return Container(
+      width: 250,
+      height: 200,
+      decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.7),
+          borderRadius: BorderRadius.circular(30)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Numdec", style: uderline),
+          Text(result.numdec ?? "- - - - - - - - -"),
+          Text("Adresse MAC", style: uderline),
+          Text(result.adresseMAC ?? "- - - - - - - - -"),
+          Text("numéro Serie", style: uderline),
+          Text(result.numeroSerie ?? "- - - - - - - - -"),
+          Text("ont Serial", style: uderline),
+          Text(result.ontSerial ?? "- - - - - - - - -"),
+        ],
+      ),
+    );
+  }
 }

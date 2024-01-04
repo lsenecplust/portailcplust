@@ -1,6 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:portail_canalplustelecom_mobile/class/scan.result.extension.dart';
 import 'package:portail_canalplustelecom_mobile/class/scanresult.dart';
 
 class DeviceBarCodes {
@@ -19,37 +19,17 @@ class DeviceBarCodes {
   bool get isNull =>
       [adresseMAC, numeroSerie, numdec].every((element) => element == null);
 
-  static bool isNumdec(String value) => RegExp(r'^[0-9]*$').hasMatch(value);
-  static bool isOntSerial(String value) => value.startsWith('SMB');
-  static bool isSerial(String value) => value.startsWith('N');
+  static String? getNumdec(List<ScanResult> scanResults) =>
+      scanResults.where((element) => element.isNumdec).lastOrNull?.data;
 
-  static bool isMac(String value) =>
-      RegExp(r'^([0-9A-Fa-f]{2}){6}$').hasMatch(value);
+  static String? getMac(List<ScanResult> scanResults) =>
+      scanResults.where((element) => element.isMac).lastOrNull?.data;
 
-  static (String?, List<ScanResult>) getNumdec(List<ScanResult> scanResults) {
-    var idx = scanResults.indexWhere((element) => isNumdec(element.data));
-    if (idx == -1) return (null, scanResults);
-    return (scanResults.removeAt(idx).data, scanResults);
-  }
+  static String? getOntSerial(List<ScanResult> scanResults) =>
+      scanResults.where((element) => element.isOntSerial).lastOrNull?.data;
 
-  static (String?, List<ScanResult>) getMac(List<ScanResult> scanResults) {
-    var idx = scanResults.indexWhere((element) => isMac(element.data));
-    if (idx == -1) return (null, scanResults);
-    return (scanResults.removeAt(idx).data, scanResults);
-  }
-
-  static (String?, List<ScanResult>) getOntSerial(
-      List<ScanResult> scanResults) {
-    var idx = scanResults.indexWhere((element) => isOntSerial(element.data));
-    if (idx == -1) return (null, scanResults);
-    return (scanResults.removeAt(idx).data, scanResults);
-  }
-
-  static (String?, List<ScanResult>) getSerial(List<ScanResult> scanResults) {
-    var idx = scanResults.indexWhere((element) => isSerial(element.data));
-    if (idx == -1) return (null, scanResults);
-    return (scanResults.removeAt(idx).data, scanResults);
-  }
+  static String? getSerial(List<ScanResult> scanResults) =>
+      scanResults.where((element) => element.isSerial).lastOrNull?.data;
 
   DeviceBarCodes copyWith({
     String? serialnumber,
@@ -76,15 +56,18 @@ class DeviceBarCodes {
 
   factory DeviceBarCodes.fromScanResult(List<ScanResult> scanresult) {
     String? numdec, mac, ontSerial, serial;
-    List<ScanResult> scr;
 
-    (numdec, scr) = DeviceBarCodes.getNumdec(scanresult);
-    (mac, scr) = DeviceBarCodes.getMac(scr);
-    (ontSerial, scr) = DeviceBarCodes.getOntSerial(scr);
-    (serial, scr) = DeviceBarCodes.getSerial(scr);
+    numdec = DeviceBarCodes.getNumdec(scanresult);
+    mac = DeviceBarCodes.getMac(
+        scanresult.where((element) => element.data != numdec).toList());
+    ontSerial = DeviceBarCodes.getOntSerial(scanresult);
+    serial = DeviceBarCodes.getSerial(scanresult);
 
     return DeviceBarCodes(
-        numdec: numdec, adresseMAC: mac, numeroSerie: serial, ontSerial: ontSerial);
+        numdec: numdec,
+        adresseMAC: mac,
+        numeroSerie: serial,
+        ontSerial: ontSerial);
   }
 
   factory DeviceBarCodes.fromMap(Map<String, dynamic> map) {
