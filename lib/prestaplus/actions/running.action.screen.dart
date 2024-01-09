@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:librairies/keycloack_auth.dart';
+import 'package:librairies/somethingwentwrong.dart';
 import 'package:librairies/streambuilder.dart';
 import 'package:portail_canalplustelecom_mobile/class/colors.dart';
+import 'package:portail_canalplustelecom_mobile/menu.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/loader.riv.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -43,16 +45,25 @@ class RunningActionScreen extends StatefulWidget {
     StreamResponse response = StreamResponse(errors: {}, actions: {});
 
     channel.sink.add(message.toJson());
-    //  print(message.toJson());
+    print(message.toJson());
     await for (var msg in channel.stream) {
       var message = MigWebSocketServerMessage.fromJson(msg);
       if (message.migNotifiyPrestationTacheMessage != null) {
         response = response.copyWith(
             prestationTache: message.migNotifiyPrestationTacheMessage);
+
+        print(
+            "====> stream message : ${message.migNotifiyPrestationTacheMessage?.statut}");
+        print("====> stream response : ${response.prestationTache?.statut}");
       }
       if (message.migNotifiyPrestationTacheActionMessage != null) {
         response.actions[message.migNotifiyPrestationTacheActionMessage!
             .actionid] = message.migNotifiyPrestationTacheActionMessage!;
+
+        print(
+            "=======> stream action message :${message.migNotifiyPrestationTacheActionMessage?.actionid} ${message.migNotifiyPrestationTacheActionMessage?.statut}");
+        print(
+            "=======> stream action response : ${response.actions[message.migNotifiyPrestationTacheActionMessage?.actionid]?.statut}");
       }
 
       if (message.message.isNotEmpty) {
