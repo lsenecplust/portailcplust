@@ -66,10 +66,20 @@ class RunningActionScreen extends StatefulWidget {
 
 class _RunningActionScreenState extends State<RunningActionScreen> {
   LoaderController loaderController = LoaderController();
+  GlobalKey<ScaffoldMenuState> scafState = GlobalKey();
+
   Map<int, LoaderController> controllers = {};
+
   @override
   Widget build(BuildContext context) {
+    Widget backButton = FilledButton.icon(
+        icon: const Icon(Icons.home),
+        onPressed: () => OAuthManager.of(context)?.navigatePushReplacement(
+            context, const ScaffoldMenu(selectedmenu: Menu.prestaplus)),
+        label: const Text("Retour Accueil"));
+
     return ScaffoldMenu(
+      key: scafState,
       child: EnhancedStreamBuilder<StreamResponse>(
         progressIndicator: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -84,16 +94,76 @@ class _RunningActionScreenState extends State<RunningActionScreen> {
             Text("Chargement de l'action en cours...")
           ],
         ),
+        error: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SomethingWenWrong(
+                iconsize: 50,
+                line1: "Erreur de connexion au Websocket",
+                line2: "Contactez le support",
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: backButton,
+              )
+            ],
+          ),
+        ),
+        noelement: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SomethingWenWrong(
+                iconsize: 50,
+                line1: "Erreur websocket pas de données",
+                line2: "Contactez le support",
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: backButton,
+              )
+            ],
+          ),
+        ),
         stream: widget.migStreamWebsocket(context),
         builder: (context, snapshot) {
-          if (snapshot.data?.statut == StreamResponseStatut.encours) {
-            loaderController.reset();
-          }
-          if (snapshot.data?.statut == StreamResponseStatut.ok) {
-            loaderController.check();
-          }
-          if (snapshot.data?.statut == StreamResponseStatut.ko) {
-            loaderController.error();
+          if (snapshot.connectionState == ConnectionState.done) {
+            print("===========> ${snapshot.data?.prestationTache?.statut}");
+
+            if (snapshot.data?.statut != StreamResponseStatut.ok) {
+              loaderController.error();
+            }
+
+            snapshot.data?.actions.forEach(
+              (key, value) {
+                if (controllers.containsKey(key) == false) {
+                  controllers[key] = LoaderController();
+                }
+
+                if (value.statut.toUpperCase() == "EN COURS") {
+                  controllers[key]?.reset();
+                }
+                if (value.statut.toUpperCase() == "OK") {
+                  controllers[key]?.check();
+                }
+                if (value.statut.toUpperCase() == "KO") {
+                  controllers[key]?.error();
+                }
+              },
+            );
+          } else {
+            if (snapshot.data?.statut == StreamResponseStatut.encours) {
+              loaderController.reset();
+            }
+            if (snapshot.data?.statut == StreamResponseStatut.ok) {
+              loaderController.check();
+            }
+            if (snapshot.data?.statut == StreamResponseStatut.ko) {
+              loaderController.error();
+            }
           }
 
           snapshot.data?.actions.forEach(
@@ -132,6 +202,8 @@ class _RunningActionScreenState extends State<RunningActionScreen> {
               ),
               HistoAction(
                 onTap: (key) {
+                  if (snapshot.data?.errors[key] == null) return;
+                  if (snapshot.data!.errors[key]!.isEmpty) return;
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -150,6 +222,13 @@ class _RunningActionScreenState extends State<RunningActionScreen> {
                 actions: snapshot.data!.actions,
                 controllers: controllers,
               ),
+              Visibility(
+                visible: snapshot.connectionState == ConnectionState.done,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: backButton,
+                ),
+              )
             ],
           );
         },
