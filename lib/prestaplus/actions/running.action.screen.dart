@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:librairies/keycloack_auth.dart';
 import 'package:librairies/streambuilder.dart';
-import 'package:timelines/timelines.dart';
+import 'package:portail_canalplustelecom_mobile/class/colors.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/loader.riv.dart';
 import 'package:web_socket_channel/io.dart';
+
 import 'package:portail_canalplustelecom_mobile/dao/action.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
 import 'package:portail_canalplustelecom_mobile/dao/websocket.client.message.dart';
@@ -11,7 +12,7 @@ import 'package:portail_canalplustelecom_mobile/dao/websokect.server.message.dar
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/widgets/scaffold.widget.dart';
 
-class RunningActionScreen extends StatelessWidget {
+class RunningActionScreen extends StatefulWidget {
   final Prestation prestation;
   final MigAction migAction;
   final MigWebSocketClientMessage message;
@@ -23,36 +24,53 @@ class RunningActionScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    Stream<List<MigWebSocketServerMessage>> migStreamWebsocket() async* {
-      List<MigWebSocketServerMessage> histo = [];
-      final channel = IOWebSocketChannel.connect(
-        Uri.parse("wss://re7.oss.canalplustelecom.com/pfs/websocket"),
-        //  Uri.parse("wss://${ApplicationConfiguration.instance!.webapipfs}/api/Mig/action-equipement/ws"),
-        //  Uri.parse("ws://fr-1vm-crmws13-r7/webApi_PFS/api/Mig/action-equipement/ws"),
-        //  Uri.parse("wss://192.168.0.11:5001/websocket/mig/action/equipement"),
-        //  Uri.parse("ws://fr-1vm-crmws13-r7/webApi_PFS/websocket/mig/action/equipement"),
-        headers: {
-          'X-AUTH-TOKEN' :"Bearer ${OAuthManager.of(context)?.client?.credentials.accessToken}",
-          "Upgrade": "websocket",
-          "Connection": "Upgrade",
-         /* 'Authorization':
-              'Bearer ${OAuthManager.of(context)?.client?.credentials.accessToken}'*/
-        },
-      );
+  State<RunningActionScreen> createState() => _RunningActionScreenState();
 
-      //  channel.sink.add(message.toJson());
+  Stream<StreamResponse> migStreamWebsocket(BuildContext context) async* {
+    final channel = IOWebSocketChannel.connect(
+      Uri.parse("wss://re7.oss.canalplustelecom.com/pfs/websocket"),
+      //  Uri.parse("wss://${ApplicationConfiguration.instance!.webapipfs}/api/Mig/action-equipement/ws"),
+      //  Uri.parse("ws://fr-1vm-crmws13-r7/webApi_PFS/api/Mig/action-equipement/ws"),
+      //  Uri.parse("wss://192.168.0.11:5001/websocket/mig/action/equipement"),
+      //  Uri.parse("ws://fr-1vm-crmws13-r7/webApi_PFS/websocket/mig/action/equipement"),
+      headers: {
+        'X-AUTH-TOKEN':
+            "Bearer ${OAuthManager.of(context)?.client?.credentials.accessToken}",
+        "Upgrade": "websocket",
+        "Connection": "Upgrade",
+      },
+    );
+    StreamResponse response = StreamResponse(errors: {}, actions: {});
 
-      await for (var msg in channel.stream) {
-        // histo.add(MigWebSocketServerMessage.
-        // fromJson(msg));
-        print(msg);
-        yield histo;
+    channel.sink.add(message.toJson());
+    //  print(message.toJson());
+    await for (var msg in channel.stream) {
+      var message = MigWebSocketServerMessage.fromJson(msg);
+      if (message.migNotifiyPrestationTacheMessage != null) {
+        response = response.copyWith(
+            prestationTache: message.migNotifiyPrestationTacheMessage);
       }
-    }
+      if (message.migNotifiyPrestationTacheActionMessage != null) {
+        response.actions[message.migNotifiyPrestationTacheActionMessage!
+            .actionid] = message.migNotifiyPrestationTacheActionMessage!;
+      }
 
+      if (message.message.isNotEmpty) {
+        response.errors[message.migNotifiyPrestationTacheActionMessage!
+            .actionid] = message.message.replaceAll(RegExp(r'"'), "");
+      }
+      yield response;
+    }
+  }
+}
+
+class _RunningActionScreenState extends State<RunningActionScreen> {
+  LoaderController loaderController = LoaderController();
+  Map<int, LoaderController> controllers = {};
+  @override
+  Widget build(BuildContext context) {
     return ScaffoldMenu(
-      child: EnhancedStreamBuilder<List<MigWebSocketServerMessage>>(
+      child: EnhancedStreamBuilder<StreamResponse>(
         progressIndicator: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,25 +84,72 @@ class RunningActionScreen extends StatelessWidget {
             Text("Chargement de l'action en cours...")
           ],
         ),
-        stream: migStreamWebsocket(),
+        stream: widget.migStreamWebsocket(context),
         builder: (context, snapshot) {
-          if (snapshot.data?.isEmpty == true) return Container();
-          bool isDone = snapshot.connectionState == ConnectionState.done;
-          bool isError = snapshot.data?.last.error ?? false;
+          if (snapshot.data?.statut == StreamResponseStatut.encours) {
+            loaderController.reset();
+          }
+          if (snapshot.data?.statut == StreamResponseStatut.ok) {
+            loaderController.check();
+          }
+          if (snapshot.data?.statut == StreamResponseStatut.ko) {
+            loaderController.error();
+          }
+
+          snapshot.data?.actions.forEach(
+            (key, value) {
+              if (controllers.containsKey(key) == false) {
+                controllers[key] = LoaderController();
+              }
+
+              if (value.statut.toUpperCase() == "EN COURS") {
+                controllers[key]?.reset();
+              }
+              if (value.statut.toUpperCase() == "OK") {
+                controllers[key]?.check();
+              }
+              if (value.statut.toUpperCase() == "KO") {
+                controllers[key]?.error();
+              }
+            },
+          );
+
           return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Builder(builder: (context) {
-                if (isDone) {
-                  return isError ? errorWidget : sucessWidget;
-                }
-                return const Expanded(child: Processindicator());
-              }),
               Text(
-                "${migAction.tache} ${isDone ? isError ? 'Echec' : 'OK' : 'en cours de traitement'}",
+                widget.migAction.tache,
                 style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
-              Expanded(child: HistoAction(actions: snapshot.data!)),
+              Center(
+                child: SizedBox(
+                    height: 200,
+                    width: 200,
+                    child:
+                        LoaderIndicator(loadingController: loaderController)),
+              ),
+              HistoAction(
+                onTap: (key) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          actions: [
+                            TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text("Fermer"))
+                          ],
+                          content: Text(
+                            snapshot.data?.errors[key] ?? "{data:null}",
+                          ),
+                        );
+                      });
+                },
+                actions: snapshot.data!.actions,
+                controllers: controllers,
+              ),
             ],
           );
         },
@@ -93,69 +158,125 @@ class RunningActionScreen extends StatelessWidget {
   }
 }
 
-Widget sucessWidget = const Padding(
-  padding: EdgeInsets.all(20.0),
-  child: CircleAvatar(
-    radius: 100,
-    backgroundColor: Colors.greenAccent,
-    foregroundColor: Colors.white,
-    child: Icon(
-      Icons.check,
-      size: 200,
-      color: Colors.white,
-    ),
-  ),
-);
-
-Widget errorWidget = const Padding(
-  padding: EdgeInsets.all(20.0),
-  child: Icon(
-    Icons.cancel,
-    size: 200,
-    color: Colors.redAccent,
-  ),
-);
-
 class HistoAction extends StatelessWidget {
+  final Map<int, LoaderController>? controllers;
+  final Function(int key)? onTap;
   const HistoAction({
     super.key,
     required this.actions,
+    this.controllers,
+    this.onTap,
   });
-  final List<MigWebSocketServerMessage> actions;
+  final Map<int, MigNotifiyPrestationTacheActionMessage>? actions;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Timeline.tileBuilder(
-        theme: TimelineThemeData(
-          nodePosition: 0,
-          connectorTheme: const ConnectorThemeData(
-            thickness: 3.0,
-            color: Color(0xffd3d3d3),
-          ),
-          indicatorTheme: const IndicatorThemeData(
-            size: 15.0,
-          ),
-        ),
-        builder: TimelineTileBuilder.connected(
-          connectorBuilder: (_, index, __) =>
-              const SolidLineConnector(color: Color(0xff6ad192)),
-          indicatorBuilder: (context, index) => const DotIndicator(
-            color: Color(0xff6ad192),
-            child: Icon(
-              Icons.check,
+    List<Widget> pactions = [];
+
+    actions?.forEach(
+      (key, value) {
+        pactions.add(InkWell(
+          onTap: () => onTap?.call(key),
+          child: Container(
+            margin: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
               color: Colors.white,
-              size: 15.0,
+              borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+              boxShadow: [
+                BoxShadow(
+                    color: lightColorScheme.primary,
+                    offset: const Offset(-7, 0),
+                    blurRadius: 0,
+                    spreadRadius: 0),
+                const BoxShadow(
+                    color: CustomColors.gray400,
+                    offset: Offset(2, 2),
+                    blurRadius: 2,
+                    spreadRadius: 2.0),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(value.label),
+                      Text(
+                        value.prestationtacheactionid.toString(),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: LoaderIndicator(
+                            loadingController: controllers?[key])),
+                  ),
+                ),
+              ],
             ),
           ),
-          contentsBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(actions[index].message),
-          ),
-          itemCount: actions.length,
-        ),
-      ),
+        ));
+      },
+    );
+    return Column(children: pactions);
+  }
+}
+
+enum StreamResponseStatut {
+  ok,
+  encours,
+  ko,
+  uknown;
+}
+
+class StreamResponse {
+  final String? message;
+  final bool error;
+  final MigNotifiyPrestationTacheMessage? prestationTache;
+  final Map<int, MigNotifiyPrestationTacheActionMessage> actions;
+  final Map<int, String> errors;
+  StreamResponse({
+    this.message,
+    this.error = false,
+    this.prestationTache,
+    required this.actions,
+    required this.errors,
+  });
+
+  bool get isOk => prestationTache?.statut.toUpperCase() == "OK";
+  bool get isEnCours => prestationTache?.statut.toUpperCase() == "EN COURS";
+  bool get isKo => prestationTache?.statut.toUpperCase() == "KO";
+
+  StreamResponseStatut get statut {
+    if (isOk) return StreamResponseStatut.ok;
+    if (isEnCours) return StreamResponseStatut.encours;
+    if (isKo) return StreamResponseStatut.ko;
+    return StreamResponseStatut.uknown;
+  }
+
+  StreamResponse copyWith({
+    String? message,
+    bool? error,
+    MigNotifiyPrestationTacheMessage? prestationTache,
+    Map<int, MigNotifiyPrestationTacheActionMessage>? actions,
+    Map<int, String>? errors,
+  }) {
+    return StreamResponse(
+      message: message ?? this.message,
+      error: error ?? this.error,
+      prestationTache: prestationTache ?? this.prestationTache,
+      actions: actions ?? this.actions,
+      errors: errors ?? this.errors,
     );
   }
 }

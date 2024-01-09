@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portail_canalplustelecom_mobile/dao/prestation.dao.dart';
+import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/loader.riv.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/portailindicator.widget.dart';
 import 'package:portail_canalplustelecom_mobile/prestaplus/widgets/prestationcard.widget.dart';
 import 'package:librairies/futurebuilder.dart';
@@ -73,7 +74,7 @@ class PresationList extends StatefulWidget {
 
 class _PresationListState extends State<PresationList> {
   var showOlderPrestation = false;
-
+  LoaderController controller = LoaderController();
   @override
   Widget build(BuildContext context) {
     return EnhancedFutureBuilder(
@@ -118,7 +119,7 @@ class _PresationListState extends State<PresationList> {
                   ],
                   onSelectIndexChanged: (selectedindex) {
                     setState(() {
-                      showOlderPrestation = selectedindex==1;
+                      showOlderPrestation = selectedindex == 1;
                     });
                   },
                 ),

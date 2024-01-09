@@ -49,7 +49,7 @@ class Processindicator extends StatelessWidget {
       width: width,
       height: height,
       child: RiveLoading(
-          name: 'assets/rives/process_indicator.riv',
+          name: 'assets/rives/processindicator.riv',
           loopAnimation: 'Timeline 1',
           onSuccess: (_) {
             debugPrint('Finished');

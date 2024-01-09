@@ -34,7 +34,7 @@ class ApplicationConfiguration extends Equatable {
       webapipfs: map['webapipfs'] ?? '',
       keycloakConfig: KeycloakConfig.fromMap(map['keycloak']),
       scandit: Scandit.fromMap(map['scandit']),
-      speedAnimations: map['speedAnimations'] ?? false,
+      speedAnimations: true,
     );
   }
 
