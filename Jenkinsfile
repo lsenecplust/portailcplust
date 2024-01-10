@@ -6,4 +6,9 @@ node('docker') {
     [
         credentialsId: 'app-jenkins-r7',
         url: 'https://gitlab.infra.msv/PFS/dart/librairies.git']])
+        {
+            sh '''
+            ls
+            '''
+        }
 }
