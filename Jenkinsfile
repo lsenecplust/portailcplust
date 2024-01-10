@@ -1,20 +1,7 @@
 node('docker') {
-    withCredentials([[
-        $class: 'VaultUsernamePasswordCredentialBinding',
+    checkout scmGit(branches: [[name: '*/master']],
+    extensions: [submodule(recursiveSubmodules: true, reference: '')],
+    userRemoteConfigs: [[
         credentialsId: 'app-jenkins-r7',
-        passwordVariable: 'PASSWORD',
-        usernameVariable: 'USERNAME'
-    ]]) {
-        checkout([
-            $class: 'GitSCM',
-            branches: [[name: 'master']],
-            doGenerateSubmoduleConfigurations: false,
-            extensions: [[$class: 'SubmoduleOption', recursiveSubmodules: true]],
-            submoduleCfg: [],
-            userRemoteConfigs: [[
-                credentialsId: 'app-jenkins-r7',
-                url: 'https://gitlab.infra.msv/PFS/portail_canalplustelecom_mobile.git'
-            ]]
-        ])
-    }
+        url: 'https://gitlab.infra.msv/PFS/portail_canalplustelecom_mobile.git']])
 }
