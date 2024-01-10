@@ -1,11 +1,23 @@
-node('docker') {
-    checkout scmGit(branches: [[name: '*/master']],
-    extensions: [submodule(recursiveSubmodules: true, trackingSubmodules : true, parentCredentials :true)],
-    userRemoteConfigs: [[
-        credentialsId: 'app-jenkins-r7',
-        url: 'https://gitlab.infra.msv/PFS/portail_canalplustelecom_mobile.git']]) 
-            sh '''
-                cd librairies
-                ls
-            '''
+pipeline {
+    agent {
+        docker { image 'node:18.18.0-alpine3.18' }
+    }
+    stages {
+        stage('Install') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'Username is $LOGIN_CREDS_USR'
+                sh 'npm run test'
+            }
+        }
+    }
 }
