@@ -3,13 +3,21 @@ node('docker') {
     credentialsId: 'app-jenkins-r7',
     passwordVariable: 'PASSWORD',
     usernameVariable: 'USERNAME']]) {
-        git branch: 'master',
-        credentialsId: 'app-jenkins-r7',
-        url: 'https://gitlab.infra.msv/PFS/portail_canalplustelecom_mobile.git'
-        sh '''
-        git submodule update --init --recursive
-        cd librairies
-        ls
-        '''
+        checkout([
+            $class: 'GitSCM',
+            branches: [[name: 'master']],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [[$class: 'SubmoduleOption', recursiveSubmodules: true]],
+            submoduleCfg: [],
+            userRemoteConfigs: [[
+                credentialsId: 'app-jenkins-r7',
+                url: 'https://gitlab.infra.msv/PFS/portail_canalplustelecom_mobile.git'
+            ]]
+        ]) {
+            sh '''
+                cd librairies
+                ls
+            '''
+        }
     }
 }
