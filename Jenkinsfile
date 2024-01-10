@@ -10,7 +10,7 @@ node('docker') {
             branches: [[name: 'master']],
             doGenerateSubmoduleConfigurations: false,
             extensions: [[$class: 'SubmoduleOption', recursiveSubmodules: true]],
-            submoduleCfg: [credentialsId: 'app-jenkins-r7'],
+            submoduleCfg: [],
             userRemoteConfigs: [[
                 credentialsId: 'app-jenkins-r7',
                 url: 'https://gitlab.infra.msv/PFS/portail_canalplustelecom_mobile.git'
