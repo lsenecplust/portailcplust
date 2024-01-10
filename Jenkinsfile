@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker { image 'node:18.18.0-alpine3.18' }
+        docker { image 'fr-1vm-harbor01.infra.msv/domenic/mongo:5.0' }
     }
     stages {
         stage('Install') {
