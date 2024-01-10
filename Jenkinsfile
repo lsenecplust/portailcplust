@@ -13,7 +13,7 @@ node('docker') {
             submoduleCfg: [],
             userRemoteConfigs: [[
                 credentialsId: 'app-jenkins-r7',
-                url: 'https://gitlab.infra.msv/PFS/portail_canalplustelecom_mobile.git'
+                url: 'git@gitlab.infra.msv:PFS/portail_canalplustelecom_mobile.git'
             ]]
         ])
     }
