@@ -4,7 +4,7 @@ node('docker') {
     passwordVariable: 'PASSWORD',
     usernameVariable: 'USERNAME']]) {
         git branch: 'master',
-        url: 'https://gitlab.infra.msv/PFS/portail_canalplustelecom_mobile.git'
+        url: 'git@gitlab.infra.msv:PFS/portail_canalplustelecom_mobile.git'
         sh '''
         ls
         '''
