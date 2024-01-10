@@ -38,15 +38,28 @@ class _LoaderIndicatorState extends State<LoaderIndicator> {
 }
 
 class LoaderController {
+  bool isDone = false;
   SMITrigger? checkTrigger;
   SMITrigger? errorTrigger;
   SMITrigger? resetTrigger;
 
   void check() {
-    checkTrigger?.fire();
+    if (isDone) {
+      resetTrigger?.fire();
+      Future.delayed(Durations.short1).then((value) => checkTrigger?.fire());
+    } else {
+      isDone = true;
+      checkTrigger?.fire();
+    }
   }
 
   void error() {
+    if (isDone) {
+      resetTrigger?.fire();
+      Future.delayed(Durations.short1).then((value) => errorTrigger?.fire());
+    } else {
+      isDone = true;
+    }
     errorTrigger?.fire();
   }
 
