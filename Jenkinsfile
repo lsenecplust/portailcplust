@@ -16,5 +16,8 @@ node('docker') {
 
     sh '''
         ls
+        cd librairies
+        pwd
+        ls
     '''
 }
