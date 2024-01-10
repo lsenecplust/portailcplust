@@ -1,8 +1,10 @@
 node('docker') {
-    withCredentials([[$class: 'VaultUsernamePasswordCredentialBinding',
-    credentialsId: 'app-jenkins-r7',
-    passwordVariable: 'PASSWORD',
-    usernameVariable: 'USERNAME']]) {
+    withCredentials([[
+        $class: 'VaultUsernamePasswordCredentialBinding',
+        credentialsId: 'app-jenkins-r7',
+        passwordVariable: 'PASSWORD',
+        usernameVariable: 'USERNAME'
+    ]]) {
         checkout([
             $class: 'GitSCM',
             branches: [[name: 'master']],
@@ -13,11 +15,6 @@ node('docker') {
                 credentialsId: 'app-jenkins-r7',
                 url: 'https://gitlab.infra.msv/PFS/portail_canalplustelecom_mobile.git'
             ]]
-        ]) {
-            sh '''
-                cd librairies
-                ls
-            '''
-        }
+        ])
     }
 }
