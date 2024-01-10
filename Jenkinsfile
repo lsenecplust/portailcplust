@@ -7,7 +7,8 @@ node('docker') {
         credentialsId: 'app-jenkins-r7',
         url: 'https://gitlab.infra.msv/PFS/portail_canalplustelecom_mobile.git'
         sh '''
-        cd librairies        
+        git submodule update --init --recursive
+        cd librairies
         ls
         '''
     }
