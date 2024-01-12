@@ -279,8 +279,7 @@ class _RunningActionScreenState extends State<RunningActionScreen> {
     final channel = IOWebSocketChannel.connect(
       uri,
       headers: {
-        /*    'X-AUTH-TOKEN':
-            "Bearer ${OAuthManager.of(context)?.client?.credentials.accessToken}",*/
+        'X-AUTH-TOKEN': token,
         "Upgrade": "websocket",
         "Connection": "Upgrade",
       },
@@ -305,7 +304,6 @@ class _RunningActionScreenState extends State<RunningActionScreen> {
     }
   }
 
-  //  Uri.parse("wss://${ApplicationConfiguration.instance!.webapipfs}/api/Mig/action-equipement/ws"),
 
   String get token =>
       "Bearer ${OAuthManager.of(context)?.client?.credentials.accessToken}";
