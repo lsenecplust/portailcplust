@@ -1,4 +1,4 @@
-name: RELEASE
+name: release re7
 on:
   workflow_dispatch:
     branches:
@@ -18,14 +18,14 @@ jobs:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '2.0.5'
+          flutter-version: '3.16.5'
       - name: Build apk
         run: |
           flutter pub get
           flutter format --set-exit-if-changed .
           flutter analyze
           flutter test
-          flutter build apk
+          flutter build apk --release -t ./lib/main.recette.dart
       - name: Retrieve Release Version
         id: versionstep
         run: |
